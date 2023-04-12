@@ -1,7 +1,9 @@
-package com.grifalion.rickandmorty.presentation
+package com.grifalion.rickandmorty.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.grifalion.rickandmorty.databinding.SplashScreenBinding
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +17,8 @@ class SplashScreenActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = SplashScreenBinding.inflate(layoutInflater)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(binding.root)
 
         CoroutineScope(Dispatchers.Main).launch {

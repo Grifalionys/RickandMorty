@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/characters"
-        android:title="Персонажи" />
+        android:title="@string/heroes" />
     <item
         android:id="@+id/locations"
-        android:title="Локации" />
+        android:title="@string/locations" />
     <item
         android:id="@+id/episodes"
-        android:title="Эпизоды" />
+        android:title="@string/episodes" />
 </menu>

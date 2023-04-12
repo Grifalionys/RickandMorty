@@ -48,7 +48,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation "androidx.fragment:fragment-ktx:1.5.6"
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
+
     def lifecycle_version = "2.5.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
@@ -70,4 +71,8 @@ dependencies {
 
     //Gif animation
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
+
+    //paging library v3
+    implementation 'androidx.paging:paging-runtime-ktx:3.1.1'
+    implementation 'androidx.paging:paging-common-ktx:3.1.1'
 }

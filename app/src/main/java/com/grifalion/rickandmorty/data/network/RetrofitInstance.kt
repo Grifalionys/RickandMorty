@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.api
+package com.grifalion.rickandmorty.data.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,7 +13,7 @@ object RetrofitInstance {
             .build()
     }
 
-    val api: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
+    val api: CharacterApiService by lazy {
+        retrofit.create(CharacterApiService::class.java)
     }
 }

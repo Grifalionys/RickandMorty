@@ -1,13 +1,14 @@
-package com.grifalion.rickandmorty.presentation
+package com.grifalion.rickandmorty.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.ActivityMainBinding
-import com.grifalion.rickandmorty.presentation.fragments.character.CharactersFragment
-import com.grifalion.rickandmorty.presentation.fragments.episode.EpisodesFragment
-import com.grifalion.rickandmorty.presentation.fragments.location.LocationsFragment
+import com.grifalion.rickandmorty.ui.fragments.character.CharactersFragment
+import com.grifalion.rickandmorty.ui.fragments.episode.EpisodesFragment
+import com.grifalion.rickandmorty.ui.fragments.location.LocationsFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,11 +32,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun replaceFragment(fragment: Fragment){
         supportFragmentManager
         .beginTransaction()
         .replace(R.id.containerFragment,fragment)
         .commit()
+    }
+
+    private fun hideBottomNavigation(){
+        binding.bottomNavigationView.visibility = View.GONE
+    }
+
+    private fun showBottomNavigation(){
+        binding.bottomNavigationView.visibility = View.VISIBLE
     }
 }

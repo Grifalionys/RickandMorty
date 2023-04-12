@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_custom">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
+        android:background="@drawable/view_top_hero_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNameDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/name_example"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imIconDetail"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="centerCrop"
+        android:theme="@style/half_rounded_corner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNameDetail"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvStatusDeatail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#298716"
+        android:gravity="center"
+        android:paddingTop="2dp"
+        android:text="@string/alive"
+        android:textSize="16sp"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintEnd_toEndOf="@+id/imIconDetail"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@+id/imIconDetail"
+        app:layout_constraintTop_toBottomOf="@+id/imIconDetail" />
+
+    <TextView
+        android:id="@+id/tvInfoSpeciesDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/type"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintStart_toStartOf="@+id/imIconDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusDeatail" />
+
+    <TextView
+        android:id="@+id/tvInfoGenderDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/gender"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoSpeciesDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoSpeciesDetail" />
+
+    <TextView
+        android:id="@+id/tvSpeciesDetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center|start"
+        android:text="@string/human"
+        android:textSize="18sp"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvInfoSpeciesDetail"
+        app:layout_constraintEnd_toEndOf="@+id/imIconDetail"
+        app:layout_constraintStart_toEndOf="@+id/tvInfoSpeciesDetail"
+        app:layout_constraintTop_toTopOf="@+id/tvInfoSpeciesDetail" />
+
+    <TextView
+        android:id="@+id/tvGenderDetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center|start"
+        android:text="@string/man"
+        android:textSize="18sp"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvInfoGenderDetail"
+        app:layout_constraintEnd_toEndOf="@+id/imIconDetail"
+        app:layout_constraintStart_toEndOf="@+id/tvInfoGenderDetail"
+        app:layout_constraintTop_toTopOf="@+id/tvInfoGenderDetail" />
+
+    <TextView
+        android:id="@+id/tvInfoOrigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/origin"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintEnd_toEndOf="@+id/imIconDetail"
+        app:layout_constraintStart_toStartOf="@+id/imIconDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoGenderDetail" />
+
+    <TextView
+        android:id="@+id/tvLocationDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/earth"
+        android:textSize="18sp"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintEnd_toEndOf="@+id/tvInfoOrigin"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoOrigin"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoOrigin" />
+
+    <TextView
+        android:id="@+id/tvTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/tv_ex"
+        android:textSize="18sp"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintEnd_toEndOf="@+id/tvInfoLocation"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoLocation"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoLocation" />
+
+    <TextView
+        android:id="@+id/tvInfoLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/location"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:theme="@style/TextViewWhiteStyle"
+        app:layout_constraintEnd_toEndOf="@+id/tvInfoOrigin"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoOrigin"
+        app:layout_constraintTop_toBottomOf="@+id/tvLocationDetail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

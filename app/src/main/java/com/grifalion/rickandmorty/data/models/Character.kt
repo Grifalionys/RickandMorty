@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.models
+package com.grifalion.rickandmorty.data.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

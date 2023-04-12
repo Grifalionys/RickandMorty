@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.location
+package com.grifalion.rickandmorty.ui.fragments.location
 
 import android.os.Bundle
 import android.view.LayoutInflater

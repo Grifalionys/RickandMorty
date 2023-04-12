@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.episode
+package com.grifalion.rickandmorty.ui.fragments.episode
 
 import android.os.Bundle
 import android.view.LayoutInflater
