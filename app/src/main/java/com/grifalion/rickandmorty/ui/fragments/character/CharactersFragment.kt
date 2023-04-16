@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -103,8 +105,10 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
         val chipMale = dialogView.findViewById<Chip>(R.id.chip_male)
         val chipGenderless = dialogView.findViewById<Chip>(R.id.chip_genderless)
         val chipUnknownGender = dialogView.findViewById<Chip>(R.id.chip_unknown_gender)
+        val btnCloseDialog = dialogView.findViewById<ImageView>(R.id.btnCloseDialog)
         dialog.setContentView(dialogView)
         dialog.show()
+        btnCloseDialog.setOnClickListener{ dialog.dismiss() }
         when(status){
             "Alive" -> chipAlive.isChecked
             "Dead" -> chipDead.isChecked
@@ -124,15 +128,19 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             if(chipMale.isChecked) gender = "Male"
             if(chipGenderless.isChecked) gender = "Genderless"
             if(chipUnknownGender.isChecked) gender = "unknown"
+            if(chipAlive.isChecked || chipDead.isChecked || chipFemale.isChecked || chipGenderless.isChecked ||
+                    chipMale.isChecked || chipFemale.isChecked || chipUnknown.isChecked || chipUnknownGender.isChecked){
+                lifecycleScope.launch {
+                    viewModel.getCharactersTwo(name,status,gender)
+                    viewModel.characterFlow.collectLatest(adapter::submitData)
 
-            lifecycleScope.launch {
-                viewModel.getCharactersTwo(name,status,gender)
-                viewModel.characterFlow.collectLatest(adapter::submitData)
-
+                }
+                dialog.dismiss()
+                binding.btnFilter.visibility = View.GONE
+                binding.btnCloseFilter.visibility = View.VISIBLE
+            } else {
+                Toast.makeText(requireContext(),getString(R.string.error_parameters),Toast.LENGTH_SHORT).show()
             }
-            dialog.dismiss()
-            binding.btnFilter.visibility = View.GONE
-            binding.btnCloseFilter.visibility = View.VISIBLE
         }
         binding.btnCloseFilter.setOnClickListener {
             binding.btnCloseFilter.visibility = View.GONE

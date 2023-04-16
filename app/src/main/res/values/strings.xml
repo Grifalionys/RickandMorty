@@ -20,4 +20,5 @@
     <string name="dead_ex">Dead</string>
     <string name="origin">Происхождение</string>
     <string name="tv_ex">TextView</string>
+    <string name="error_parameters">Параметры не заданы</string>
 </resources>
