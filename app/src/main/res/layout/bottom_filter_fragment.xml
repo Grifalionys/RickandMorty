@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:text="Фильтр"
+        android:text="@string/filter"
         android:textSize="25sp"
         android:textStyle="bold"
         android:theme="@style/TextViewWhiteStyle"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="24dp"
-        android:text="Status"
+        android:text="@string/status_eng"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Gender"
+        android:text="@string/gender_eng"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
         app:layout_constraintStart_toStartOf="@+id/tvInfoStatus"
@@ -49,15 +49,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/button_gradient"
-        android:text="Применить"
+        android:backgroundTint="#88226F"
+        android:shadowColor="@color/black"
+        android:text="@string/apply"
         android:textAllCaps="false"
+        app:cornerRadius="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chipGroup_gender"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="#000000" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup_status"
@@ -75,21 +78,21 @@
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alive" />
+            android:text="@string/alive_eng" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_dead"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dead" />
+            android:text="@string/dead_eng" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_unknown"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unknown" />
+            android:text="@string/unknown_eng" />
     </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.chip.ChipGroup
@@ -107,39 +110,38 @@
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female" />
+            android:text="@string/female_eng" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_male"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Male" />
+            android:text="@string/male_eng" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_genderless"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Genderless" />
+            android:text="@string/genderless_eng" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_unknown_gender"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unknown" />
+            android:text="@string/unknown" />
     </com.google.android.material.chip.ChipGroup>
 
     <ImageView
         android:id="@+id/btnCloseDialog"
-        android:layout_width="40dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvInfoFilter"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvInfoFilter"
-        app:layout_constraintVertical_bias="0.56"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_close_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

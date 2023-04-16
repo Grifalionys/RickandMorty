@@ -21,4 +21,15 @@
     <string name="origin">Происхождение</string>
     <string name="tv_ex">TextView</string>
     <string name="error_parameters">Параметры не заданы</string>
+    <string name="apply">Применить</string>
+    <string name="filter">Фильтр</string>
+    <string name="status_eng">Status</string>
+    <string name="gender_eng">Gender</string>
+    <string name="alive_eng">Alive</string>
+    <string name="dead_eng">Dead</string>
+    <string name="unknown_eng">Unknown</string>
+    <string name="female_eng">Female</string>
+    <string name="male_eng">Male</string>
+    <string name="genderless_eng">Genderless</string>
+    <string name="unknown">Unknown</string>
 </resources>
