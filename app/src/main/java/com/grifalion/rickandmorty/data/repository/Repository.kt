@@ -9,31 +9,5 @@ import kotlinx.coroutines.flow.Flow
 
 class Repository {
 
-    fun getCharacters(name: String, status: String, gender: String): LiveData<PagingData<Character>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 42,
-                enablePlaceholders = false,
-                initialLoadSize = 2
-            ),
-            pagingSourceFactory = {
-                CharacterDataSource(name, status, gender)
-            },
-            initialKey = 1
-        ).liveData
-    }
 
-    fun getCharacterss(name: String, status: String, gender: String): Flow<PagingData<Character>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 42,
-                enablePlaceholders = false,
-                initialLoadSize = 2
-            ),
-            pagingSourceFactory = {
-                CharacterDataSource(name, status, gender)
-            },
-            initialKey = 1
-        ).flow
-    }
 }

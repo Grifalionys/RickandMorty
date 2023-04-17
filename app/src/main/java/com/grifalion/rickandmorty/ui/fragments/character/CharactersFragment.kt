@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
@@ -35,6 +34,7 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
     private var name = ""
     private var status = ""
     private var gender = ""
+    private var species = ""
 
 
     override fun onCreateView(
@@ -71,7 +71,7 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharactersTwo(name,status,gender)
+                    viewModel.getCharactersTwo(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
@@ -80,7 +80,7 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharactersTwo(name,status,gender)
+                    viewModel.getCharactersTwo(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
@@ -95,7 +95,7 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
         }
     }
     private fun initBottomFilter(){
-        val dialogView: View = layoutInflater.inflate(R.layout.bottom_filter_fragment, null)
+        val dialogView: View = layoutInflater.inflate(R.layout.character_filter_fragment, null)
         val dialog = BottomSheetDialog(requireContext())
         val btnApply = dialogView.findViewById<Button>(R.id.btnApply)
         val chipAlive = dialogView.findViewById<Chip>(R.id.chip_alive)
@@ -105,10 +105,32 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
         val chipMale = dialogView.findViewById<Chip>(R.id.chip_male)
         val chipGenderless = dialogView.findViewById<Chip>(R.id.chip_genderless)
         val chipUnknownGender = dialogView.findViewById<Chip>(R.id.chip_unknown_gender)
+        val chipHuman = dialogView.findViewById<Chip>(R.id.chip_human)
+        val chipAlien = dialogView.findViewById<Chip>(R.id.chip_alien)
+        val chipHumanoid = dialogView.findViewById<Chip>(R.id.chip_humanoid)
+        val chipRobot = dialogView.findViewById<Chip>(R.id.chip_robot)
+        val chipUnknownSpecies = dialogView.findViewById<Chip>(R.id.chip_unknown_species)
+        val chipPoopybutthole = dialogView.findViewById<Chip>(R.id.chip_poopybutthole)
+        val chipMythological = dialogView.findViewById<Chip>(R.id.chip_mythological)
+        val chipAnimal = dialogView.findViewById<Chip>(R.id.chip_animal)
+        val chipCronenberg = dialogView.findViewById<Chip>(R.id.chip_cronenberg)
+        val chipDisease = dialogView.findViewById<Chip>(R.id.chip_disease)
         val btnCloseDialog = dialogView.findViewById<ImageView>(R.id.btnCloseDialog)
         dialog.setContentView(dialogView)
         dialog.show()
         btnCloseDialog.setOnClickListener{ dialog.dismiss() }
+        when(species){
+            "Human" -> chipHuman.isChecked
+            "Alien" -> chipAlien.isChecked
+            "Humanoid" -> chipHumanoid.isChecked
+            "Robot" -> chipRobot.isChecked
+            "unknown" -> chipUnknownSpecies.isChecked
+            "Poopybutthole" -> chipPoopybutthole.isChecked
+            "Mythological" -> chipMythological.isChecked
+            "Animal" -> chipAnimal.isChecked
+            "Cronenberg" -> chipCronenberg.isChecked
+            "Disease" -> chipDisease.isChecked
+        }
         when(status){
             "Alive" -> chipAlive.isChecked
             "Dead" -> chipDead.isChecked
@@ -128,10 +150,24 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             if(chipMale.isChecked) gender = "Male"
             if(chipGenderless.isChecked) gender = "Genderless"
             if(chipUnknownGender.isChecked) gender = "unknown"
+            if(chipHuman.isChecked) species = "Human"
+            if(chipAlien.isChecked) species = "Alien"
+            if(chipHumanoid.isChecked) species = "Humanoid"
+            if(chipRobot.isChecked) species = "Robot"
+            if(chipUnknownSpecies.isChecked) species = "unknown"
+            if(chipPoopybutthole.isChecked) species = "Poopybutthole"
+            if(chipMythological.isChecked) species = "Mythological"
+            if(chipAnimal.isChecked) species = "Animal"
+            if(chipCronenberg.isChecked) species = "Cronenberg"
+            if(chipDisease.isChecked) species = "Disease"
+
             if(chipAlive.isChecked || chipDead.isChecked || chipFemale.isChecked || chipGenderless.isChecked ||
-                    chipMale.isChecked || chipFemale.isChecked || chipUnknown.isChecked || chipUnknownGender.isChecked){
+                    chipMale.isChecked || chipFemale.isChecked || chipUnknown.isChecked || chipUnknownGender.isChecked
+                || chipHuman.isChecked || chipAlien.isChecked || chipHumanoid.isChecked || chipRobot.isChecked ||
+                    chipUnknownSpecies.isChecked || chipPoopybutthole.isChecked || chipMythological.isChecked ||
+                    chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked){
                 lifecycleScope.launch {
-                    viewModel.getCharactersTwo(name,status,gender)
+                    viewModel.getCharactersTwo(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
 
                 }
@@ -167,8 +203,9 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
         name = ""
         status = ""
         gender = ""
+        species = ""
         lifecycleScope.launch {
-            viewModel.getCharactersTwo(name,status,gender)
+            viewModel.getCharactersTwo(name,status,gender,species)
             viewModel.characterFlow.collectLatest(adapter::submitData)
         }
     }

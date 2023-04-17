@@ -18,6 +18,7 @@ interface CharacterApiService {
                               @Query("name") name: String,
                               @Query("status") status: String,
                               @Query("gender") gender: String,
+                              @Query("species") species: String
 
     ): Response<CharacterList>
 
