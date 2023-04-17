@@ -27,7 +27,7 @@
         android:text="@string/status_eng"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoSpecies"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <TextView
@@ -150,7 +150,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/chipGroup_status"
         app:layout_constraintStart_toStartOf="@+id/chipGroup_status"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoSpecies">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -166,28 +166,28 @@
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Human" />
+                    android:text="@string/human_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_alien"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Alien" />
+                    android:text="@string/alien_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_humanoid"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Humanoid" />
+                    android:text="@string/humanoid_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_robot"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Robot" />
+                    android:text="@string/robot_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_unknown_species"
@@ -201,41 +201,41 @@
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Poopybutthole" />
+                    android:text="@string/poopybutthole_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_mythological"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mythological" />
+                    android:text="@string/mythological_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_animal"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Animal" />
+                    android:text="@string/animal_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_cronenberg"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cronenberg" />
+                    android:text="@string/cronenberg_eng" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_disease"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Disease" />
+                    android:text="@string/disease_eng" />
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
     </HorizontalScrollView>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvInfoSpecies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
