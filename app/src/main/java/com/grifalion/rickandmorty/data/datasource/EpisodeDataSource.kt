@@ -4,15 +4,17 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.grifalion.rickandmorty.data.network.RetrofitInstance
 import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.domain.models.location.Location
 
-class CharacterDataSource(private val id: Int, private val name: String,private val status: String, private val gender: String,private val species: String): PagingSource<Int, Character>() {
+class EpisodeDataSource(private val name: String, private val episode: String): PagingSource<Int, Episode>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Episode> {
         try {
             val currentLoadingPageKey = params.key ?: 1
             val response = RetrofitInstance.getInstance()
-            val responseData = mutableListOf<Character>()
-            responseData.addAll(response.getCharacters(currentLoadingPageKey,id, name, status, gender,species).body()!!.results)
+            val responseData = mutableListOf<Episode>()
+            responseData.addAll(response.getEpisodes(currentLoadingPageKey, name,episode).body()!!.results)
 
             val prevKey = if(currentLoadingPageKey == 1){
                 null
@@ -28,7 +30,7 @@ class CharacterDataSource(private val id: Int, private val name: String,private 
             return LoadResult.Error(e)
         }
     }
-    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Episode>): Int? {
         return state.anchorPosition?.let {
             state.closestPageToPosition(it)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(it)?.nextKey?.minus(1)

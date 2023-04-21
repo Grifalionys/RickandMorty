@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chip"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_custom_filter">
@@ -20,33 +21,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvInfoStatus"
+        android:id="@+id/tvInfoDimension"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/status_eng"
+        android:text="Dimension"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
-        app:layout_constraintStart_toStartOf="@+id/tvInfoSpecies"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoType"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
-
-    <TextView
-        android:id="@+id/tvInfoGender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/gender_eng"
-        android:textSize="18sp"
-        android:theme="@style/TextViewWhiteStyle"
-        app:layout_constraintStart_toStartOf="@+id/tvInfoStatus"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup_status" />
 
     <Button
         android:id="@+id/btnApply"
         style="@style/TextViewWhiteStyle"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="51dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="#88226F"
         android:shadowColor="@color/black"
@@ -57,81 +47,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup_gender"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2"
+        app:layout_constraintVertical_bias="0.09"
         app:strokeColor="#000000" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup_status"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvInfoStatus"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoStatus"
-        app:singleSelection="true">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_alive"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/alive_eng" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_dead"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dead_eng" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_unknown"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/unknown_eng" />
-    </com.google.android.material.chip.ChipGroup>
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup_gender"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:singleSelection="true"
-        app:layout_constraintEnd_toEndOf="@+id/chipGroup_status"
-        app:layout_constraintStart_toStartOf="@+id/tvInfoGender"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoGender">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_female"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/female_eng" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_male"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/male_eng" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_genderless"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/genderless_eng" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_unknown_gender"
-            style="@style/CustomChipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/unknown" />
-    </com.google.android.material.chip.ChipGroup>
 
     <ImageView
         android:id="@+id/btnCloseDialog"
@@ -148,9 +66,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/chipGroup_status"
-        app:layout_constraintStart_toStartOf="@+id/chipGroup_status"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoSpecies">
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoType"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoType">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -162,35 +81,35 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_human"
+                    android:id="@+id/chip_planet"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/human_eng" />
+                    android:text="Planet" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_cluster"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/alien_eng" />
+                    android:text="Cluster" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_space_station"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/humanoid_eng" />
+                    android:text="Space station" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_tv"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/robot_eng" />
+                    android:text="TV" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_unknown_species"
+                    android:id="@+id/chip_unknown_type"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,76 +120,134 @@
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/poopybutthole_eng" />
+                    android:text="Microverse" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_resort"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/mythological_eng" />
+                    android:text="Resort" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_fantasy_town"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/animal_eng" />
+                    android:text="Fantasy town" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_dream"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cronenberg_eng" />
+                    android:text="Dream" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_menagerie"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/disease_eng" />
+                    android:text="Menagerie" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_game"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Game" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_customs"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Customs" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_daycare"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daycare" />
+
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
     </HorizontalScrollView>
 
     <TextView
-        android:id="@+id/tvInfoSpecies"
+        android:id="@+id/tvInfoType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Species"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:text="Type"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
-        app:layout_constraintStart_toStartOf="@+id/edSearchHero"
-        app:layout_constraintTop_toBottomOf="@+id/edSearchHero" />
-
-    <EditText
-        android:id="@+id/edSearchHero"
-        style="@style/TextViewWhiteStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/white"
-        android:ems="10"
-        android:hint="Введите имя героя..."
-        android:inputType="textPersonName"
-        android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInfoFilter" />
 
-    <ImageView
-        android:id="@+id/btnClearText"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/edSearchHero"
-        app:layout_constraintEnd_toEndOf="@+id/edSearchHero"
-        app:layout_constraintTop_toTopOf="@+id/edSearchHero"
-        app:srcCompat="@drawable/baseline_close_24" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoDimension">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_137"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dimension C-137" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_apocaliptic"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Post-Apocalyptic Dimension" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_replacement"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Replacement Dimension" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_fantasy"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fantasy Dimension" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_5"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dimension 5-126" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_unknown_dimension"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unknown" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

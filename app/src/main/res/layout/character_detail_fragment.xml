@@ -111,7 +111,7 @@
         app:layout_constraintTop_toTopOf="@+id/tvInfoGenderDetail" />
 
     <TextView
-        android:id="@+id/tvInfoOrigin"
+        android:id="@+id/tvInfoDataEp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -131,9 +131,9 @@
         android:text="@string/earth"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
-        app:layout_constraintEnd_toEndOf="@+id/tvInfoOrigin"
-        app:layout_constraintStart_toStartOf="@+id/tvInfoOrigin"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoOrigin" />
+        app:layout_constraintEnd_toEndOf="@+id/tvInfoDataEp"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoDataEp"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoDataEp" />
 
     <TextView
         android:id="@+id/tvTest"
@@ -156,8 +156,8 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:theme="@style/TextViewWhiteStyle"
-        app:layout_constraintEnd_toEndOf="@+id/tvInfoOrigin"
-        app:layout_constraintStart_toStartOf="@+id/tvInfoOrigin"
+        app:layout_constraintEnd_toEndOf="@+id/tvInfoDataEp"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoDataEp"
         app:layout_constraintTop_toBottomOf="@+id/tvLocationDetail" />
 
     <ImageView
@@ -169,5 +169,29 @@
         app:layout_constraintEnd_toStartOf="@+id/imIconDetail"
         app:layout_constraintTop_toTopOf="@+id/imIconDetail"
         app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDetailCharacter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        tools:listitem="@layout/item_episode_list" />
+
+    <ProgressBar
+        android:id="@+id/progressBarDChar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvDetailCharacter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvDetailCharacter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
