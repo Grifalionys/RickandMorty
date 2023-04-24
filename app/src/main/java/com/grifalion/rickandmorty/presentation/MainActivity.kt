@@ -6,9 +6,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.ActivityMainBinding
-import com.grifalion.rickandmorty.presentation.fragments.character.CharactersFragment
-import com.grifalion.rickandmorty.presentation.fragments.episode.EpisodeFragment
-import com.grifalion.rickandmorty.presentation.fragments.location.LocationsFragment
+import com.grifalion.rickandmorty.presentation.fragments.character.list.CharactersListFragment
+import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListFragment
+import com.grifalion.rickandmorty.presentation.fragments.location.list.LocationsListFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,12 +21,12 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun initBottomNav(){
-        replaceFragment(CharactersFragment())
+        replaceFragment(CharactersListFragment())
         binding.bottomNavigationView.setOnItemSelectedListener { item->
             when(item.itemId){
-                R.id.characters -> replaceFragment(CharactersFragment())
-                R.id.locations -> replaceFragment(LocationsFragment())
-                R.id.episodes -> replaceFragment(EpisodeFragment())
+                R.id.characters -> replaceFragment(CharactersListFragment())
+                R.id.locations -> replaceFragment(LocationsListFragment())
+                R.id.episodes -> replaceFragment(EpisodeListFragment())
             }
             true
         }

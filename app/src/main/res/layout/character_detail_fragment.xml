@@ -124,7 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvInfoGenderDetail" />
 
     <TextView
-        android:id="@+id/tvLocationDetail"
+        android:id="@+id/tvOriginDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -136,7 +136,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvInfoDataEp" />
 
     <TextView
-        android:id="@+id/tvTest"
+        android:id="@+id/tvLocationDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -158,7 +158,7 @@
         android:theme="@style/TextViewWhiteStyle"
         app:layout_constraintEnd_toEndOf="@+id/tvInfoDataEp"
         app:layout_constraintStart_toStartOf="@+id/tvInfoDataEp"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocationDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/tvOriginDetail" />
 
     <ImageView
         android:id="@+id/btnBack"
@@ -182,16 +182,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
-        tools:listitem="@layout/item_episode_list" />
-
-    <ProgressBar
-        android:id="@+id/progressBarDChar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/rvDetailCharacter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rvDetailCharacter" />
+        tools:listitem="@layout/episode_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,20 +1,22 @@
-package com.grifalion.rickandmorty.presentation.adapters
+package com.grifalion.rickandmorty.presentation.fragments.location.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.grifalion.rickandmorty.databinding.ItemLocationListBinding
+import com.grifalion.rickandmorty.databinding.LocationItemBinding
 import com.grifalion.rickandmorty.domain.models.location.Location
 
-class LocationAdapter: PagingDataAdapter<Location,LocationAdapter.LocationViewHolder>(LocationComparator) {
+class LocationListAdapter(private val locationListener: Listener): PagingDataAdapter<Location, LocationListAdapter.LocationViewHolder>(
+    LocationComparator
+) {
 
-    class LocationViewHolder(val binding: ItemLocationListBinding) : RecyclerView.ViewHolder(binding.root)
+    class LocationViewHolder(val binding: LocationItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
         return LocationViewHolder(
-            ItemLocationListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            LocationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -24,6 +26,9 @@ class LocationAdapter: PagingDataAdapter<Location,LocationAdapter.LocationViewHo
         holder.binding.tvNameLocation.text = item.name
         holder.binding.tvDimension.text = item.dimension
         holder.binding.tvTypeLocation.text = item.type
+        holder.itemView.rootView.setOnClickListener {
+            locationListener.onClick(item)
+        }
     }
 
 
@@ -37,4 +42,8 @@ class LocationAdapter: PagingDataAdapter<Location,LocationAdapter.LocationViewHo
         }
 
     }
+    interface Listener{
+        fun onClick(episode: Location)
+    }
+
 }

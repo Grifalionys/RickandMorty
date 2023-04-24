@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.episode
+package com.grifalion.rickandmorty.presentation.fragments.episode.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,19 +15,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.Chip
 import com.grifalion.rickandmorty.R
-import com.grifalion.rickandmorty.databinding.EpisodeFragmentBinding
+import com.grifalion.rickandmorty.databinding.EpisodeListFragmentBinding
 import com.grifalion.rickandmorty.domain.models.episode.Episode
-import com.grifalion.rickandmorty.presentation.adapters.EpisodeAdapter
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.DetailEpisodeFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class EpisodeFragment: Fragment(), EpisodeAdapter.ListenerEpisode {
-    private lateinit var binding: EpisodeFragmentBinding
-    private val adapter = EpisodeAdapter(this)
-    private lateinit var viewModel: EpisodeViewModel
-    private val dataEpisode: EpisodeViewModel by activityViewModels()
+class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
+    private lateinit var binding: EpisodeListFragmentBinding
+    private val adapter = EpisodeListAdapter(this)
+    private lateinit var viewModel: EpisodeListViewModel
+    private val dataEpisode: EpisodeListViewModel by activityViewModels()
     private var name = ""
     private var episode = ""
 
@@ -36,8 +35,8 @@ class EpisodeFragment: Fragment(), EpisodeAdapter.ListenerEpisode {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = EpisodeFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[EpisodeViewModel::class.java]
+        binding = EpisodeListFragmentBinding.inflate(inflater)
+        viewModel = ViewModelProvider(this)[EpisodeListViewModel::class.java]
         return binding.root
 
 

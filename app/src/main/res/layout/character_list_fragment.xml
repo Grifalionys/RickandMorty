@@ -7,7 +7,7 @@
     android:background="@drawable/background_custom">
 
     <SearchView
-        android:id="@+id/searchViewEp"
+        android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_margin="10dp"
@@ -18,6 +18,33 @@
         app:layout_constraintEnd_toStartOf="@+id/viewInvisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCharacters"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintVertical_bias="1.0"
+        app:spanCount="2"
+        tools:listitem="@layout/character_item" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/btnFilter"
         style="@android:style/Widget.ImageButton"
@@ -27,9 +54,9 @@
         android:background="@drawable/gradient_item"
         android:src="@drawable/baseline_filter_alt_24"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/searchViewEp"
+        app:layout_constraintBottom_toBottomOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchViewEp" />
+        app:layout_constraintTop_toTopOf="@+id/searchView" />
 
     <ImageButton
         android:id="@+id/viewInvisible"
@@ -40,9 +67,9 @@
         android:background="@drawable/gradient_item"
         android:src="@drawable/baseline_filter_alt_24"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/searchViewEp"
+        app:layout_constraintBottom_toBottomOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchViewEp" />
+        app:layout_constraintTop_toTopOf="@+id/searchView" />
 
     <ImageButton
         android:id="@+id/btnCloseFilter"
@@ -53,30 +80,8 @@
         android:background="@drawable/gradient_item"
         android:src="@drawable/baseline_filter_alt_off_24"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/searchViewEp"
+        app:layout_constraintBottom_toBottomOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchViewEp" />
+        app:layout_constraintTop_toTopOf="@+id/searchView" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvEpisode"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchViewEp"
-        app:spanCount="2"
-        tools:listitem="@layout/item_episode_list" />
-
-    <ProgressBar
-        android:id="@+id/progressBarEpisode"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

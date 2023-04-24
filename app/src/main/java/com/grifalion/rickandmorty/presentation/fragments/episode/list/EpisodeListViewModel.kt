@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.episode
+package com.grifalion.rickandmorty.presentation.fragments.episode.list
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,16 +7,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.grifalion.rickandmorty.data.datasource.CharacterDataSource
 import com.grifalion.rickandmorty.data.datasource.EpisodeDataSource
-import com.grifalion.rickandmorty.domain.models.character.Character
 import com.grifalion.rickandmorty.domain.models.episode.Episode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
 
-class EpisodeViewModel: ViewModel() {
+class EpisodeListViewModel: ViewModel() {
     var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
     var dataEpisode = MutableLiveData<Episode>()
 

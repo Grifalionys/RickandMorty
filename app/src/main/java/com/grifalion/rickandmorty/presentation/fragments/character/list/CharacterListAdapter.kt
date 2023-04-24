@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.adapters
+package com.grifalion.rickandmorty.presentation.fragments.character.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,16 +6,19 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.grifalion.rickandmorty.databinding.ItemCharacterListBinding
+import com.grifalion.rickandmorty.databinding.CharacterItemBinding
+
 import com.grifalion.rickandmorty.domain.models.character.Character
 
-class CharacterAdapter(private val listener: Listener): PagingDataAdapter<Character, CharacterAdapter.CharacterViewHolder>(CharacterComparator) {
+class CharacterListAdapter(private val characterListener: Listener): PagingDataAdapter<Character, CharacterListAdapter.CharacterViewHolder>(
+    CharacterComparator
+) {
 
-    class CharacterViewHolder(val binding: ItemCharacterListBinding): RecyclerView.ViewHolder(binding.root)
+    class CharacterViewHolder(val binding: CharacterItemBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         return CharacterViewHolder(
-            ItemCharacterListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+            CharacterItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         )
     }
 
@@ -29,7 +32,7 @@ class CharacterAdapter(private val listener: Listener): PagingDataAdapter<Charac
             .load(item.image)
             .into(holder.binding.imIconCharacter)
         holder.itemView.rootView.setOnClickListener {
-            listener.onClick(item)
+            characterListener.onClick(item)
         }
     }
     object CharacterComparator : DiffUtil.ItemCallback<Character>() {

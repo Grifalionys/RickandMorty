@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.location
+package com.grifalion.rickandmorty.presentation.fragments.location.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,24 +9,30 @@ import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.grifalion.rickandmorty.R
-import com.grifalion.rickandmorty.databinding.LocationFragmentBinding
-import com.grifalion.rickandmorty.presentation.adapters.LocationAdapter
-import com.grifalion.rickandmorty.presentation.fragments.character.MainViewModel
+import com.grifalion.rickandmorty.databinding.LocationDetailFragmentBinding
+import com.grifalion.rickandmorty.databinding.LocationListFragmentBinding
+import com.grifalion.rickandmorty.domain.models.location.Location
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class LocationsFragment: Fragment() {
-    private lateinit var binding: LocationFragmentBinding
-    private val adapter = LocationAdapter()
-    private val viewModels: MainViewModel by activityViewModels()
-    private lateinit var viewModel: LocationViewModel
+class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
+    private lateinit var binding: LocationListFragmentBinding
+    private val adapter = LocationListAdapter(this)
+    private lateinit var viewModel: LocationListViewModel
+    private val detailVM: LocationDetailViewModel by activityViewModels()
     private var name = ""
     private var type = ""
     private var dimension = ""
@@ -36,8 +42,8 @@ class LocationsFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = LocationFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[LocationViewModel::class.java]
+        binding = LocationListFragmentBinding.inflate(inflater)
+        viewModel = ViewModelProvider(this)[LocationListViewModel::class.java]
         return binding.root
 
 
@@ -45,6 +51,7 @@ class LocationsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showBottomNav()
         showBottomFilter()
         binding.rvLocation.adapter = adapter
         adapter.addLoadStateListener { loadState->
@@ -92,17 +99,16 @@ class LocationsFragment: Fragment() {
         val dialogView: View = layoutInflater.inflate(R.layout.location_filter_fragment, null)
         val dialog = BottomSheetDialog(requireContext())
         val btnApply = dialogView.findViewById<Button>(R.id.btnApply)
-
         val chipPlanet = dialogView.findViewById<Chip>(R.id.chip_planet)
-        val chipCluster = dialogView.findViewById<Chip>(R.id.chip_cluster)
-        val chipSpaceStation = dialogView.findViewById<Chip>(R.id.chip_space_station)
+        val chipCluster = dialogView.findViewById<Chip>(R.id.chip_alien)
+        val chipSpaceStation = dialogView.findViewById<Chip>(R.id.chip_humanoid)
         val chipTv = dialogView.findViewById<Chip>(R.id.chip_tv)
         val chipUnknownType = dialogView.findViewById<Chip>(R.id.chip_unknown_type)
-        val chipMicroverse = dialogView.findViewById<Chip>(R.id.chip_microverse)
-        val chipResort = dialogView.findViewById<Chip>(R.id.chip_resort)
-        val chipFantasyTown = dialogView.findViewById<Chip>(R.id.chip_fantasy_town)
-        val chipDream = dialogView.findViewById<Chip>(R.id.chip_dream)
-        val chipMenagerie = dialogView.findViewById<Chip>(R.id.chip_menagerie)
+        val chipMicroverse = dialogView.findViewById<Chip>(R.id.chipPoopybutthole)
+        val chipResort = dialogView.findViewById<Chip>(R.id.chipMythological)
+        val chipFantasyTown = dialogView.findViewById<Chip>(R.id.chipAnimal)
+        val chipDream = dialogView.findViewById<Chip>(R.id.chipCronenberg)
+        val chipMenagerie = dialogView.findViewById<Chip>(R.id.chipDisease)
         val chipGame = dialogView.findViewById<Chip>(R.id.chip_game)
         val chipCustoms = dialogView.findViewById<Chip>(R.id.chip_customs)
         val chipDaycare = dialogView.findViewById<Chip>(R.id.chip_daycare)
@@ -195,5 +201,19 @@ class LocationsFragment: Fragment() {
             viewModel.getLocations(name,type,dimension)
             viewModel.locationFlow.collectLatest(adapter::submitData)
         }
+    }
+
+    override fun onClick(location: Location) {
+        detailVM.onClickItemLocation(location)
+        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+        fragmentManager
+            .beginTransaction()
+            .replace(R.id.containerFragment, LocationDetailFragment(detailVM))
+            .addToBackStack("locations")
+            .commit()
+    }
+    private fun showBottomNav(){
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 }

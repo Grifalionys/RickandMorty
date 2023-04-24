@@ -1,13 +1,9 @@
-package com.grifalion.rickandmorty.presentation.fragments.character
+package com.grifalion.rickandmorty.presentation.fragments.character.list
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -18,22 +14,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.chip.Chip
 import com.grifalion.rickandmorty.R
-import com.grifalion.rickandmorty.presentation.adapters.CharacterAdapter
-import com.grifalion.rickandmorty.databinding.CharacterFragmentBinding
+import com.grifalion.rickandmorty.databinding.CharacterFilterFragmentBinding
+import com.grifalion.rickandmorty.databinding.CharacterListFragmentBinding
 import com.grifalion.rickandmorty.domain.models.character.Character
-import com.grifalion.rickandmorty.presentation.fragments.character.detail.DetailCharacterFragment
-import com.grifalion.rickandmorty.presentation.fragments.character.detail.DetailCharacterViewModel
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class CharactersFragment: Fragment(), CharacterAdapter.Listener {
-    private lateinit var binding: CharacterFragmentBinding
-    private val adapter = CharacterAdapter(this)
-    private val detailVM: DetailCharacterViewModel by activityViewModels()
-    private lateinit var viewModel: CharacterViewModel
+class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
+    private lateinit var binding: CharacterListFragmentBinding
+    private lateinit var filterBinding: CharacterFilterFragmentBinding
+    private val adapter = CharacterListAdapter(this)
+    private val detailVM: CharacterDetailViewModel by activityViewModels()
+    private lateinit var viewModel: CharacterListViewModel
 
     private var name = ""
     private var status = ""
@@ -45,10 +41,10 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = CharacterFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[CharacterViewModel::class.java]
+        binding = CharacterListFragmentBinding.inflate(inflater)
+        filterBinding = CharacterFilterFragmentBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this)[CharacterListViewModel::class.java]
         return binding.root
-
 
     }
 
@@ -97,43 +93,25 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
         binding.btnFilter.setOnClickListener{
           initBottomFilter()
         }
+        BottomSheetDialog(requireContext())
     }
 
-    private fun initBottomFilter(){
-        val dialogView: View = layoutInflater.inflate(R.layout.character_filter_fragment, null)
+    private fun initBottomFilter() = with((filterBinding)){
         val dialog = BottomSheetDialog(requireContext())
-        val btnApply = dialogView.findViewById<Button>(R.id.btnApply)
-        val btnClearText = dialogView.findViewById<ImageView>(R.id.btnClearText)
-        val searchView = dialogView.findViewById<EditText>(R.id.edSearchHero)
-        val chipAlive = dialogView.findViewById<Chip>(R.id.chip_alive)
-        val chipDead = dialogView.findViewById<Chip>(R.id.chip_dead)
-        val chipUnknown = dialogView.findViewById<Chip>(R.id.chip_unknown)
-        val chipFemale = dialogView.findViewById<Chip>(R.id.chip_female)
-        val chipMale = dialogView.findViewById<Chip>(R.id.chip_male)
-        val chipGenderless = dialogView.findViewById<Chip>(R.id.chip_genderless)
-        val chipUnknownGender = dialogView.findViewById<Chip>(R.id.chip_unknown_gender)
-        val chipHuman = dialogView.findViewById<Chip>(R.id.chip_human)
-        val chipAlien = dialogView.findViewById<Chip>(R.id.chip_cluster)
-        val chipHumanoid = dialogView.findViewById<Chip>(R.id.chip_space_station)
-        val chipRobot = dialogView.findViewById<Chip>(R.id.chip_tv)
-        val chipUnknownSpecies = dialogView.findViewById<Chip>(R.id.chip_unknown_species)
-        val chipPoopybutthole = dialogView.findViewById<Chip>(R.id.chip_microverse)
-        val chipMythological = dialogView.findViewById<Chip>(R.id.chip_resort)
-        val chipAnimal = dialogView.findViewById<Chip>(R.id.chip_fantasy_town)
-        val chipCronenberg = dialogView.findViewById<Chip>(R.id.chip_dream)
-        val chipDisease = dialogView.findViewById<Chip>(R.id.chip_menagerie)
-        val btnCloseDialog = dialogView.findViewById<ImageView>(R.id.btnCloseDialog)
-        dialog.setContentView(dialogView)
+        if(filterBinding.root.parent != null){
+            (filterBinding.root.parent as ViewGroup).removeView(filterBinding.root)
+        }
+        dialog.setContentView(filterBinding.root)
         dialog.show()
         btnCloseDialog.setOnClickListener{ dialog.dismiss() }
-        btnClearText.setOnClickListener { searchView.text.clear() }
+        btnClearText.setOnClickListener { edSearchHero.text.clear() }
 
         when(species){
             "Human" -> chipHuman.isChecked
             "Alien" -> chipAlien.isChecked
             "Humanoid" -> chipHumanoid.isChecked
             "Robot" -> chipRobot.isChecked
-            "unknown" -> chipUnknownSpecies.isChecked
+            "unknown" -> chipUnknownHero.isChecked
             "Poopybutthole" -> chipPoopybutthole.isChecked
             "Mythological" -> chipMythological.isChecked
             "Animal" -> chipAnimal.isChecked
@@ -152,7 +130,7 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             "unknown" -> chipUnknownGender.isChecked
         }
         btnApply.setOnClickListener {
-            if(searchView.text.isNotEmpty()) name = searchView.text.toString()
+            if(edSearchHero.text.isNotEmpty()) name = edSearchHero.text.toString()
             if(chipAlive.isChecked) status = "Alive"
             if(chipDead.isChecked) status = "Dead"
             if(chipUnknown.isChecked) status = "unknown"
@@ -164,7 +142,7 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             if(chipAlien.isChecked) species = "Alien"
             if(chipHumanoid.isChecked) species = "Humanoid"
             if(chipRobot.isChecked) species = "Robot"
-            if(chipUnknownSpecies.isChecked) species = "unknown"
+            if(chipUnknownHero.isChecked) species = "unknown"
             if(chipPoopybutthole.isChecked) species = "Poopybutthole"
             if(chipMythological.isChecked) species = "Mythological"
             if(chipAnimal.isChecked) species = "Animal"
@@ -174,8 +152,8 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             if(chipAlive.isChecked || chipDead.isChecked || chipFemale.isChecked || chipGenderless.isChecked ||
                     chipMale.isChecked || chipFemale.isChecked || chipUnknown.isChecked || chipUnknownGender.isChecked
                 || chipHuman.isChecked || chipAlien.isChecked || chipHumanoid.isChecked || chipRobot.isChecked ||
-                    chipUnknownSpecies.isChecked || chipPoopybutthole.isChecked || chipMythological.isChecked ||
-                    chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked || searchView.text.isNotEmpty()){
+                    chipUnknownHero.isChecked || chipPoopybutthole.isChecked || chipMythological.isChecked ||
+                    chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked || edSearchHero.text.isNotEmpty()){
                 lifecycleScope.launch {
                     viewModel.getCharacters(id,name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
@@ -192,16 +170,17 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             binding.btnCloseFilter.visibility = View.GONE
             binding.btnFilter.visibility = View.VISIBLE
             getListCharacters()
+
         }
     }
 
 
     override fun onClick(character: Character) {
-        detailVM.itemListCharacter.value = character
+        detailVM.onClickItemCharacter(character)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.containerFragment,DetailCharacterFragment(detailVM))
+            .replace(R.id.containerFragment, CharacterDetailFragment(detailVM))
             .addToBackStack("characters")
             .commit()
     }
@@ -219,4 +198,9 @@ class CharactersFragment: Fragment(), CharacterAdapter.Listener {
             viewModel.characterFlow.collectLatest(adapter::submitData)
         }
     }
+
+
+
 }
+
+

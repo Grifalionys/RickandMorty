@@ -88,14 +88,14 @@
                     android:text="Planet" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_cluster"
+                    android:id="@+id/chip_alien"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cluster" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_space_station"
+                    android:id="@+id/chip_humanoid"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,35 +116,35 @@
                     android:text="@string/unknown" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_microverse"
+                    android:id="@+id/chipPoopybutthole"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Microverse" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_resort"
+                    android:id="@+id/chipMythological"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Resort" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_fantasy_town"
+                    android:id="@+id/chipAnimal"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fantasy town" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_dream"
+                    android:id="@+id/chipCronenberg"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dream" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_menagerie"
+                    android:id="@+id/chipDisease"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

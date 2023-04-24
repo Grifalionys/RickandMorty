@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.episode
+package com.grifalion.rickandmorty.presentation.fragments.episode.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,25 +7,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.EpisodeDetailFragmentBinding
-import com.grifalion.rickandmorty.presentation.fragments.character.CharacterViewModel
-import com.grifalion.rickandmorty.presentation.fragments.character.MainViewModel
+import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListViewModel
 
 class DetailEpisodeFragment: Fragment() {
     private lateinit var binding: EpisodeDetailFragmentBinding
-    private lateinit var viewModel: EpisodeViewModel
-    private val dataEpisode: EpisodeViewModel by activityViewModels()
+    private lateinit var viewModel: EpisodeListViewModel
+    private val dataEpisode: EpisodeListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = EpisodeDetailFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[EpisodeViewModel::class.java]
+        viewModel = ViewModelProvider(this)[EpisodeListViewModel::class.java]
         return binding.root
     }
 

@@ -1,20 +1,22 @@
-package com.grifalion.rickandmorty.presentation.adapters
+package com.grifalion.rickandmorty.presentation.fragments.episode.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.grifalion.rickandmorty.databinding.ItemEpisodeListBinding
+import com.grifalion.rickandmorty.databinding.EpisodeItemBinding
 import com.grifalion.rickandmorty.domain.models.episode.Episode
 
-class EpisodeAdapter(val listenerEpisode: ListenerEpisode): PagingDataAdapter<Episode, EpisodeAdapter.EpisodeViewHolder>(EpisodeComparator) {
+class EpisodeListAdapter(val listenerEpisode: ListenerEpisode): PagingDataAdapter<Episode, EpisodeListAdapter.EpisodeViewHolder>(
+    EpisodeComparator
+) {
 
-    class EpisodeViewHolder(val binding: ItemEpisodeListBinding): RecyclerView.ViewHolder(binding.root)
+    class EpisodeViewHolder(val binding: EpisodeItemBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
         return EpisodeViewHolder(
-            ItemEpisodeListBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+            EpisodeItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         )
     }
 

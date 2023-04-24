@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.presentation.fragments.character
+package com.grifalion.rickandmorty.presentation.fragments.character.list
 
 
 import androidx.lifecycle.ViewModel
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
 
 
-class CharacterViewModel: ViewModel() {
+class CharacterListViewModel: ViewModel() {
     var characterFlow: Flow<PagingData<Character>> = emptyFlow()
     var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
 
