@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.stateIn
 
 class EpisodeListViewModel: ViewModel() {
     var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
-    var dataEpisode = MutableLiveData<Episode>()
 
     fun getEpisodes(name: String, episode: String){
         episodeFlow = Pager(PagingConfig(pageSize = 1)){

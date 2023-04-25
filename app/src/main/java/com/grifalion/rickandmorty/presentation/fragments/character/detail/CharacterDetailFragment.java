@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,8 @@ import com.grifalion.rickandmorty.data.network.RetrofitInstance;
 import com.grifalion.rickandmorty.databinding.CharacterDetailFragmentBinding;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment;
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,16 +33,23 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class CharacterDetailFragment extends Fragment {
+public class CharacterDetailFragment extends Fragment implements CharacterDetailAdapter.SelectListener {
     private CharacterDetailFragmentBinding binding;
     private CharacterDetailViewModel viewModelDetail;
+    private LocationDetailViewModel viewModelLocation;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView rv;
     ApiService apiService;
 
     public CharacterDetailFragment(@NotNull CharacterDetailViewModel viewModel){
         this.viewModelDetail = viewModel;
+
     }
+
+    public CharacterDetailFragment(LocationDetailViewModel viewModelDetails) {
+        this.viewModelLocation = viewModelDetails;
+    }
+
 
     @Nullable
     @Override
@@ -93,7 +103,7 @@ public class CharacterDetailFragment extends Fragment {
     }
 
     private void detailData(List<Episode> posts) {
-        CharacterDetailAdapter adapter = new CharacterDetailAdapter(requireContext(),posts);
+        CharacterDetailAdapter adapter = new CharacterDetailAdapter(requireContext(),posts,this);
         rv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -107,5 +117,16 @@ public class CharacterDetailFragment extends Fragment {
     public void hideBottomNav(){
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClicked(Episode episode) {
+        viewModelDetail.onClickItemEpisode(episode);
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.containerFragment, new EpisodeDetailFragment(viewModelDetail))
+                .addToBackStack("character_detail")
+                .commit();
     }
 }

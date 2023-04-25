@@ -22,6 +22,7 @@ import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.EpisodeFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.EpisodeListFragmentBinding
 import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     private lateinit var binding: EpisodeListFragmentBinding
     private lateinit var filterBinding: EpisodeFilterFragmentBinding
     private lateinit var viewModel: EpisodeListViewModel
-    private val dataEpisode: EpisodeListViewModel by activityViewModels()
+    private val viewModelDetail: CharacterDetailViewModel by activityViewModels()
     private val adapter = EpisodeListAdapter(this)
     private var name = ""
     private var episode = ""
@@ -170,11 +171,11 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     }
 
     override fun onClick(episode: Episode) {
-        dataEpisode.dataEpisode.postValue(episode)
+        viewModelDetail.onClickItemEpisode(episode);
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.containerFragment, EpisodeDetailFragment::class.java.newInstance())
+            .replace(R.id.containerFragment, EpisodeDetailFragment(viewModelDetail))
             .addToBackStack("episodes")
             .commit()
     }

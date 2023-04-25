@@ -43,7 +43,7 @@ class LocationListAdapter(private val locationListener: Listener): PagingDataAda
 
     }
     interface Listener{
-        fun onClick(episode: Location)
+        fun onClick(location: Location)
     }
 
 }

@@ -11,16 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.grifalion.rickandmorty.R;
 import com.grifalion.rickandmorty.domain.models.character.Character;
+import com.grifalion.rickandmorty.domain.models.episode.Episode;
 
 import java.util.List;
 
 public class LocationDetailAdapter extends RecyclerView.Adapter<LocationDetailViewHolder> {
-    Context context;
-    List<Character> listCharacters;
+    private Context context;
+    private List<Character> listCharacters;
+    private SelectListener listener;
 
-    public LocationDetailAdapter(Context context, List<Character> listCharacters){
+    public LocationDetailAdapter(Context context, List<Character> listCharacters, SelectListener listener){
         this.context = context;
         this.listCharacters = listCharacters;
+        this.listener = listener;
     }
 
 
@@ -34,6 +37,7 @@ public class LocationDetailAdapter extends RecyclerView.Adapter<LocationDetailVi
 
     @Override
     public void onBindViewHolder(@NonNull LocationDetailViewHolder holder, int position) {
+        Character item = listCharacters.get(position);
         Glide.with(holder.tvImage)
                 .load(listCharacters.get(position).getImage())
                 .into(holder.tvImage);
@@ -41,10 +45,20 @@ public class LocationDetailAdapter extends RecyclerView.Adapter<LocationDetailVi
         holder.tvGender.setText(listCharacters.get(position).getGender());
         holder.tvStatus.setText(listCharacters.get(position).getStatus());
         holder.tvSpecies.setText(listCharacters.get(position).getSpecies());
+        holder.itemView.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(item);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return listCharacters.size();
+    }
+
+    public interface SelectListener{
+        void onItemClicked(Character character);
     }
 }

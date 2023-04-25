@@ -85,28 +85,28 @@
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Planet" />
+                    android:text="@string/planet" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_alien"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cluster" />
+                    android:text="@string/cluster" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_humanoid"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Space station" />
+                    android:text="@string/space_station" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_tv"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TV" />
+                    android:text="@string/tv" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_unknown_type"
@@ -120,56 +120,56 @@
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Microverse" />
+                    android:text="@string/microverse" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipMythological"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Resort" />
+                    android:text="@string/resort" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipAnimal"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fantasy town" />
+                    android:text="@string/fantasy_town" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipCronenberg"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dream" />
+                    android:text="@string/dream" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipDisease"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Menagerie" />
+                    android:text="@string/menagerie" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_game"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Game" />
+                    android:text="@string/game" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_customs"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Customs" />
+                    android:text="@string/customs" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_daycare"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Daycare" />
+                    android:text="@string/daycare" />
 
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
@@ -181,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="24dp"
-        android:text="Type"
+        android:text="@string/type_ex"
         android:textSize="18sp"
         android:theme="@style/TextViewWhiteStyle"
         app:layout_constraintStart_toStartOf="parent"
@@ -210,35 +210,35 @@
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dimension C-137" />
+                    android:text="@string/dimension_c_137" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_apocaliptic"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Post-Apocalyptic Dimension" />
+                    android:text="@string/post_apocalyptic_dimension" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_replacement"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Replacement Dimension" />
+                    android:text="@string/replacement_dimension" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_fantasy"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fantasy Dimension" />
+                    android:text="@string/fantasy_dimension" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_5"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dimension 5-126" />
+                    android:text="@string/dimension_5_126" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_unknown_dimension"

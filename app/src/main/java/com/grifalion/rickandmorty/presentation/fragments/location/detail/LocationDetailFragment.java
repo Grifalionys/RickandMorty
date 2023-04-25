@@ -21,6 +21,9 @@ import com.grifalion.rickandmorty.data.network.RetrofitInstance;
 import com.grifalion.rickandmorty.databinding.LocationDetailFragmentBinding;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.location.Location;
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment;
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel;
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,17 +34,18 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class LocationDetailFragment extends Fragment {
+public class LocationDetailFragment extends Fragment implements LocationDetailAdapter.SelectListener {
 
     private LocationDetailFragmentBinding binding;
-    private LocationDetailViewModel viewModelDetail;
+    private LocationDetailViewModel viewModelDetails;
+
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView rv;
     ApiService apiService;
 
     public LocationDetailFragment(@NotNull LocationDetailViewModel viewModel){
-        this.viewModelDetail = viewModel;
+        this.viewModelDetails = viewModel;
     }
 
     @Nullable
@@ -71,21 +75,21 @@ public class LocationDetailFragment extends Fragment {
             binding.tvTypeLocationD.setText(location.getType());
 
         };
-        viewModelDetail.getItemListLocations().observe(getViewLifecycleOwner(),observer);
-        viewModelDetail.getCharacters();
+        viewModelDetails.getItemListLocations().observe(getViewLifecycleOwner(),observer);
+        viewModelDetails.getCharacters();
         fetchData();
-        viewModelDetail.clearListOfCharacters();
+        viewModelDetails.clearListOfCharacters();
     }
 
     private void fetchData() {
-        compositeDisposable.add(apiService.getDetailCharacter(viewModelDetail.characterId)
+        compositeDisposable.add(apiService.getDetailCharacter(viewModelDetails.characterId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::detailData, throwable -> Log.d("tag",throwable.toString())));
     }
 
     private void detailData(List<Character> post) {
-        LocationDetailAdapter adapter = new LocationDetailAdapter(requireContext(),post);
+        LocationDetailAdapter adapter = new LocationDetailAdapter(requireContext(),post,this);
         rv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -100,5 +104,16 @@ public class LocationDetailFragment extends Fragment {
     public void hideBottomNav(){
         BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClicked(Character character) {
+        viewModelDetails.onClickItemCharacter(character);
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.containerFragment, new CharacterDetailFragment(viewModelDetails))
+                .addToBackStack("location_detail")
+                .commit();
     }
 }

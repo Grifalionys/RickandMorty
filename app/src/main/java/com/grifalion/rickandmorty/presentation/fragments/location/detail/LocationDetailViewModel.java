@@ -12,6 +12,7 @@ import java.util.List;
 public class LocationDetailViewModel extends ViewModel {
 
     public MutableLiveData<Location> itemListLocation = new MutableLiveData<>();
+    public MutableLiveData<Character> itemListCharacter = new MutableLiveData<>();
 
     public List<String> listsOfHeroes = new ArrayList<>();
 
@@ -22,6 +23,12 @@ public class LocationDetailViewModel extends ViewModel {
         listsOfHeroes.addAll(location.getResidents());
     }
 
+    public void onClickItemCharacter(Character character){
+        itemListCharacter.setValue(character);
+    }
+    public MutableLiveData<Character> getItemListCharacters(){
+        return itemListCharacter;
+    }
 
     public MutableLiveData<Location> getItemListLocations(){
         return itemListLocation;

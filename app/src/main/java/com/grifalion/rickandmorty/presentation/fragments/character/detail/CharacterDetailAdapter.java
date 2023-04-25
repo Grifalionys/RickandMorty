@@ -14,12 +14,14 @@ import com.grifalion.rickandmorty.domain.models.episode.Episode;
 import java.util.List;
 
 public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetailViewHolder> {
-    Context context;
-    List<Episode> listEpisodes;
+    private Context context;
+    private List<Episode> listEpisodes;
+    private SelectListener listener;
 
-    public CharacterDetailAdapter(Context context, List<Episode> listEpisodes){
+    public CharacterDetailAdapter(Context context, List<Episode> listEpisodes, SelectListener listener){
         this.context = context;
         this.listEpisodes = listEpisodes;
+        this.listener = listener;
     }
 
 
@@ -34,13 +36,25 @@ public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetail
 
     @Override
     public void onBindViewHolder(@NonNull CharacterDetailViewHolder holder, int position) {
+        Episode item = listEpisodes.get(position);
         holder.tvNameEpisode.setText(listEpisodes.get(position).getName());
         holder.tvNumberEpisode.setText(listEpisodes.get(position).getEpisode());
         holder.tvAirDataEpisode.setText(listEpisodes.get(position).getAir_date());
+        holder.itemView.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked(item);
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
         return listEpisodes.size();
+    }
+
+    public interface SelectListener{
+        void onItemClicked(Episode episode);
     }
 }
