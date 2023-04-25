@@ -9,9 +9,9 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imIconCharacter"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_100"
+        android:layout_marginTop="@dimen/dp_8"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/type"
         app:layout_constraintStart_toStartOf="@+id/imIconCharacter"
         app:layout_constraintTop_toBottomOf="@+id/imIconCharacter" />
@@ -34,7 +34,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/status"
         app:layout_constraintStart_toStartOf="@+id/tvTypeInfo"
         app:layout_constraintTop_toBottomOf="@+id/tvTypeInfo" />
@@ -44,7 +44,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/gender"
         app:layout_constraintStart_toStartOf="@+id/tvStatusInfo"
         app:layout_constraintTop_toBottomOf="@+id/tvStatusInfo" />
@@ -65,7 +65,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/dp_12"
         android:text="@string/human"
         app:layout_constraintStart_toEndOf="@+id/tvTypeInfo"
         app:layout_constraintTop_toTopOf="@+id/tvTypeInfo" />
@@ -75,7 +75,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/dp_12"
         android:text="@string/alive"
         app:layout_constraintStart_toEndOf="@+id/tvStatusInfo"
         app:layout_constraintTop_toTopOf="@+id/tvStatusInfo" />
@@ -85,7 +85,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/dp_12"
         android:text="@string/man_ex2"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="@+id/textView7" />

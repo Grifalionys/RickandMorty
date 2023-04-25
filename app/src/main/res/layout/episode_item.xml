@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/dp_10"
     android:background="@drawable/gradient_item">
 
     <TextView
@@ -12,7 +12,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/name_example"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -25,7 +25,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/one"
         app:layout_constraintEnd_toEndOf="@+id/tvNameEpisode"
         app:layout_constraintStart_toStartOf="@+id/tvNameEpisode"
@@ -36,7 +36,7 @@
         style="@style/TextViewWhiteStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="@string/unknown"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="@+id/tvNumberEpisode"

@@ -38,6 +38,7 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
 
     private LocationDetailFragmentBinding binding;
     private LocationDetailViewModel viewModelDetails;
+    private CharacterDetailViewModel vmCharacter;
 
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -46,6 +47,9 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
 
     public LocationDetailFragment(@NotNull LocationDetailViewModel viewModel){
         this.viewModelDetails = viewModel;
+    }
+    public LocationDetailFragment(@NotNull CharacterDetailViewModel vmCharacter){
+        this.vmCharacter = vmCharacter;
     }
 
     @Nullable
@@ -108,11 +112,11 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
 
     @Override
     public void onItemClicked(Character character) {
-        viewModelDetails.onClickItemCharacter(character);
+        vmCharacter.itemListCharacter.setValue(character);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new CharacterDetailFragment(viewModelDetails))
+                .replace(R.id.containerFragment, new CharacterDetailFragment(vmCharacter))
                 .addToBackStack("location_detail")
                 .commit();
     }

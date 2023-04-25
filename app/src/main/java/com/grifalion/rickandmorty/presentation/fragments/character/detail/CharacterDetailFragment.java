@@ -46,11 +46,6 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
 
     }
 
-    public CharacterDetailFragment(LocationDetailViewModel viewModelDetails) {
-        this.viewModelLocation = viewModelDetails;
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +80,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
 
         };
         viewModelDetail.getItemListCharacter().observe(getViewLifecycleOwner(),observer);
+
         viewModelDetail.getEpisodes();
         fetchData();
         viewModelDetail.clearListOfEpisodes();

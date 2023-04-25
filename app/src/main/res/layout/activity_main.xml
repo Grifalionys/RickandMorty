@@ -8,8 +8,8 @@
 
     <FrameLayout
         android:id="@+id/containerFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,14 +19,14 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_70"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_24"
         android:background="@drawable/view_bottom_nav_custom"
         android:contextClickable="true"
-        android:paddingBottom="15dp"
+        android:paddingBottom="@dimen/dp_16"
         android:textAlignment="gravity"
         android:theme="@style/TextViewWhiteStyle"
         app:itemTextAppearanceActive="@style/BottomNavigationView.Active"

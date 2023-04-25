@@ -70,4 +70,6 @@
     <string name="replacement_dimension">Replacement Dimension</string>
     <string name="fantasy_dimension">Fantasy Dimension</string>
     <string name="dimension_5_126">Dimension 5-126</string>
+    <string name="type_ex1">Тип</string>
+    <string name="dimension_ex">Измерение</string>
 </resources>
