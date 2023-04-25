@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.data.network
+package com.grifalion.rickandmorty.data.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

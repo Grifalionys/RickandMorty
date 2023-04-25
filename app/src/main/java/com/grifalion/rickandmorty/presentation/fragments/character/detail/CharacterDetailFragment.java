@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.grifalion.rickandmorty.R;
-import com.grifalion.rickandmorty.data.network.ApiService;
-import com.grifalion.rickandmorty.data.network.RetrofitInstance;
+import com.grifalion.rickandmorty.data.api.ApiService;
+import com.grifalion.rickandmorty.data.api.RetrofitInstance;
 import com.grifalion.rickandmorty.databinding.CharacterDetailFragmentBinding;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;

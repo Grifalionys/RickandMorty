@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,14 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.grifalion.rickandmorty.R;
-import com.grifalion.rickandmorty.data.network.ApiService;
-import com.grifalion.rickandmorty.data.network.RetrofitInstance;
+import com.grifalion.rickandmorty.data.api.ApiService;
+import com.grifalion.rickandmorty.data.api.RetrofitInstance;
 import com.grifalion.rickandmorty.databinding.LocationDetailFragmentBinding;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.location.Location;
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel;
-import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +29,6 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LocationDetailFragment extends Fragment implements LocationDetailAdapter.SelectListener {

@@ -2,7 +2,7 @@ package com.grifalion.rickandmorty.data.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.grifalion.rickandmorty.data.network.RetrofitInstance
+import com.grifalion.rickandmorty.data.api.RetrofitInstance
 import com.grifalion.rickandmorty.domain.models.character.Character
 
 class CharacterDataSource(private val id: Int, private val name: String,private val status: String, private val gender: String,private val species: String): PagingSource<Int, Character>() {
