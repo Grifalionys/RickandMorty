@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -16,17 +19,19 @@ import androidx.paging.LoadState
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
+import com.grifalion.rickandmorty.databinding.EpisodeFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.EpisodeListFragmentBinding
 import com.grifalion.rickandmorty.domain.models.episode.Episode
-import com.grifalion.rickandmorty.presentation.fragments.episode.detail.DetailEpisodeFragment
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     private lateinit var binding: EpisodeListFragmentBinding
-    private val adapter = EpisodeListAdapter(this)
+    private lateinit var filterBinding: EpisodeFilterFragmentBinding
     private lateinit var viewModel: EpisodeListViewModel
     private val dataEpisode: EpisodeListViewModel by activityViewModels()
+    private val adapter = EpisodeListAdapter(this)
     private var name = ""
     private var episode = ""
 
@@ -36,6 +41,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         savedInstanceState: Bundle?
     ): View? {
         binding = EpisodeListFragmentBinding.inflate(inflater)
+        filterBinding = EpisodeFilterFragmentBinding.inflate(inflater)
         viewModel = ViewModelProvider(this)[EpisodeListViewModel::class.java]
         return binding.root
 
@@ -91,16 +97,65 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
             initBottomFilter()
         }
     }
-    private fun initBottomFilter() {
-        val dialogView: View = layoutInflater.inflate(R.layout.character_filter_fragment, null)
+    private fun initBottomFilter() = with(filterBinding) {
         val dialog = BottomSheetDialog(requireContext())
-        val btnApply = dialogView.findViewById<Button>(R.id.btnApply)
-        val btnCloseDialog = dialogView.findViewById<ImageView>(R.id.btnCloseDialog)
-        dialog.setContentView(dialogView)
-        dialog.show()
-        btnCloseDialog.setOnClickListener {
-            dialog.dismiss()
+        val seasonsArray = arrayOf("S01", "S02","S03", "S04", "S05")
+        val episodeArray = arrayOf("E01", "E02", "E03","E04","E05","E06","E07","E08","E09","E10","E11")
+        var selectSeason = ""
+        var selectEpisode = ""
+        val seasonsAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,seasonsArray)
+        val episodeAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,episodeArray)
+        spinnerSeason.adapter = seasonsAdapter
 
+        spinnerSeason.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectSeason = seasonsArray[position]
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+        }
+
+        spinnerEpisode.adapter = episodeAdapter
+        spinnerEpisode.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectEpisode = episodeArray[position]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
+
+        }
+
+        if(filterBinding.root.parent != null){
+            (filterBinding.root.parent as ViewGroup).removeView(filterBinding.root)
+        }
+        dialog.setContentView(filterBinding.root)
+        dialog.show()
+        btnCloseEpisodeDialog.setOnClickListener {
+            dialog.dismiss()
+        }
+        btnApplyFilterEp.setOnClickListener {
+            episode = selectSeason + selectEpisode
+            lifecycleScope.launch {
+                viewModel.getEpisodes(name,episode)
+                viewModel.episodeFlow.collectLatest(adapter::submitData)
+            }
+            binding.btnFilter.visibility = View.GONE
+            binding.btnCloseFilter.visibility = View.VISIBLE
+            dialog.dismiss()
+        }
+        binding.btnCloseFilter.setOnClickListener {
+            binding.btnCloseFilter.visibility = View.GONE
+            binding.btnFilter.visibility = View.VISIBLE
+            getListEpisodes()
 
         }
     }
@@ -119,8 +174,17 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.containerFragment, DetailEpisodeFragment::class.java.newInstance())
+            .replace(R.id.containerFragment, EpisodeDetailFragment::class.java.newInstance())
             .addToBackStack("episodes")
             .commit()
+    }
+
+    private fun getListEpisodes() {
+        name = ""
+        episode = ""
+        lifecycleScope.launch {
+            viewModel.getEpisodes(name, episode)
+            viewModel.episodeFlow.collectLatest(adapter::submitData)
+        }
     }
 }

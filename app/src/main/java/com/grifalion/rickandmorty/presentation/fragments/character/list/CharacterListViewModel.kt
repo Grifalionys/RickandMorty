@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.stateIn
 
 class CharacterListViewModel: ViewModel() {
     var characterFlow: Flow<PagingData<Character>> = emptyFlow()
-    var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
 
     fun getCharacters(id: Int,name: String, status: String, gender: String, species: String){
                characterFlow = Pager(PagingConfig(pageSize = 1)){

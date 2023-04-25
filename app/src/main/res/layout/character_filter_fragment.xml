@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="@string/filter"
-        android:textSize="25sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         android:theme="@style/TextViewWhiteStyle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#88226F"
+        android:backgroundTint="@color/purple_custom"
         android:shadowColor="@color/black"
         android:text="@string/apply"
         android:textAllCaps="false"
@@ -59,7 +59,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chipGroup_gender"
         app:layout_constraintVertical_bias="0.0"
-        app:strokeColor="#000000" />
+        app:strokeColor="@color/black" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroup_status"

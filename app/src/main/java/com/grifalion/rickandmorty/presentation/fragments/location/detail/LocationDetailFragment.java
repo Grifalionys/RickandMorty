@@ -1,9 +1,11 @@
 package com.grifalion.rickandmorty.presentation.fragments.location.detail;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,12 +81,7 @@ public class LocationDetailFragment extends Fragment {
         compositeDisposable.add(apiService.getDetailCharacter(viewModelDetail.characterId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Character>>() {
-                    @Override
-                    public void accept(List<Character> post) throws Exception {
-                        detailData(post);
-                    }
-                }));
+                .subscribe(this::detailData, throwable -> Log.d("tag",throwable.toString())));
     }
 
     private void detailData(List<Character> post) {

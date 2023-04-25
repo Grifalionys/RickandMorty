@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.EpisodeDetailFragmentBinding
+import com.grifalion.rickandmorty.presentation.fragments.character.list.CharacterListAdapter
 import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListViewModel
 
-class DetailEpisodeFragment: Fragment() {
+class EpisodeDetailFragment: Fragment() {
     private lateinit var binding: EpisodeDetailFragmentBinding
     private lateinit var viewModel: EpisodeListViewModel
     private val dataEpisode: EpisodeListViewModel by activityViewModels()

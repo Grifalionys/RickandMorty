@@ -24,4 +24,6 @@ class EpisodeListViewModel: ViewModel() {
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }
+
 }
+
