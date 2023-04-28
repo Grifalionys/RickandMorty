@@ -12,59 +12,68 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.EpisodeDetailFragmentBinding
+import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.character.list.CharacterListViewModel
 import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListViewModel
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailAdapter
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class EpisodeDetailFragment(val vmEpisode: CharacterDetailViewModel): Fragment() {
+class EpisodeDetailFragment(private val episodeViewModel: EpisodeDetailViewModel): Fragment(), LocationDetailAdapter.SelectListener {
     private lateinit var binding: EpisodeDetailFragmentBinding
-    private val dataEpisode: EpisodeListViewModel by activityViewModels()
-    private val adapter = EpisodeDetailAdapter()
-    private lateinit var vmCharacters: CharacterListViewModel
-    private lateinit var vmDetailCharacter: CharacterDetailViewModel
-    private var name = ""
-    private var status = ""
-    private var gender = ""
-    private var species = ""
+    lateinit var adapter: LocationDetailAdapter
+    private val vmDetailCharacter: CharacterDetailViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = EpisodeDetailFragmentBinding.inflate(inflater)
-        vmDetailCharacter = ViewModelProvider(this)[CharacterDetailViewModel::class.java]
-        vmCharacters = ViewModelProvider(this)[CharacterListViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vmEpisode.getItemListEpisode().observe(viewLifecycleOwner){
+        hideBottomNav()
+        binding.btnBack.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack()
+        }
+
+        episodeViewModel.selectedItemLocation.observe(viewLifecycleOwner){
             binding.tvNameEpisodeD.text = it.name
             binding.tvEpisode.text = it.episode
             binding.tvDataEpisode.text = it.air_date
         }
-        binding.btnBack.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
-        binding.rvEpisodeDetail.adapter = adapter
-        name = ""
-        status = ""
-        gender = ""
-        species = ""
-        lifecycleScope.launch {
-            vmCharacters.getCharacters(id,name,status,gender,species)
-            vmCharacters.characterFlow.collectLatest(adapter::submitData)
-        }
+        episodeViewModel.getCharacters()
+        episodeViewModel.fetchData()
+        episodeViewModel.responseCharacters.observe(viewLifecycleOwner){
+            adapter = LocationDetailAdapter(requireContext(),it,this)
+            binding.rvEpisodeDetail.adapter = adapter
 
-        hideBottomNav()
+        }
     }
+
 
 
     private fun hideBottomNav(){
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.GONE
+    }
+
+    override fun onItemClicked(character: Character?) {
+        vmDetailCharacter.onClickItemCharacter(character)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.containerFragment, CharacterDetailFragment(vmDetailCharacter))
+            ?.addToBackStack(null)
+            ?.commit()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        episodeViewModel.clearListCharacters()
     }
 }

@@ -3,50 +3,82 @@ package com.grifalion.rickandmorty.presentation.fragments.location.detail;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.grifalion.rickandmorty.data.api.ApiService;
+import com.grifalion.rickandmorty.data.api.RetrofitInstance;
+import com.grifalion.rickandmorty.data.repsonse.location.LocationResponse;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.location.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class LocationDetailViewModel extends ViewModel {
+    public MutableLiveData<String> locationName = new MutableLiveData<>();
+    public MutableLiveData<Location> selectedItemLocation = new MutableLiveData<>();
+    public MutableLiveData<List<Character>> responseCharacters = new MutableLiveData<List<Character>>();
 
-    public MutableLiveData<Location> itemListLocation = new MutableLiveData<>();
-    public MutableLiveData<Character> itemListCharacter = new MutableLiveData<>();
-
-    public List<String> listsOfHeroes = new ArrayList<>();
+    public List<String> listsOfCharacters = new ArrayList<>();
 
     public String characterId;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    public ApiService apiService = RetrofitInstance.INSTANCE.getCharacterApi();
 
-    public void onClickItemLocation(Location location){
-        itemListLocation.setValue(location);
-        listsOfHeroes.addAll(location.getResidents());
+    public void onClickItemCharacter(Location location){
+        selectedItemLocation.setValue(location);
+        listsOfCharacters.addAll(location.getResidents());
+    }
+    public void setLocationName(String name){
+        locationName.setValue(name);
+        fetchDataLocation();
     }
 
-    public void onClickItemCharacter(Character character){
-        itemListCharacter.setValue(character);
+    public void setResponse(List<Character> character){
+        responseCharacters.setValue(character);
     }
-    public MutableLiveData<Character> getItemListCharacters(){
-        return itemListCharacter;
+    public MutableLiveData<Location> getSelectedItemCharacter(){
+        return selectedItemLocation;
     }
 
-    public MutableLiveData<Location> getItemListLocations(){
-        return itemListLocation;
+    public void setResponseLocation(LocationResponse locationResponse){
+        selectedItemLocation.setValue(locationResponse.getResults().get(0));
+        onClickItemCharacter(locationResponse.getResults().get(0));
     }
 
     public void clearListOfCharacters(){
-        listsOfHeroes.clear();
+        listsOfCharacters.clear();
     }
+
+    public void fetchData(){
+        compositeDisposable.add(apiService.getDetailCharacter(characterId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setResponse,throwable -> {}
+                ));
+    }
+    void fetchDataLocation() {
+        compositeDisposable.add(apiService.getDetailLocation(locationName.getValue())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setResponseLocation, throwable -> {
+                }));
+    }
+
 
     public void getCharacters(){
         String str1;
         String result = "";
-        if(!listsOfHeroes.isEmpty()){
-            for(String character: listsOfHeroes){
+        if(!listsOfCharacters.isEmpty()){
+            for(String character: listsOfCharacters){
                 str1 = character.substring(42);
                 result = result + str1 + ",";
             }
         }
         characterId = result;
     }
+
 }

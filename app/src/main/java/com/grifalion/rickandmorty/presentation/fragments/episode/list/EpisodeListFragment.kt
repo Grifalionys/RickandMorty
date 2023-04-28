@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
@@ -24,6 +22,7 @@ import com.grifalion.rickandmorty.databinding.EpisodeListFragmentBinding
 import com.grifalion.rickandmorty.domain.models.episode.Episode
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -31,7 +30,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     private lateinit var binding: EpisodeListFragmentBinding
     private lateinit var filterBinding: EpisodeFilterFragmentBinding
     private lateinit var viewModel: EpisodeListViewModel
-    private val viewModelDetail: CharacterDetailViewModel by activityViewModels()
+    private val viewModelDetail: EpisodeDetailViewModel by activityViewModels()
     private val adapter = EpisodeListAdapter(this)
     private var name = ""
     private var episode = ""
@@ -60,9 +59,10 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
                 binding.progressBarEpisode.visibility = View.GONE
             }
         }
-        getListLocations()
+        getListEpisodes()
         getNameSearchView()
         showBottomNav()
+        swipeRefresh()
     }
 
     private fun showBottomNav(){
@@ -92,6 +92,15 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
 
         })
 
+    }
+    private fun swipeRefresh(){
+        binding.swipeRefresh.setOnRefreshListener {
+            lifecycleScope.launch{
+                adapter.submitData(PagingData.empty())
+                viewModel.episodeFlow.collectLatest(adapter::submitData)
+            }
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
     private fun showBottomFilter(){
         binding.btnFilter.setOnClickListener{
@@ -161,23 +170,12 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         }
     }
 
-    private fun getListLocations(){
-        name = ""
-        episode = ""
-        lifecycleScope.launch {
-            viewModel.getEpisodes(name,episode)
-            viewModel.episodeFlow.collectLatest(adapter::submitData)
-        }
-    }
-
     override fun onClick(episode: Episode) {
-        viewModelDetail.onClickItemEpisode(episode);
-        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
-        fragmentManager
-            .beginTransaction()
-            .replace(R.id.containerFragment, EpisodeDetailFragment(viewModelDetail))
-            .addToBackStack("episodes")
-            .commit()
+        viewModelDetail.onClickItemEpisode(episode)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.containerFragment, EpisodeDetailFragment(viewModelDetail))
+            ?.addToBackStack(null)
+            ?.commit()
     }
 
     private fun getListEpisodes() {

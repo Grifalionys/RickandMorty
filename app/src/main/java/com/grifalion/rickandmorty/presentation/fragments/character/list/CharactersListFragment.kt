@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
@@ -62,6 +63,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         getListCharacters()
         getNameSearchView()
         showBottomFilter()
+        swipeRefresh()
     }
 
 
@@ -94,6 +96,16 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
           initBottomFilter()
         }
         BottomSheetDialog(requireContext())
+    }
+
+    private fun swipeRefresh(){
+        binding.swipeRefresh.setOnRefreshListener {
+            lifecycleScope.launch{
+                adapter.submitData(PagingData.empty())
+                viewModel.characterFlow.collectLatest(adapter::submitData)
+            }
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun initBottomFilter() = with((filterBinding)){

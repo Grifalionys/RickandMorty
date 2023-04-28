@@ -1,6 +1,5 @@
 package com.grifalion.rickandmorty.di
 
-import androidx.room.Database
 import com.grifalion.rickandmorty.presentation.MainActivity
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel

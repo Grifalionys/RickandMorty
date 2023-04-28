@@ -45,5 +45,7 @@ interface ApiService {
     @GET("character/{id}")
     fun getDetailCharacter(@Path("id") id: String): Observable<List<com.grifalion.rickandmorty.domain.models.character.Character>>
 
+    @GET("location/")
+    fun getDetailLocation(@Query("name") name: String): Observable<LocationResponse>
 
 }

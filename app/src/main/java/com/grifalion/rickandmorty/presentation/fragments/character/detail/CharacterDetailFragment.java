@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +22,8 @@ import com.grifalion.rickandmorty.databinding.CharacterDetailFragmentBinding;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment;
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel;
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,14 +37,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CharacterDetailFragment extends Fragment implements CharacterDetailAdapter.SelectListener {
     private CharacterDetailFragmentBinding binding;
-    private CharacterDetailViewModel viewModelDetail;
-    private LocationDetailViewModel viewModelLocation;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    RecyclerView rv;
-    ApiService apiService;
+    private CharacterDetailViewModel characterDetailViewModel;
+    private EpisodeDetailViewModel episodeDetailViewModel;
+    private LocationDetailViewModel locationDetailViewModel;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private RecyclerView rv;
+    private ApiService apiService;
 
-    public CharacterDetailFragment(@NotNull CharacterDetailViewModel viewModel){
-        this.viewModelDetail = viewModel;
+    public CharacterDetailFragment(@NotNull CharacterDetailViewModel characterDetailViewModel){
+        this.characterDetailViewModel = characterDetailViewModel;
 
     }
 
@@ -49,6 +53,8 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = CharacterDetailFragmentBinding.inflate(inflater);
+        episodeDetailViewModel = new ViewModelProvider(this).get(EpisodeDetailViewModel.class);
+        locationDetailViewModel = new ViewModelProvider(this).get(LocationDetailViewModel.class);
         return binding.getRoot();
     }
 
@@ -62,7 +68,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         final Observer<Character> observer = character -> {
@@ -76,31 +82,40 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
             binding.tvLocationDetail.setText(character.getLocation().getName());
             binding.tvOriginDetail.setText(character.getOrigin().getName());
             binding.tvNameDetail.setText(character.getName());
+            binding.tvOriginDetail.setOnClickListener(it -> {
+                locationDetailViewModel.setLocationName(character.getOrigin().getName());
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.containerFragment,new LocationDetailFragment(locationDetailViewModel))
+                            .addToBackStack(null)
+                            .commit();
+            });
+            binding.tvLocationDetail.setOnClickListener(it -> {
+                locationDetailViewModel.setLocationName(character.getLocation().getName());
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.containerFragment,new LocationDetailFragment(locationDetailViewModel))
+                        .addToBackStack(null)
+                        .commit();
+            });
 
         };
-        viewModelDetail.getItemListCharacter().observe(getViewLifecycleOwner(),observer);
-
-        viewModelDetail.getEpisodes();
-        fetchData();
-        viewModelDetail.clearListOfEpisodes();
+        characterDetailViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(),observer);
+        characterDetailViewModel.getEpisodes();
+        characterDetailViewModel.clearListOfEpisodes();
+        characterDetailViewModel.fetchData();
+        detailData();
     }
 
-    private void fetchData() {
-        compositeDisposable.add(apiService.getDetailEpisode(viewModelDetail.episodeId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Episode>>() {
-                    @Override
-                    public void accept(List<Episode> posts) throws Exception {
-                        detailData(posts);
-                    }
-                }));
-    }
-
-    private void detailData(List<Episode> posts) {
-        CharacterDetailAdapter adapter = new CharacterDetailAdapter(requireContext(),posts,this);
-        rv.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    private void detailData() {
+        final Observer<List<Episode>> observer = listOfEpisodes -> {
+            CharacterDetailAdapter adapter = new CharacterDetailAdapter(requireContext(),listOfEpisodes,this);
+            rv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        };
+            characterDetailViewModel.responseEpisodes.observe(getViewLifecycleOwner(),observer);
     }
 
     @Override
@@ -116,12 +131,12 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
 
     @Override
     public void onItemClicked(Episode episode) {
-        viewModelDetail.onClickItemEpisode(episode);
+        episodeDetailViewModel.onClickItemEpisode(episode);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new EpisodeDetailFragment(viewModelDetail))
-                .addToBackStack("character_detail")
+                .replace(R.id.containerFragment, new EpisodeDetailFragment(episodeDetailViewModel))
+                .addToBackStack(null)
                 .commit();
     }
 }

@@ -14,15 +14,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.grifalion.rickandmorty.R
-import com.grifalion.rickandmorty.databinding.LocationDetailFragmentBinding
 import com.grifalion.rickandmorty.databinding.LocationListFragmentBinding
 import com.grifalion.rickandmorty.domain.models.location.Location
-import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
-import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -63,6 +61,7 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
         }
         getListLocations()
         getNameSearchView()
+        swipeRefresh()
     }
 
 
@@ -89,6 +88,15 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
 
         })
 
+    }
+    private fun swipeRefresh(){
+        binding.swipeRefresh.setOnRefreshListener {
+            lifecycleScope.launch{
+                adapter.submitData(PagingData.empty())
+                viewModel.locationFlow.collectLatest(adapter::submitData)
+            }
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
     private fun showBottomFilter(){
         binding.btnFilter.setOnClickListener{
@@ -204,7 +212,7 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
     }
 
     override fun onClick(location: Location) {
-        detailVM.onClickItemLocation(location)
+        detailVM.onClickItemCharacter(location)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()

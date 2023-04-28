@@ -1,42 +1,50 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.detail;
 
-import android.widget.Toast;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.grifalion.rickandmorty.data.api.ApiService;
+import com.grifalion.rickandmorty.data.api.RetrofitInstance;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class CharacterDetailViewModel extends ViewModel {
-    public MutableLiveData<Character> itemListCharacter = new MutableLiveData<>();
+    public MutableLiveData<Character> selectedItemCharacter = new MutableLiveData<>();
+    public MutableLiveData<List<Episode>> responseEpisodes = new MutableLiveData<List<Episode>>();
     public List<String> listOfEpisodes = new ArrayList<>();
 
-
-    public MutableLiveData<Episode> itemListEpisode = new MutableLiveData<>();
     public String episodeId;
-
-    public void onClickItemEpisode(Episode episode){
-        itemListEpisode.setValue(episode);
-    }
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    public ApiService apiService = RetrofitInstance.INSTANCE.getCharacterApi();
 
     public void onClickItemCharacter(Character character){
-        itemListCharacter.setValue(character);
+        selectedItemCharacter.setValue(character);
         listOfEpisodes.addAll(character.getEpisode());
     }
-    public MutableLiveData<Episode> getItemListEpisode(){
-        return itemListEpisode;
+    public void setListOfEpisodes(List<Episode> episode){
+        responseEpisodes.setValue(episode);
     }
 
-
-    public MutableLiveData<Character> getItemListCharacter(){
-        return itemListCharacter;
+    public MutableLiveData<Character> getSelectedItemCharacter(){
+        return selectedItemCharacter;
     }
 
     public void clearListOfEpisodes(){
         listOfEpisodes.clear();
+    }
+
+    void fetchData(){
+        compositeDisposable.add(apiService.getDetailEpisode(episodeId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setListOfEpisodes,throwable -> {}));
     }
 
     public void getEpisodes(){

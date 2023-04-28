@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,25 +35,21 @@ import io.reactivex.schedulers.Schedulers;
 public class LocationDetailFragment extends Fragment implements LocationDetailAdapter.SelectListener {
 
     private LocationDetailFragmentBinding binding;
-    private LocationDetailViewModel viewModelDetails;
-    private CharacterDetailViewModel vmCharacter;
+    private LocationDetailViewModel locationDetailViewModel;
+    private CharacterDetailViewModel characterDetailViewModel;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private RecyclerView rv;
+    private ApiService apiService;
 
-
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    RecyclerView rv;
-    ApiService apiService;
-
-    public LocationDetailFragment(@NotNull LocationDetailViewModel viewModel){
-        this.viewModelDetails = viewModel;
-    }
-    public LocationDetailFragment(@NotNull CharacterDetailViewModel vmCharacter){
-        this.vmCharacter = vmCharacter;
+    public LocationDetailFragment(@NotNull LocationDetailViewModel locationDetailViewModel){
+        this.locationDetailViewModel = locationDetailViewModel;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = LocationDetailFragmentBinding.inflate(inflater);
+        characterDetailViewModel = new ViewModelProvider(this).get(CharacterDetailViewModel.class);
         return binding.getRoot();
     }
 
@@ -66,7 +63,7 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
         final Observer<Location> observer = location -> {
@@ -76,23 +73,22 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
             binding.tvTypeLocationD.setText(location.getType());
 
         };
-        viewModelDetails.getItemListLocations().observe(getViewLifecycleOwner(),observer);
-        viewModelDetails.getCharacters();
-        fetchData();
-        viewModelDetails.clearListOfCharacters();
+        locationDetailViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(),observer);
+
+        locationDetailViewModel.getCharacters();
+        locationDetailViewModel.fetchData();
+        detailData();
+        locationDetailViewModel.clearListOfCharacters();
     }
 
-    private void fetchData() {
-        compositeDisposable.add(apiService.getDetailCharacter(viewModelDetails.characterId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::detailData, throwable -> Log.d("tag",throwable.toString())));
-    }
 
-    private void detailData(List<Character> post) {
-        LocationDetailAdapter adapter = new LocationDetailAdapter(requireContext(),post,this);
-        rv.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    private void detailData() {
+        final Observer<List<Character>> observer = listOfCharacter ->{
+            LocationDetailAdapter adapter = new LocationDetailAdapter(requireContext(),listOfCharacter,this);
+            rv.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        };
+        locationDetailViewModel.responseCharacters.observe(getViewLifecycleOwner(),observer);
     }
 
     @Override
@@ -109,12 +105,12 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
 
     @Override
     public void onItemClicked(Character character) {
-        vmCharacter.itemListCharacter.setValue(character);
+        characterDetailViewModel.onClickItemCharacter(character);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new CharacterDetailFragment(vmCharacter))
-                .addToBackStack("location_detail")
+                .replace(R.id.containerFragment, new CharacterDetailFragment(characterDetailViewModel))
+                .addToBackStack(null)
                 .commit();
     }
 }
