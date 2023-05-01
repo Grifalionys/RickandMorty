@@ -4,25 +4,24 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.grifalion.rickandmorty.data.db.entity.CharacterEntity
+import androidx.room.Transaction
+import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
 
 @Dao
 interface CharacterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveCharacters(character: CharacterEntity)
+    suspend fun insertCharacter(list: List<CharacterDbModel>)
 
-    @Query("SELECT * FROM character_table")
-    fun getAllCharacters(): List<CharacterEntity>
+    @Query("SELECT * FROM item_character")
+    fun getAllCharacters(): List<CharacterDbModel>
 
-    @Query("SELECT * FROM character_table WHERE id = :id")
-    fun getCharacterById(id: Int): CharacterEntity
+    @Query("DELETE FROM item_character")
+    suspend fun deleteAllCharacters()
 
-    @Query("SELECT * FROM character_table WHERE (:name IS NULL OR name LIKE '%' || :name || '%')" +
-            "AND (:status IS NULL OR status LIKE :status)" +
-            "AND (:species IS NULL OR species LIKE '%' || :species || '%')" +
-            "AND (:type IS NULL OR type LIKE '%' || :type || '%')" +
-            "AND (:gender IS NULL OR gender LIKE :gender)")
-    fun getFilteredCharacters(name: String?, status: String?, species: String?,
-                              type: String?, gender: String?): List<CharacterEntity>
+    @Transaction
+    suspend fun refreshCharacters(list: List<CharacterDbModel>){
+        deleteAllCharacters()
+        insertCharacter(list)
+    }
 }

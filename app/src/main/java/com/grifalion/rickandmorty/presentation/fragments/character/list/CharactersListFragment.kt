@@ -1,5 +1,7 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.list
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +18,16 @@ import androidx.paging.PagingData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
+import com.grifalion.rickandmorty.app.App
 import com.grifalion.rickandmorty.databinding.CharacterFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.CharacterListFragmentBinding
+import com.grifalion.rickandmorty.di.ViewModelFactory
 import com.grifalion.rickandmorty.domain.models.character.Character
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
@@ -31,22 +36,30 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
     private val adapter = CharacterListAdapter(this)
     private val detailVM: CharacterDetailViewModel by activityViewModels()
     private lateinit var viewModel: CharacterListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy{
+        (requireActivity().application as App).component
+    }
 
     private var name = ""
     private var status = ""
     private var gender = ""
     private var species = ""
 
-
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = CharacterListFragmentBinding.inflate(inflater)
         filterBinding = CharacterFilterFragmentBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[CharacterListViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[CharacterListViewModel::class.java]
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +77,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         getNameSearchView()
         showBottomFilter()
         swipeRefresh()
+
     }
 
 
@@ -73,7 +87,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharacters(id,name,status,gender,species)
+                    viewModel.getCharacters(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
@@ -82,7 +96,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharacters(id,name,status,gender,species)
+                    viewModel.getCharacters(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
@@ -167,7 +181,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
                     chipUnknownHero.isChecked || chipPoopybutthole.isChecked || chipMythological.isChecked ||
                     chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked || edSearchHero.text.isNotEmpty()){
                 lifecycleScope.launch {
-                    viewModel.getCharacters(id,name,status,gender,species)
+                    viewModel.getCharacters(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
 
                 }
@@ -206,7 +220,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         gender = ""
         species = ""
         lifecycleScope.launch {
-            viewModel.getCharacters(id,name,status,gender,species)
+            viewModel.getCharacters(name,status,gender,species)
             viewModel.characterFlow.collectLatest(adapter::submitData)
         }
     }
