@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.grifalion.rickandmorty.data.api.ApiService;
 import com.grifalion.rickandmorty.data.api.RetrofitInstance;
-import com.grifalion.rickandmorty.data.repsonse.location.LocationResponse;
+import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResponse;
 import com.grifalion.rickandmorty.domain.models.character.Character;
 import com.grifalion.rickandmorty.domain.models.location.Location;
 

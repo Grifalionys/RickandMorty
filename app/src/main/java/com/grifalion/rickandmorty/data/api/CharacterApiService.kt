@@ -1,6 +1,6 @@
 package com.grifalion.rickandmorty.data.api
 
-import com.grifalion.rickandmorty.data.repsonse.character.CharacterResponse
+import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -1,6 +1,6 @@
 package com.grifalion.rickandmorty.domain.repository
 
-import com.grifalion.rickandmorty.data.repsonse.character.CharacterResponse
+import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
 
 interface CharacterRepository {
 

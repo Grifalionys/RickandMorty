@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.data.repsonse.episode
+package com.grifalion.rickandmorty.data.api.repsonse.episode
 
 data class Info(
     val count: Int,

@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.data.repsonse.episode
+package com.grifalion.rickandmorty.data.api.repsonse.episode
 
 import com.grifalion.rickandmorty.domain.models.episode.Episode
 

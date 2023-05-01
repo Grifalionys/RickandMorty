@@ -1,9 +1,9 @@
 package com.grifalion.rickandmorty.data.api
 
 import io.reactivex.Observable
-import com.grifalion.rickandmorty.data.repsonse.character.CharacterResponse
-import com.grifalion.rickandmorty.data.repsonse.episode.EpisodeResponse
-import com.grifalion.rickandmorty.data.repsonse.location.LocationResponse
+import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
+import com.grifalion.rickandmorty.data.api.repsonse.episode.EpisodeResponse
+import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResponse
 import com.grifalion.rickandmorty.domain.models.episode.Episode
 
 

@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.data.repsonse.character
+package com.grifalion.rickandmorty.data.api.repsonse.character
 
 data class Info(
     val count: Int,

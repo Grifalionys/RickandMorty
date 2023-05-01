@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.data.repsonse.location
+package com.grifalion.rickandmorty.data.api.repsonse.location
 
 import com.grifalion.rickandmorty.domain.models.location.Location
 
