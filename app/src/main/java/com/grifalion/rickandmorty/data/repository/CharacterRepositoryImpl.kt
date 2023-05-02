@@ -21,12 +21,11 @@ class CharacterRepositoryImpl @Inject constructor(
     private val mapper: CharacterMapper
     ): CharacterRepository {
 
-
     override suspend fun getCharacter(
         page: Int,
         name: String,
-        gender: String,
         status: String,
+        gender: String,
         species: String): CharacterModel {
         val characterApi = apiService.getCharacter(page,name,gender,status,species)
         val listCharacters = mapper.mapCharacterResponseForCharacter(characterApi)

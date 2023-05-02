@@ -94,6 +94,7 @@ class CharacterMapper @Inject constructor() {
         mapCharacterResultResponseForCharacterResultDb(it)
     }
 
+
     companion object{
         private const val EMPTY_STRING = ""
         private const val ZERO_NUMBER = 0
