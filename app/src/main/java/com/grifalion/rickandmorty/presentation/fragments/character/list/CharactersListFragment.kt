@@ -1,6 +1,5 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.list
 
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,7 +21,7 @@ import com.grifalion.rickandmorty.app.App
 import com.grifalion.rickandmorty.databinding.CharacterFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.CharacterListFragmentBinding
 import com.grifalion.rickandmorty.di.ViewModelFactory
-import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -43,10 +42,10 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         (requireActivity().application as App).component
     }
 
-    private var name = ""
-    private var status = ""
-    private var gender = ""
-    private var species = ""
+    private var name = EMPTY_STRING
+    private var status = EMPTY_STRING
+    private var gender = EMPTY_STRING
+    private var species = EMPTY_STRING
 
     override fun onAttach(context: Context) {
         component.inject(this)
@@ -59,6 +58,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         binding = CharacterListFragmentBinding.inflate(inflater)
         filterBinding = CharacterFilterFragmentBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this,viewModelFactory)[CharacterListViewModel::class.java]
+        viewModel.getCharacters(name,status,gender,species)
         return binding.root
     }
 
@@ -181,9 +181,9 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
                     chipUnknownHero.isChecked || chipPoopybutthole.isChecked || chipMythological.isChecked ||
                     chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked || edSearchHero.text.isNotEmpty()){
                 lifecycleScope.launch {
+
                     viewModel.getCharacters(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
-
                 }
                 dialog.dismiss()
                 binding.btnFilter.visibility = View.GONE
@@ -201,7 +201,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
     }
 
 
-    override fun onClick(character: Character) {
+   /* override fun onClick(character: CharacterResult) {
         detailVM.onClickItemCharacter(character)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
@@ -209,24 +209,31 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
             .replace(R.id.containerFragment, CharacterDetailFragment(detailVM))
             .addToBackStack("characters")
             .commit()
-    }
+    }*/
     private fun showBottomNav(){
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
     }
     private fun getListCharacters(){
-        name = ""
-        status = ""
-        gender = ""
-        species = ""
         lifecycleScope.launch {
+            name = EMPTY_STRING
+            status = EMPTY_STRING
+            gender = EMPTY_STRING
+            species = EMPTY_STRING
+
             viewModel.getCharacters(name,status,gender,species)
             viewModel.characterFlow.collectLatest(adapter::submitData)
         }
     }
 
+    override fun onClick(character: CharacterResult) {
+        TODO("Not yet implemented")
+    }
 
-
+    companion object{
+        private const val EMPTY_STRING = ""
+    }
 }
+
 
 

@@ -1,9 +1,9 @@
 package com.grifalion.rickandmorty.data.api.repsonse.character
 
 import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 
 data class CharacterResponse (
-    val info: Info,
-    var results: List<Character>
-    ) {
-}
+    val info: CharacterInfoResponse?,
+    var results: List<CharacterResultResponse>
+    )

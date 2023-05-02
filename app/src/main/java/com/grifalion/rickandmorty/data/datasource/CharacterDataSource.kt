@@ -5,36 +5,35 @@ import android.content.Context
 import android.net.ConnectivityManager
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.grifalion.rickandmorty.data.repository.CharacterRepositoryImpl
 import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
+import com.grifalion.rickandmorty.domain.repository.CharacterRepository
 import javax.inject.Inject
 
 class CharacterDataSource @Inject constructor(
-    private val repository: CharacterRepositoryImpl,
+    private val repository: CharacterRepository,
     private val application: Application,
     private val name: String,
     private val status: String,
     private val gender: String,
     private val species: String,
-    ): PagingSource<Int, Character>() {
+    ): PagingSource<Int, CharacterResult>() {
 
 
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResult> {
        return try {
             val page = params.key ?: 1
-            val responseData = arrayListOf<Character>()
+            val responseData = arrayListOf<CharacterResult>()
             if(hasConnected(application.applicationContext)) {
-                responseData.addAll((repository.getCharacter(page,name,gender,status,species)).results)
+                responseData.addAll((repository.getCharacter(page,name,gender,status,species)).result)
             } else {
-
+                val listCharacters = repository.getListCharacters()
+                responseData.addAll(listCharacters)
             }
 
-            val prevKey = if(page == 1){
-                null
-            } else {
-                page - 1
-            }
+            val prevKey = if(page == 1) null else page - 1
+
             return LoadResult.Page(
                 data = responseData,
                 prevKey = prevKey,
@@ -44,7 +43,7 @@ class CharacterDataSource @Inject constructor(
             return LoadResult.Error(e)
         }
     }
-    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, CharacterResult>): Int? {
         return null
         }
     }

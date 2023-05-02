@@ -1,10 +1,13 @@
 package com.grifalion.rickandmorty.domain.repository
 
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
+import com.grifalion.rickandmorty.domain.models.character.CharacterModel
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 
 interface CharacterRepository {
 
-    suspend fun getCharacter(page: Int, name: String, status: String, gender: String, species: String): CharacterResponse
+    suspend fun getCharacter(page: Int, name: String, status: String, gender: String, species: String): CharacterModel
 
-    suspend fun insertCharacter(list: List<com.grifalion.rickandmorty.domain.models.character.Character>)
+    suspend fun insertCharacter(list: List<CharacterResult>)
+
+    suspend fun getListCharacters(): List<CharacterResult>
 }

@@ -8,7 +8,9 @@ data class Character (
     var species: String,
     var gender: String,
     var origin : Location,
-    var location : Location,
+    var location : CharacterLocation,
     var image : String,
+    var created: String,
+    var type: String,
     var episode : List<String>
 )

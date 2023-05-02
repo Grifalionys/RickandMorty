@@ -4,61 +4,48 @@ import com.grifalion.rickandmorty.data.api.CharacterApiService
 import com.grifalion.rickandmorty.data.db.dao.CharacterDao
 import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
 import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
+import com.grifalion.rickandmorty.data.mappers.CharacterMapper
 import com.grifalion.rickandmorty.domain.models.character.Character
 import com.grifalion.rickandmorty.domain.models.character.CharacterInfo
 import com.grifalion.rickandmorty.domain.models.character.CharacterModel
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.repository.CharacterRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
     private val apiService: CharacterApiService,
-    private val characterDao: CharacterDao
+    private val characterDao: CharacterDao,
+    private val mapper: CharacterMapper
     ): CharacterRepository {
 
-
-   /* fun mapCharacterForNetwork(characterResponse: CharacterResponse) = CharacterModel(
-        info = characterResponse.info(CharacterInfo(
-            pages = 0,
-            next = "",
-            count = 0,
-            prev = ""
-        )),
-        result = characterResponse.results
-    )*/
-
-    fun mapCharacterForDb(character: com.grifalion.rickandmorty.domain.models.character.Character): CharacterDbModel{
-        return CharacterDbModel(
-            id = character.id,
-            name = character.name,
-            image = character.image,
-            gender = character.gender,
-            status = character.status,
-            url = character.status,
-            created = "",
-            type = "",
-            species = character.species
-        )
-    }
-    private fun listMapCharacterDb(list: List<com.grifalion.rickandmorty.domain.models.character.Character>) = list.map {
-        mapCharacterForDb(it)
-    }
 
     override suspend fun getCharacter(
         page: Int,
         name: String,
         gender: String,
         status: String,
-        species: String): CharacterResponse {
+        species: String): CharacterModel {
         val characterApi = apiService.getCharacter(page,name,gender,status,species)
-        // val list =
-        // characterDao.insertCharacter(listMapCharacterDb(list))
-        return characterApi
-
+        val listCharacters = mapper.mapCharacterResponseForCharacter(characterApi)
+        characterDao.insertCharacter(mapper.mapListResultResponseForListDb(listCharacters.result))
+        return listCharacters
     }
 
+    override suspend fun insertCharacter(list: List<CharacterResult>) {
+        characterDao.insertCharacter(mapper.mapListResultResponseForListDb(list))
+    }
 
-    override suspend fun insertCharacter(list: List<Character>) {
-        characterDao.insertCharacter(listMapCharacterDb(list))
+    override suspend fun getListCharacters(): List<CharacterResult> {
+        var listCharacters = emptyList<CharacterResult>()
+        CoroutineScope(Dispatchers.IO).launch {
+            listCharacters = (characterDao.getAllCharacters()).map {
+                mapper.mapCharacterResultDbForCharacterResult(it)
+            }
+        }
+        return listCharacters
     }
 
 

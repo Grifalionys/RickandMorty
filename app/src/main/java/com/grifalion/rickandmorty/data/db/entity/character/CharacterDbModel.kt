@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class CharacterDbModel (
     var created: String,
     var gender: String,
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey()
     var id: Int,
     var image: String,
     var name: String,
