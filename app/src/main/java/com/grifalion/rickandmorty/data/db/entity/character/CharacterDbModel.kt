@@ -2,6 +2,7 @@ package com.grifalion.rickandmorty.data.db.entity.character
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.grifalion.rickandmorty.domain.models.episode.Episode
 
 @Entity(tableName = "item_character")
 data class CharacterDbModel (

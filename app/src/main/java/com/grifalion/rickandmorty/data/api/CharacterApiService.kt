@@ -1,11 +1,18 @@
 package com.grifalion.rickandmorty.data.api
 
+import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterDetailResponse
 import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
+import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResponse
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
+import com.grifalion.rickandmorty.domain.models.episode.Episode
+import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CharacterApiService {
@@ -17,29 +24,32 @@ interface CharacterApiService {
         @Query("gender") gender: String,
         @Query("species") species: String
     ): CharacterResponse
+    @GET("episode/{id}")
+    fun getDetailEpisode(@Path("id") id: String): Observable<List<Episode>>
+
+    @GET("character/{id}")
+    fun getDetailCharacter(@Path("id") id: String): Observable<List<CharacterResult>>
+
+    @GET("location/")
+    fun getDetailLocation(@Query("name") name: String): Observable<LocationResponse>
 
     companion object {
-        object CharacterRetrofit {
-
-            private const val URL = "https://rickandmortyapi.com/api/"
-
-            private val okHttpClient by lazy {
-                OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
-                    .build()
-            }
-
-            private val retrofit by lazy {
-                Retrofit.Builder()
-                    .client(okHttpClient)
-                    .baseUrl(URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-            }
-
-            val characterApiService: CharacterApiService by lazy {
-                retrofit.create(CharacterApiService::class.java)
+            private const val BASE_URL = "https://rickandmortyapi.com/api/"
+            var characterRetrofit: CharacterApiService? = null
+            fun getInstance(): CharacterApiService {
+                if(characterRetrofit == null) {
+                    val okHttpClient = OkHttpClient.Builder()
+                        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                        .build()
+                    val retrofit = Retrofit.Builder()
+                        .client(okHttpClient)
+                        .baseUrl(BASE_URL)
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                    characterRetrofit = retrofit.create(CharacterApiService::class.java)
+                }
+                return characterRetrofit!!
             }
         }
     }
-}

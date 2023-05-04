@@ -200,16 +200,6 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         }
     }
 
-
-   /* override fun onClick(character: CharacterResult) {
-        detailVM.onClickItemCharacter(character)
-        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
-        fragmentManager
-            .beginTransaction()
-            .replace(R.id.containerFragment, CharacterDetailFragment(detailVM))
-            .addToBackStack("characters")
-            .commit()
-    }*/
     private fun showBottomNav(){
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
@@ -227,7 +217,14 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
     }
 
     override fun onClick(character: CharacterResult) {
-        TODO("Not yet implemented")
+        detailVM.onClickItemCharacter(character)
+        val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+        fragmentManager
+            .beginTransaction()
+            .replace(R.id.containerFragment, CharacterDetailFragment(detailVM))
+            .addToBackStack("characters")
+            .commit()
+
     }
 
     companion object{

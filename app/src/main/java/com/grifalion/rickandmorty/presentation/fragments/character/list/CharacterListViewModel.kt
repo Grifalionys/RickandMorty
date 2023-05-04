@@ -4,7 +4,6 @@ package com.grifalion.rickandmorty.presentation.fragments.character.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.grifalion.rickandmorty.domain.models.character.Character
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.usecases.GetCharacterUseCase
 import kotlinx.coroutines.flow.Flow

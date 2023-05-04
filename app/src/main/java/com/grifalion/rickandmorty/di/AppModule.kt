@@ -27,7 +27,7 @@ interface AppModule {
     companion object{
         @Provides
         fun provideApiService(): CharacterApiService{
-            return CharacterApiService.Companion.CharacterRetrofit.characterApiService
+            return CharacterApiService.Companion.getInstance()
         }
 
         @Provides

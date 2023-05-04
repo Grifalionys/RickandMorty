@@ -8,7 +8,7 @@ import com.grifalion.rickandmorty.data.db.dao.CharacterDao
 import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
 
 
-@Database(entities = [CharacterDbModel::class], version = 2)
+@Database(entities = [CharacterDbModel::class], version = 4)
 abstract class CharacterDatabase: RoomDatabase() {
     abstract fun getCharacterDao(): CharacterDao
     companion object{

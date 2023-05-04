@@ -12,28 +12,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.grifalion.rickandmorty.R;
 import com.grifalion.rickandmorty.data.api.ApiService;
 import com.grifalion.rickandmorty.data.api.RetrofitInstance;
 import com.grifalion.rickandmorty.databinding.CharacterDetailFragmentBinding;
-import com.grifalion.rickandmorty.domain.models.character.Character;
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel;
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class CharacterDetailFragment extends Fragment implements CharacterDetailAdapter.SelectListener {
     private CharacterDetailFragmentBinding binding;
@@ -71,7 +64,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-        final Observer<Character> observer = character -> {
+        final Observer<CharacterResult> observer = character -> {
             assert character != null;
             Glide.with(requireContext())
                     .load(character.getImage())

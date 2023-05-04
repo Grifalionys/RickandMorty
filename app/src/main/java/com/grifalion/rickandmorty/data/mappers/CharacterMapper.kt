@@ -1,15 +1,9 @@
 package com.grifalion.rickandmorty.data.mappers
 
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterInfoResponse
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterLocationResponse
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResultResponse
+import com.grifalion.rickandmorty.data.api.repsonse.character.*
 import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
 import com.grifalion.rickandmorty.data.db.entity.character.CharacterLocationDb
-import com.grifalion.rickandmorty.domain.models.character.CharacterInfo
-import com.grifalion.rickandmorty.domain.models.character.CharacterLocation
-import com.grifalion.rickandmorty.domain.models.character.CharacterModel
-import com.grifalion.rickandmorty.domain.models.character.CharacterResult
+import com.grifalion.rickandmorty.domain.models.character.*
 import javax.inject.Inject
 
 class CharacterMapper @Inject constructor() {
@@ -36,8 +30,9 @@ class CharacterMapper @Inject constructor() {
         species = resultResponse?.species ?: EMPTY_STRING,
         status = resultResponse?.status ?: EMPTY_STRING,
         type = resultResponse?.type ?: EMPTY_STRING,
-        url = resultResponse?.url ?: EMPTY_STRING
-        )
+        url = resultResponse?.url ?: EMPTY_STRING,
+        origin = mapLocationResponseForLocation(resultResponse?.location)
+    )
 
     fun mapListCharacterResponseForResult(list: List<CharacterResultResponse>) = list.map{
             mapResultResponseForResult(it)
@@ -70,7 +65,7 @@ class CharacterMapper @Inject constructor() {
             image = characterResult.image,
             url = characterResult.url,
             type = characterResult.type,
-            created =  characterResult.created
+            created =  characterResult.created,
         )
     }
 
@@ -86,7 +81,8 @@ class CharacterMapper @Inject constructor() {
             url = characterResult.url,
             type = characterResult.type,
             episode = emptyList(),
-            gender = characterResult.gender
+            gender = characterResult.gender,
+            origin = CharacterLocation("","")
         )
     }
 
@@ -94,7 +90,29 @@ class CharacterMapper @Inject constructor() {
         mapCharacterResultResponseForCharacterResultDb(it)
     }
 
+    fun mapDetailResponseForDetail(characterDetailResponse: CharacterDetailResponse): CharacterDetail {
+        return CharacterDetail(
+            created = characterDetailResponse.created,
+            gender = characterDetailResponse.gender,
+            name = characterDetailResponse.name,
+            species = characterDetailResponse.species,
+            status = characterDetailResponse.status,
+            episode = characterDetailResponse.episode,
+            type = characterDetailResponse.type,
+            image = characterDetailResponse.image,
+            location = mapLocationResponseForLocation(characterDetailResponse.location),
+            id = characterDetailResponse.id,
+            url = characterDetailResponse.url,
+            origin = mapOriginResponseForOrigin(characterDetailResponse.origin),
+        )
+    }
 
+    private fun mapOriginResponseForOrigin(originDto: CharacterOriginResponse): CharacterOrigin {
+        return CharacterOrigin(
+            name = originDto.name,
+            url = originDto.url
+        )
+    }
     companion object{
         private const val EMPTY_STRING = ""
         private const val ZERO_NUMBER = 0

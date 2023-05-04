@@ -5,22 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.databinding.EpisodeDetailFragmentBinding
-import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
-import com.grifalion.rickandmorty.presentation.fragments.character.list.CharacterListViewModel
-import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListViewModel
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailAdapter
-import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class EpisodeDetailFragment(private val episodeViewModel: EpisodeDetailViewModel): Fragment(), LocationDetailAdapter.SelectListener {
     private lateinit var binding: EpisodeDetailFragmentBinding
@@ -64,7 +56,7 @@ class EpisodeDetailFragment(private val episodeViewModel: EpisodeDetailViewModel
         bottomNavigationView.visibility = View.GONE
     }
 
-    override fun onItemClicked(character: Character?) {
+    override fun onItemClicked(character: CharacterResult?) {
         vmDetailCharacter.onClickItemCharacter(character)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.containerFragment, CharacterDetailFragment(vmDetailCharacter))

@@ -6,13 +6,10 @@ import androidx.lifecycle.ViewModel;
 import com.grifalion.rickandmorty.data.api.ApiService;
 import com.grifalion.rickandmorty.data.api.RetrofitInstance;
 import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResponse;
-import com.grifalion.rickandmorty.domain.models.character.Character;
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.location.Location;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -20,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 public class LocationDetailViewModel extends ViewModel {
     public MutableLiveData<String> locationName = new MutableLiveData<>();
     public MutableLiveData<Location> selectedItemLocation = new MutableLiveData<>();
-    public MutableLiveData<List<Character>> responseCharacters = new MutableLiveData<List<Character>>();
+    public MutableLiveData<List<CharacterResult>> responseCharacters = new MutableLiveData<List<CharacterResult>>();
 
     public List<String> listsOfCharacters = new ArrayList<>();
 
@@ -37,7 +34,7 @@ public class LocationDetailViewModel extends ViewModel {
         fetchDataLocation();
     }
 
-    public void setResponse(List<Character> character){
+    public void setResponse(List<CharacterResult> character){
         responseCharacters.setValue(character);
     }
     public MutableLiveData<Location> getSelectedItemCharacter(){

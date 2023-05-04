@@ -2,14 +2,13 @@ package com.grifalion.rickandmorty.data.repository
 
 import com.grifalion.rickandmorty.data.api.CharacterApiService
 import com.grifalion.rickandmorty.data.db.dao.CharacterDao
-import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
 import com.grifalion.rickandmorty.data.mappers.CharacterMapper
-import com.grifalion.rickandmorty.domain.models.character.Character
-import com.grifalion.rickandmorty.domain.models.character.CharacterInfo
+import com.grifalion.rickandmorty.domain.models.character.CharacterDetail
 import com.grifalion.rickandmorty.domain.models.character.CharacterModel
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.repository.CharacterRepository
+import io.reactivex.Observable
+import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,6 +45,7 @@ class CharacterRepositoryImpl @Inject constructor(
         }
         return listCharacters
     }
+
 
 
 }

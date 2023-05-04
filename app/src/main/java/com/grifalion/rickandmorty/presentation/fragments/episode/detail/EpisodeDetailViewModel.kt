@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 
 class EpisodeDetailViewModel: ViewModel() {
     val selectedItemLocation = MutableLiveData<Episode>()
-    val responseCharacters = MutableLiveData<List<com.grifalion.rickandmorty.domain.models.character.Character?>?>()
+    val responseCharacters = MutableLiveData<List<com.grifalion.rickandmorty.domain.models.character.CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()
     private var characterId: String? = null
     private val apiService = RetrofitInstance.getInstance()
@@ -26,7 +26,7 @@ class EpisodeDetailViewModel: ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-            { character: List<com.grifalion.rickandmorty.domain.models.character.Character?>? ->
+            { character: List<com.grifalion.rickandmorty.domain.models.character.CharacterResult?>? ->
                 this.responseCharacters.value = character
             }) {throwable: Throwable? -> })
     }

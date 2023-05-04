@@ -1,6 +1,5 @@
 package com.grifalion.rickandmorty.domain.models.episode
 
-import com.grifalion.rickandmorty.domain.models.character.Character
 
 data class Episode (
     val id: Int,

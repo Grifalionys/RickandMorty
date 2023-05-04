@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.grifalion.rickandmorty.domain.models.character.Character
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.repository.CharacterRepository
 import javax.inject.Inject
