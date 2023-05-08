@@ -2,21 +2,21 @@ package com.grifalion.rickandmorty.presentation.fragments.episode.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.grifalion.rickandmorty.data.api.RetrofitInstance
-import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.data.api.EpisodeApiService
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class EpisodeDetailViewModel: ViewModel() {
-    val selectedItemLocation = MutableLiveData<Episode>()
+    val selectedItemLocation = MutableLiveData<EpisodeResult>()
     val responseCharacters = MutableLiveData<List<com.grifalion.rickandmorty.domain.models.character.CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()
     private var characterId: String? = null
-    private val apiService = RetrofitInstance.getInstance()
+    private val apiService = EpisodeApiService.getInstance()
     private val compositeDisposable = CompositeDisposable()
 
-    fun onClickItemEpisode(episode: Episode){
+    fun onClickItemEpisode(episode: EpisodeResult){
         selectedItemLocation.value = episode
         listOfCharacters.add(episode.characters)
     }

@@ -1,21 +1,27 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.list
 
 
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
-import com.grifalion.rickandmorty.domain.usecases.GetCharacterUseCase
+import com.grifalion.rickandmorty.domain.usecases.character.GetCharacterUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class CharacterListViewModel @Inject constructor(
-    private val getCharacterUseCase: GetCharacterUseCase): ViewModel() {
-
+    private val getCharacterUseCase: GetCharacterUseCase
+): ViewModel() {
     var characterFlow: Flow<PagingData<CharacterResult>> = emptyFlow()
 
 
@@ -25,6 +31,7 @@ class CharacterListViewModel @Inject constructor(
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }
+
 }
 
 

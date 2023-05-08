@@ -1,4 +1,4 @@
-package com.grifalion.rickandmorty.domain.usecases
+package com.grifalion.rickandmorty.domain.usecases.character
 
 import android.app.Application
 import com.grifalion.rickandmorty.data.datasource.CharacterDataSource
@@ -12,4 +12,5 @@ class GetCharacterUseCase @Inject constructor(
     fun getCharacter(name: String, status: String, gender: String, species: String): CharacterDataSource{
         return CharacterDataSource(repository,application,name, status,gender, species)
     }
+
 }

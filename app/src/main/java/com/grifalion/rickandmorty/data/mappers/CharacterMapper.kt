@@ -1,9 +1,11 @@
 package com.grifalion.rickandmorty.data.mappers
 
 import com.grifalion.rickandmorty.data.api.repsonse.character.*
+import com.grifalion.rickandmorty.data.db.entity.character.CharacterDb
 import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
 import com.grifalion.rickandmorty.data.db.entity.character.CharacterLocationDb
 import com.grifalion.rickandmorty.domain.models.character.*
+import okhttp3.internal.threadName
 import javax.inject.Inject
 
 class CharacterMapper @Inject constructor() {
@@ -31,7 +33,7 @@ class CharacterMapper @Inject constructor() {
         status = resultResponse?.status ?: EMPTY_STRING,
         type = resultResponse?.type ?: EMPTY_STRING,
         url = resultResponse?.url ?: EMPTY_STRING,
-        origin = mapLocationResponseForLocation(resultResponse?.location)
+        origin = mapOriginResponseForOrigin(resultResponse?.origin!!)
     )
 
     fun mapListCharacterResponseForResult(list: List<CharacterResultResponse>) = list.map{
@@ -66,8 +68,13 @@ class CharacterMapper @Inject constructor() {
             url = characterResult.url,
             type = characterResult.type,
             created =  characterResult.created,
+            location = characterResult.location.name.toString(),
+            origin = characterResult.origin.name.toString()
+
         )
     }
+
+
 
     fun mapCharacterResultDbForCharacterResult(characterResult: CharacterDbModel): CharacterResult{
         return CharacterResult(
@@ -77,17 +84,21 @@ class CharacterMapper @Inject constructor() {
             name = characterResult.name,
             species = characterResult.species,
             image = characterResult.image,
-            location = CharacterLocation("",""),
+            location = CharacterLocation(characterResult.location,""),
             url = characterResult.url,
             type = characterResult.type,
             episode = emptyList(),
             gender = characterResult.gender,
-            origin = CharacterLocation("","")
+            origin = CharacterOrigin(characterResult.origin,"")
         )
     }
 
     fun mapListResultResponseForListDb(list: List<CharacterResult>) = list.map {
         mapCharacterResultResponseForCharacterResultDb(it)
+    }
+
+    fun mapListResultDbForCharacterResult(list: List<CharacterDbModel> ) = list.map {
+        mapCharacterResultDbForCharacterResult(it)
     }
 
     fun mapDetailResponseForDetail(characterDetailResponse: CharacterDetailResponse): CharacterDetail {
@@ -107,10 +118,10 @@ class CharacterMapper @Inject constructor() {
         )
     }
 
-    private fun mapOriginResponseForOrigin(originDto: CharacterOriginResponse): CharacterOrigin {
+    private fun mapOriginResponseForOrigin(originResponse: CharacterOriginResponse): CharacterOrigin {
         return CharacterOrigin(
-            name = originDto.name,
-            url = originDto.url
+            name = originResponse.name,
+            url = originResponse.url
         )
     }
     companion object{

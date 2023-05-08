@@ -1,6 +1,7 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.list
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,18 +19,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.app.App
+import com.grifalion.rickandmorty.data.mappers.CharacterMapper
 import com.grifalion.rickandmorty.databinding.CharacterFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.CharacterListFragmentBinding
 import com.grifalion.rickandmorty.di.ViewModelFactory
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
+class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, LocationDetailAdapter.SelectListener {
     private lateinit var binding: CharacterListFragmentBinding
     private lateinit var filterBinding: CharacterFilterFragmentBinding
     private val adapter = CharacterListAdapter(this)
@@ -73,14 +76,13 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
                 binding.progressBar.visibility = View.GONE
             }
         }
-        getListCharacters()
-        getNameSearchView()
-        showBottomFilter()
-        swipeRefresh()
+
+            getListCharacters()
+            getNameSearchView()
+            showBottomFilter()
+            swipeRefresh()
 
     }
-
-
 
      private fun getNameSearchView(){
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -229,6 +231,10 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
 
     companion object{
         private const val EMPTY_STRING = ""
+    }
+
+    override fun onItemClicked(character: CharacterResult?) {
+        TODO("Not yet implemented")
     }
 }
 

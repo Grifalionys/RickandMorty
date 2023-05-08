@@ -9,20 +9,24 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.grifalion.rickandmorty.data.datasource.EpisodeDataSource
 import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
+import com.grifalion.rickandmorty.domain.usecases.episode.GetEpisodeUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class EpisodeListViewModel: ViewModel() {
-    var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
+class EpisodeListViewModel @Inject constructor(
+    private val getEpisodeUseCase: GetEpisodeUseCase
+): ViewModel() {
+    var episodeFlow: Flow<PagingData<EpisodeResult>> = emptyFlow()
 
-    fun getEpisodes(name: String, episode: String){
+    fun getEpisodes(name: String, episode: String) {
         episodeFlow = Pager(PagingConfig(pageSize = 1)){
-            EpisodeDataSource(name,episode)
+            getEpisodeUseCase.getEpisodes(name,episode)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }
-
 }
 

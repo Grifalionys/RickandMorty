@@ -1,10 +1,10 @@
 package com.grifalion.rickandmorty.data.api
 
-import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterDetailResponse
 import com.grifalion.rickandmorty.data.api.repsonse.character.CharacterResponse
 import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResponse
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
-import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
+import com.grifalion.rickandmorty.domain.models.location.Location
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -25,13 +25,13 @@ interface CharacterApiService {
         @Query("species") species: String
     ): CharacterResponse
     @GET("episode/{id}")
-    fun getDetailEpisode(@Path("id") id: String): Observable<List<Episode>>
+    fun getDetailEpisode(@Path("id") id: String): Observable<List<EpisodeResult>>
 
     @GET("character/{id}")
     fun getDetailCharacter(@Path("id") id: String): Observable<List<CharacterResult>>
 
     @GET("location/")
-    fun getDetailLocation(@Query("name") name: String): Observable<LocationResponse>
+    fun getDetailLocation(@Query("name") name: String): Observable<Location>
 
     companion object {
             private const val BASE_URL = "https://rickandmortyapi.com/api/"

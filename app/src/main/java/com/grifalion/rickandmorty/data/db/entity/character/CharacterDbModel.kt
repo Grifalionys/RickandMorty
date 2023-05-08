@@ -15,5 +15,7 @@ data class CharacterDbModel (
     var species: String,
     var status: String,
     var type: String,
-    var url: String
+    var url: String,
+    var location: String,
+    var origin: String
     )

@@ -11,5 +11,6 @@ data class CharacterResultResponse(
     var species: String?,
     var status: String?,
     var type: String?,
-    var url: String?
+    var url: String?,
+    var origin: CharacterOriginResponse
 )

@@ -14,7 +14,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Module
-interface AppModule {
+interface CharacterModule {
 
     @Binds
     fun bindCharacterRepository(repository: CharacterRepositoryImpl): CharacterRepository

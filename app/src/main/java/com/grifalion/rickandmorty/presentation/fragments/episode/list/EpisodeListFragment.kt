@@ -1,5 +1,6 @@
 package com.grifalion.rickandmorty.presentation.fragments.episode.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,24 +18,37 @@ import androidx.paging.PagingData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
+import com.grifalion.rickandmorty.app.App
 import com.grifalion.rickandmorty.databinding.EpisodeFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.EpisodeListFragmentBinding
+import com.grifalion.rickandmorty.di.ViewModelFactory
 import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     private lateinit var binding: EpisodeListFragmentBinding
     private lateinit var filterBinding: EpisodeFilterFragmentBinding
     private lateinit var viewModel: EpisodeListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy {
+        (requireActivity().application as App).component
+    }
     private val viewModelDetail: EpisodeDetailViewModel by activityViewModels()
     private val adapter = EpisodeListAdapter(this)
-    private var name = ""
-    private var episode = ""
+    private var name = EMPTY_STRING
+    private var episode = EMPTY_STRING
 
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +56,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     ): View? {
         binding = EpisodeListFragmentBinding.inflate(inflater)
         filterBinding = EpisodeFilterFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[EpisodeListViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[EpisodeListViewModel::class.java]
         return binding.root
 
 
@@ -111,8 +125,8 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         val dialog = BottomSheetDialog(requireContext())
         val seasonsArray = arrayOf("S01", "S02","S03", "S04", "S05")
         val episodeArray = arrayOf("E01", "E02", "E03","E04","E05","E06","E07","E08","E09","E10","E11")
-        var selectSeason = ""
-        var selectEpisode = ""
+        var selectSeason = EMPTY_STRING
+        var selectEpisode = EMPTY_STRING
         val seasonsAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,seasonsArray)
         val episodeAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,episodeArray)
         spinnerSeason.adapter = seasonsAdapter
@@ -170,7 +184,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         }
     }
 
-    override fun onClick(episode: Episode) {
+    override fun onClick(episode: EpisodeResult) {
         viewModelDetail.onClickItemEpisode(episode)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.containerFragment, EpisodeDetailFragment(viewModelDetail))
@@ -185,5 +199,9 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
             viewModel.getEpisodes(name, episode)
             viewModel.episodeFlow.collectLatest(adapter::submitData)
         }
+    }
+
+    companion object{
+        private const val EMPTY_STRING = ""
     }
 }

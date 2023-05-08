@@ -14,5 +14,5 @@ data class CharacterResult (
     var status: String,
     var type: String,
     var url: String,
-    var origin: CharacterLocation
+    var origin: CharacterOrigin
         )
