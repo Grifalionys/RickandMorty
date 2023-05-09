@@ -3,7 +3,19 @@
 
 Основная информация
 
+***
+__Жирный__
+_Курсивный_
+___Жирный и курсивный__
+* Пример
+* Пример
+* * Пример
+```
+тест
+```
+>Цитата
 
+[ссылка](vk.com)
 # Скриншоты
 ![image](https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7)  ![image](https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6)
 
