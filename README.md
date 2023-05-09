@@ -27,8 +27,7 @@
 * Pagging3
 * Room
 * Dagger2
-* MVVM
-* Clean architecture
+* MVVM, Clean architecture
 
 __Жирный__
 _Курсивный_
