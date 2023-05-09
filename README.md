@@ -29,16 +29,7 @@
 * Dagger2
 * MVVM, Clean architecture
 
-__Жирный__
-_Курсивный_
-___Жирный и курсивный__
-
-```
-тест
-```
->Цитата
-
-# Скриншоты
+## Скриншоты
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7" width="300" height="700">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6" width="300" height="700">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/7533e84a-c37f-4197-8be4-753e0e1ac847" width="300" height="700">
