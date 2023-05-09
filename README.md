@@ -2,11 +2,11 @@
 Приложение написано на Kotlin и частично на Java
 
 ## Оглавление 
-* [Основная информация](vk.com)
+* [Основная информация](https://github.com/Grifalionys/RickandMorty/blob/develop/README.md#%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%B0%D1%8F-%D0%B8%D0%BD%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%86%D0%B8%D1%8F)
 
-* [Технологии](vk.com)
+* [Технологии](https://github.com/Grifalionys/RickandMorty/blob/develop/README.md#%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8)
 
-* [Скриншоты](vk.com)
+* [Скриншоты](https://github.com/Grifalionys/RickandMorty/blob/develop/README.md#%D1%81%D0%BA%D1%80%D0%B8%D0%BD%D1%88%D0%BE%D1%82%D1%8B)
 
 
 
