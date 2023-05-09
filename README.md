@@ -17,5 +17,7 @@ ___Жирный и курсивный__
 
 [ссылка](vk.com)
 # Скриншоты
-![image](https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7)  ![image](https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6)
 
+
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7)" width="300" height="700">
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6)" width="300" height="700">
