@@ -13,6 +13,8 @@
 * Kotlin
 * Java
 * Glide
+* Coroutines
+* RxJava
 * Retrofit
 * Room
 * Dagger2
