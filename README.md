@@ -15,6 +15,7 @@
 * Glide
 * Retrofit
 * Room
+* Dagger2
 * MVVM
 * Clean architecture
 
