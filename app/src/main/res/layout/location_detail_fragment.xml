@@ -77,11 +77,12 @@
             app:layout_constraintStart_toStartOf="@+id/tvInfoTypeLocationD"
             app:layout_constraintTop_toBottomOf="@+id/tvInfoTypeLocationD" />
 
-        <ImageView
+        <Button
             android:id="@+id/btnBack"
             android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_60"
             android:layout_marginStart="@dimen/dp_24"
+            android:background="@drawable/baseline_arrow_back_ios_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

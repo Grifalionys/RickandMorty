@@ -2,10 +2,7 @@ package com.grifalion.rickandmorty.presentation.fragments.location.detail;
 
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.grifalion.rickandmorty.R;
 

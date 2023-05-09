@@ -4,17 +4,24 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.grifalion.rickandmorty.data.db.entity.EpisodeEntity
+import androidx.room.Transaction
+import com.grifalion.rickandmorty.data.db.entity.episode.EpisodeDbModel
+import com.grifalion.rickandmorty.data.db.entity.location.LocationDbModel
 
 @Dao
 interface EpisodeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveEpisodes(episodes: EpisodeEntity)
+    suspend fun insertEpisode(list: List<EpisodeDbModel>)
 
-    @Query("SELECT * FROM episodes_table WHERE id = :id")
-    fun getEpisodeById(id: Int): EpisodeEntity
+    @Query("SELECT * FROM item_episode")
+    fun getAllEpisodes(): List<EpisodeDbModel>
 
-    @Query("SELECT * FROM episodes_table WHERE (:name IS NULL OR name LIKE '%' || :name || '%') " +
-            "AND (:episode IS NULL OR episode LIKE '%' || :episode || '%')")
-    fun getFilteredEpisodes(name: String?, episode: String?): List<EpisodeEntity>
+    @Query("DELETE FROM item_episode")
+    suspend fun deleteAllEpisodes()
+
+    @Transaction
+    suspend fun refreshEpisodes(list: List<EpisodeDbModel>){
+        deleteAllEpisodes()
+        insertEpisode(list)
+    }
 }

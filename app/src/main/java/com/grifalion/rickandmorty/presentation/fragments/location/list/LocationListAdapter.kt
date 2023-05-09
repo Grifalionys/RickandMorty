@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.grifalion.rickandmorty.databinding.LocationItemBinding
 import com.grifalion.rickandmorty.domain.models.location.Location
+import com.grifalion.rickandmorty.domain.models.location.LocationResult
 
-class LocationListAdapter(private val locationListener: Listener): PagingDataAdapter<Location, LocationListAdapter.LocationViewHolder>(
+class LocationListAdapter(private val locationListener: Listener): PagingDataAdapter<LocationResult, LocationListAdapter.LocationViewHolder>(
     LocationComparator
 ) {
 
@@ -32,18 +33,18 @@ class LocationListAdapter(private val locationListener: Listener): PagingDataAda
     }
 
 
-    object LocationComparator : DiffUtil.ItemCallback<Location>() {
-        override fun areItemsTheSame(oldItem: Location, newItem: Location): Boolean {
+    object LocationComparator : DiffUtil.ItemCallback<LocationResult>() {
+        override fun areItemsTheSame(oldItem: LocationResult, newItem: LocationResult): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Location, newItem: Location): Boolean {
+        override fun areContentsTheSame(oldItem: LocationResult, newItem: LocationResult): Boolean {
             return oldItem == newItem
         }
 
     }
     interface Listener{
-        fun onClick(location: Location)
+        fun onClick(location: LocationResult)
     }
 
 }

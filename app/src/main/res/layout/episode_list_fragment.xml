@@ -6,6 +6,32 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_custom">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchViewEp">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvEpisode"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_0"
+            android:layout_marginTop="@dimen/dp_2"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchViewEp"
+            app:spanCount="2"
+            tools:listitem="@layout/episode_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <SearchView
         android:id="@+id/searchViewEp"
         android:layout_width="@dimen/dp_0"
@@ -57,38 +83,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/searchViewEp" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_2"
+    <ProgressBar
+        android:id="@+id/progressBarEpisode"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchViewEp">
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvEpisode"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="@dimen/dp_0"
-            android:layout_marginTop="@dimen/dp_2"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchViewEp"
-            app:spanCount="2"
-            tools:listitem="@layout/episode_item" />
-
-        <ProgressBar
-            android:id="@+id/progressBarEpisode"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

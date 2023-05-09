@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.grifalion.rickandmorty.databinding.EpisodeItemBinding
 import com.grifalion.rickandmorty.domain.models.episode.Episode
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
 
-class EpisodeListAdapter(val listenerEpisode: ListenerEpisode): PagingDataAdapter<Episode, EpisodeListAdapter.EpisodeViewHolder>(
+class EpisodeListAdapter(val listenerEpisode: ListenerEpisode): PagingDataAdapter<EpisodeResult, EpisodeListAdapter.EpisodeViewHolder>(
     EpisodeComparator
 ) {
 
@@ -30,16 +31,16 @@ class EpisodeListAdapter(val listenerEpisode: ListenerEpisode): PagingDataAdapte
         }
     }
 
-    object EpisodeComparator : DiffUtil.ItemCallback<Episode>() {
-        override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
+    object EpisodeComparator : DiffUtil.ItemCallback<EpisodeResult>() {
+        override fun areItemsTheSame(oldItem: EpisodeResult, newItem: EpisodeResult): Boolean {
            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Episode, newItem: Episode): Boolean {
+        override fun areContentsTheSame(oldItem: EpisodeResult, newItem: EpisodeResult): Boolean {
            return oldItem == newItem
         }
     }
     interface ListenerEpisode{
-        fun onClick(episode: Episode)
+        fun onClick(episode: EpisodeResult)
     }
 }

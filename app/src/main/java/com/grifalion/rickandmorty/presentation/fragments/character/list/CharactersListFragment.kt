@@ -1,5 +1,7 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.list
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,37 +18,52 @@ import androidx.paging.PagingData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.grifalion.rickandmorty.R
+import com.grifalion.rickandmorty.app.App
+import com.grifalion.rickandmorty.data.mappers.CharacterMapper
 import com.grifalion.rickandmorty.databinding.CharacterFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.CharacterListFragmentBinding
-import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.di.ViewModelFactory
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailAdapter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
+class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, LocationDetailAdapter.SelectListener {
     private lateinit var binding: CharacterListFragmentBinding
     private lateinit var filterBinding: CharacterFilterFragmentBinding
     private val adapter = CharacterListAdapter(this)
     private val detailVM: CharacterDetailViewModel by activityViewModels()
     private lateinit var viewModel: CharacterListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
-    private var name = ""
-    private var status = ""
-    private var gender = ""
-    private var species = ""
+    private val component by lazy{
+        (requireActivity().application as App).component
+    }
 
+    private var name = EMPTY_STRING
+    private var status = EMPTY_STRING
+    private var gender = EMPTY_STRING
+    private var species = EMPTY_STRING
 
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = CharacterListFragmentBinding.inflate(inflater)
         filterBinding = CharacterFilterFragmentBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[CharacterListViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[CharacterListViewModel::class.java]
+        viewModel.getCharacters(name,status,gender,species)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,20 +77,20 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
                 binding.progressBar.visibility = View.GONE
             }
         }
-        getListCharacters()
-        getNameSearchView()
-        showBottomFilter()
-        swipeRefresh()
+
+            getListCharacters()
+            getNameSearchView()
+            showBottomFilter()
+            swipeRefresh()
+
     }
-
-
 
      private fun getNameSearchView(){
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharacters(id,name,status,gender,species)
+                    viewModel.getCharacters(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
@@ -82,7 +99,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharacters(id,name,status,gender,species)
+                    viewModel.getCharacters(name,status,gender,species)
                     viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
@@ -167,9 +184,9 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
                     chipUnknownHero.isChecked || chipPoopybutthole.isChecked || chipMythological.isChecked ||
                     chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked || edSearchHero.text.isNotEmpty()){
                 lifecycleScope.launch {
-                    viewModel.getCharacters(id,name,status,gender,species)
-                    viewModel.characterFlow.collectLatest(adapter::submitData)
 
+                    viewModel.getCharacters(name,status,gender,species)
+                    viewModel.characterFlow.collectLatest(adapter::submitData)
                 }
                 dialog.dismiss()
                 binding.btnFilter.visibility = View.GONE
@@ -186,8 +203,23 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
         }
     }
 
+    private fun showBottomNav(){
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+    }
+    private fun getListCharacters(){
+        lifecycleScope.launch {
+            name = EMPTY_STRING
+            status = EMPTY_STRING
+            gender = EMPTY_STRING
+            species = EMPTY_STRING
 
-    override fun onClick(character: Character) {
+            viewModel.getCharacters(name,status,gender,species)
+            viewModel.characterFlow.collectLatest(adapter::submitData)
+        }
+    }
+
+    override fun onClick(character: CharacterResult) {
         detailVM.onClickItemCharacter(character)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
@@ -195,24 +227,17 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
             .replace(R.id.containerFragment, CharacterDetailFragment(detailVM))
             .addToBackStack("characters")
             .commit()
-    }
-    private fun showBottomNav(){
-        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.visibility = View.VISIBLE
-    }
-    private fun getListCharacters(){
-        name = ""
-        status = ""
-        gender = ""
-        species = ""
-        lifecycleScope.launch {
-            viewModel.getCharacters(id,name,status,gender,species)
-            viewModel.characterFlow.collectLatest(adapter::submitData)
-        }
+
     }
 
+    companion object{
+        private const val EMPTY_STRING = ""
+    }
 
-
+    override fun onItemClicked(character: CharacterResult?) {
+        TODO("Not yet implemented")
+    }
 }
+
 
 

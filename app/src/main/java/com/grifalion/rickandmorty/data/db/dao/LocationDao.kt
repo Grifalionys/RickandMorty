@@ -4,21 +4,24 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.grifalion.rickandmorty.data.db.entity.LocationEntity
+import androidx.room.Transaction
+import com.grifalion.rickandmorty.data.db.entity.location.LocationDbModel
 
 @Dao
 interface LocationDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveLocations(location: LocationEntity)
+    suspend fun insertLocation(list: List<LocationDbModel>)
 
-    @Query("SELECT * FROM location_table WHERE (:name IS NULL OR name LIKE '%' || :name || '%') " +
-            "AND (:type IS NULL OR type LIKE '%' || :type || '%')" +
-            "And (:dimension IS NULL OR dimension LIKE '%' || :dimension || '%')")
-    fun getFilteredLocations (name: String?, type: String?, dimension: String?): List<LocationEntity>
+    @Query("SELECT * FROM item_location")
+    fun getAllLocation(): List<LocationDbModel>
 
-    @Query("SELECT * FROM location_table")
-    fun getAllLocations(): List<LocationEntity>
+    @Query("DELETE FROM item_location")
+    suspend fun deleteAllLocations()
 
-    @Query("SELECT * FROM location_table WHERE id = :id")
-    fun getLocationById(id: Int): LocationEntity
+    @Transaction
+    suspend fun refreshLocations(list: List<LocationDbModel>){
+        deleteAllLocations()
+        insertLocation(list)
+    }
 }

@@ -1,5 +1,6 @@
 package com.grifalion.rickandmorty.presentation.fragments.location.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,32 +20,45 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.grifalion.rickandmorty.R
+import com.grifalion.rickandmorty.app.App
 import com.grifalion.rickandmorty.databinding.LocationListFragmentBinding
+import com.grifalion.rickandmorty.di.ViewModelFactory
 import com.grifalion.rickandmorty.domain.models.location.Location
+import com.grifalion.rickandmorty.domain.models.location.LocationResult
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
     private lateinit var binding: LocationListFragmentBinding
     private val adapter = LocationListAdapter(this)
     private lateinit var viewModel: LocationListViewModel
     private val detailVM: LocationDetailViewModel by activityViewModels()
-    private var name = ""
-    private var type = ""
-    private var dimension = ""
+    private var name = EMPTY_STRING
+    private var type = EMPTY_STRING
+    private var dimension = EMPTY_STRING
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val component by lazy{
+        (requireActivity().application as App).component
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = LocationListFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this)[LocationListViewModel::class.java]
+        viewModel = ViewModelProvider(this,viewModelFactory)[LocationListViewModel::class.java]
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -211,7 +225,7 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
         }
     }
 
-    override fun onClick(location: Location) {
+    override fun onClick(location: LocationResult) {
         detailVM.onClickItemCharacter(location)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
@@ -223,5 +237,8 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
     private fun showBottomNav(){
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
+    }
+    companion object{
+        private const val EMPTY_STRING = ""
     }
 }

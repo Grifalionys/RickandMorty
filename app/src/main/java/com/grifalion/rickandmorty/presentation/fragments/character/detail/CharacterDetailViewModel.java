@@ -2,11 +2,9 @@ package com.grifalion.rickandmorty.presentation.fragments.character.detail;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.grifalion.rickandmorty.data.api.ApiService;
-import com.grifalion.rickandmorty.data.api.RetrofitInstance;
-import com.grifalion.rickandmorty.domain.models.character.Character;
-import com.grifalion.rickandmorty.domain.models.episode.Episode;
+import com.grifalion.rickandmorty.data.api.CharacterApiService;
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,23 +14,24 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CharacterDetailViewModel extends ViewModel {
-    public MutableLiveData<Character> selectedItemCharacter = new MutableLiveData<>();
-    public MutableLiveData<List<Episode>> responseEpisodes = new MutableLiveData<List<Episode>>();
+    public MutableLiveData<CharacterResult> selectedItemCharacter = new MutableLiveData<>();
+    public MutableLiveData<List<EpisodeResult>> responseEpisodes = new MutableLiveData<>();
     public List<String> listOfEpisodes = new ArrayList<>();
 
     public String episodeId;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    public ApiService apiService = RetrofitInstance.INSTANCE.getCharacterApi();
 
-    public void onClickItemCharacter(Character character){
+    public CharacterApiService apiService = CharacterApiService.Companion.getInstance();
+
+    public void onClickItemCharacter(CharacterResult character){
         selectedItemCharacter.setValue(character);
         listOfEpisodes.addAll(character.getEpisode());
     }
-    public void setListOfEpisodes(List<Episode> episode){
+    public void setListOfEpisodes(List<EpisodeResult> episode){
         responseEpisodes.setValue(episode);
     }
 
-    public MutableLiveData<Character> getSelectedItemCharacter(){
+    public MutableLiveData<CharacterResult> getSelectedItemCharacter(){
         return selectedItemCharacter;
     }
 
@@ -46,6 +45,7 @@ public class CharacterDetailViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setListOfEpisodes,throwable -> {}));
     }
+
 
     public void getEpisodes(){
         String str1;

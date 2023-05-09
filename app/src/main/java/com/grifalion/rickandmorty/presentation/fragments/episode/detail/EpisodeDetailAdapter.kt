@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.grifalion.rickandmorty.databinding.CharacterItemBinding
-import com.grifalion.rickandmorty.databinding.EpisodeItemBinding
-import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 
-class EpisodeDetailAdapter: PagingDataAdapter<Character, EpisodeDetailAdapter.EpisodeDetailViewHolder>(EpisodeDetailComparator) {
+
+class EpisodeDetailAdapter: PagingDataAdapter<CharacterResult, EpisodeDetailAdapter.EpisodeDetailViewHolder>(EpisodeDetailComparator) {
     class EpisodeDetailViewHolder(var binding: CharacterItemBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeDetailViewHolder {
@@ -30,12 +30,12 @@ class EpisodeDetailAdapter: PagingDataAdapter<Character, EpisodeDetailAdapter.Ep
             .load(item.image)
             .into(holder.binding.imIconCharacter)
     }
-    object EpisodeDetailComparator : DiffUtil.ItemCallback<Character>() {
-        override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
+    object EpisodeDetailComparator : DiffUtil.ItemCallback<CharacterResult>() {
+        override fun areItemsTheSame(oldItem: CharacterResult, newItem: CharacterResult): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
+        override fun areContentsTheSame(oldItem: CharacterResult, newItem: CharacterResult): Boolean {
             return oldItem == newItem
         }
 

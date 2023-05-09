@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dp_450"
         android:background="@drawable/view_top_hero_profile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +34,7 @@
         android:id="@+id/imIconDetail"
         android:layout_width="@dimen/dp_150"
         android:layout_height="@dimen/dp_130"
-        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
         android:theme="@style/half_rounded_corner"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,13 +62,13 @@
         android:id="@+id/tvInfoSpeciesDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginTop="8dp"
         android:text="@string/type"
         android:textSize="18sp"
         android:textStyle="bold"
         android:theme="@style/TextViewWhiteStyle"
         app:layout_constraintStart_toStartOf="@+id/imIconDetail"
-        app:layout_constraintTop_toBottomOf="@+id/tvStatusDeatail" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCreated" />
 
     <TextView
         android:id="@+id/tvInfoGenderDetail"
@@ -160,16 +160,6 @@
         app:layout_constraintStart_toStartOf="@+id/tvInfoDataEp"
         app:layout_constraintTop_toBottomOf="@+id/tvOriginDetail" />
 
-    <ImageView
-        android:id="@+id/btnBack"
-        android:layout_width="@dimen/dp_50"
-        android:layout_height="@dimen/dp_80"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvStatusDeatail"
-        app:layout_constraintEnd_toStartOf="@+id/imIconDetail"
-        app:layout_constraintTop_toTopOf="@+id/imIconDetail"
-        app:srcCompat="@drawable/baseline_arrow_back_ios_24" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDetailCharacter"
         android:layout_width="@dimen/dp_0"
@@ -183,5 +173,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
         tools:listitem="@layout/episode_item" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:background="@drawable/baseline_arrow_back_ios_24"
+        android:shadowColor="@color/black"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStatusDeatail"
+        app:layout_constraintEnd_toStartOf="@+id/imIconDetail"
+        app:layout_constraintTop_toTopOf="@+id/imIconDetail"
+        app:strokeColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tvCreated"
+        style="@style/TextViewWhiteStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/imIconDetail"
+        app:layout_constraintStart_toStartOf="@+id/imIconDetail"
+        app:layout_constraintTop_toBottomOf="@+id/tvStatusDeatail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

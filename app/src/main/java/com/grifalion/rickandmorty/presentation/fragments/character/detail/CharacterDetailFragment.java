@@ -7,33 +7,27 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.grifalion.rickandmorty.R;
-import com.grifalion.rickandmorty.data.api.ApiService;
-import com.grifalion.rickandmorty.data.api.RetrofitInstance;
+import com.grifalion.rickandmorty.data.api.CharacterApiService;
 import com.grifalion.rickandmorty.databinding.CharacterDetailFragmentBinding;
-import com.grifalion.rickandmorty.domain.models.character.Character;
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult;
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel;
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class CharacterDetailFragment extends Fragment implements CharacterDetailAdapter.SelectListener {
     private CharacterDetailFragmentBinding binding;
@@ -42,7 +36,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
     private LocationDetailViewModel locationDetailViewModel;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RecyclerView rv;
-    private ApiService apiService;
+    private CharacterApiService apiService;
 
     public CharacterDetailFragment(@NotNull CharacterDetailViewModel characterDetailViewModel){
         this.characterDetailViewModel = characterDetailViewModel;
@@ -62,7 +56,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         hideBottomNav();
-        apiService = RetrofitInstance.INSTANCE.getCharacterApi();
+        apiService = CharacterApiService.Companion.getCharacterRetrofit();
         rv = binding.rvDetailCharacter;
         rv.setHasFixedSize(true);
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +65,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-        final Observer<Character> observer = character -> {
+        final Observer<CharacterResult> observer = character -> {
             assert character != null;
             Glide.with(requireContext())
                     .load(character.getImage())
@@ -82,6 +76,14 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
             binding.tvLocationDetail.setText(character.getLocation().getName());
             binding.tvOriginDetail.setText(character.getOrigin().getName());
             binding.tvNameDetail.setText(character.getName());
+            binding.tvCreated.setText(character.getCreated());
+            if(binding.tvStatusDeatail.getText().toString().equals("Alive")){
+                binding.tvStatusDeatail.setBackground(ContextCompat.getDrawable(requireActivity(),R.drawable.view_alive));
+            } else if(binding.tvStatusDeatail.getText().toString().equals("Dead")){
+                binding.tvStatusDeatail.setBackground(ContextCompat.getDrawable(requireActivity(),R.drawable.view_dead));
+            } else if(binding.tvStatusDeatail.getText().toString().equals("unknown")){
+                binding.tvStatusDeatail.setBackground(ContextCompat.getDrawable(requireActivity(),R.drawable.view_unknown));
+            }
             binding.tvOriginDetail.setOnClickListener(it -> {
                 locationDetailViewModel.setLocationName(character.getOrigin().getName());
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -110,7 +112,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
     }
 
     private void detailData() {
-        final Observer<List<Episode>> observer = listOfEpisodes -> {
+        final Observer<List<EpisodeResult>> observer = listOfEpisodes -> {
             CharacterDetailAdapter adapter = new CharacterDetailAdapter(requireContext(),listOfEpisodes,this);
             rv.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -130,7 +132,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
     }
 
     @Override
-    public void onItemClicked(Episode episode) {
+    public void onItemClicked(EpisodeResult episode) {
         episodeDetailViewModel.onClickItemEpisode(episode);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager

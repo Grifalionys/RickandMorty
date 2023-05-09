@@ -1,37 +1,66 @@
 package com.grifalion.rickandmorty.data.datasource
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.grifalion.rickandmorty.data.api.RetrofitInstance
-import com.grifalion.rickandmorty.domain.models.character.Character
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
+import com.grifalion.rickandmorty.domain.repository.CharacterRepository
+import retrofit2.HttpException
+import javax.inject.Inject
 
-class CharacterDataSource(private val id: Int, private val name: String,private val status: String, private val gender: String,private val species: String): PagingSource<Int, Character>() {
+class CharacterDataSource @Inject constructor(
+    private val repository: CharacterRepository,
+    private val application: Application,
+    private val name: String,
+    private val status: String,
+    private val gender: String,
+    private val species: String,
+    ): PagingSource<Int, CharacterResult>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
-        try {
-            val currentLoadingPageKey = params.key ?: 1
-            val response = RetrofitInstance.getInstance()
-            val responseData = mutableListOf<Character>()
-            responseData.addAll(response.getCharacters(currentLoadingPageKey,id, name, status, gender,species).body()!!.results)
 
-            val prevKey = if(currentLoadingPageKey == 1){
-                null
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResult> {
+       return try {
+            val page = params.key ?: 1
+            var nextKey : Int? = 0
+            val responseData = arrayListOf<CharacterResult>()
+            if (hasConnected(application.applicationContext)) {
+                val response = repository.getCharacter(page,name,gender,status,species)
+                responseData.addAll(response.result)
+                nextKey = if(response.info.next == null && responseData.isNotEmpty()) null else page + 1
             } else {
-                currentLoadingPageKey - 1
+                val listCharacters = repository.getListCharactersDb()
+                responseData.addAll(listCharacters)
+                nextKey = if(responseData.isNotEmpty()) null else page + 1
             }
-            return LoadResult.Page(
+
+           val prevKey = if(page == 1) null else page - 1
+
+           return LoadResult.Page(
                 data = responseData,
                 prevKey = prevKey,
-                nextKey = currentLoadingPageKey.plus(1)
+                nextKey = nextKey
             )
-        } catch (e: Exception){
+            } catch (e: Exception){
             return LoadResult.Error(e)
+            } catch (e: HttpException) {
+            LoadResult.Page(
+                data = emptyList(),
+                prevKey = null,
+                nextKey = null
+            )
+            }
+    }
+    override fun getRefreshKey(state: PagingState<Int, CharacterResult>): Int? {
+        return null
         }
     }
-    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
-        return state.anchorPosition?.let {
-            state.closestPageToPosition(it)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
-        }
+
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
     }
-}
+
