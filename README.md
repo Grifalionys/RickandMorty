@@ -21,9 +21,11 @@
 * Kotlin
 * Java
 * Glide
+* 
 * Coroutines
 * RxJava
 * Retrofit
+* Pagging3
 * Room
 * Dagger2
 * MVVM
