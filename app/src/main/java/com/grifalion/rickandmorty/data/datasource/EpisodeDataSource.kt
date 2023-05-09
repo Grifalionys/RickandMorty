@@ -26,10 +26,11 @@ class EpisodeDataSource @Inject constructor(
                 responseData.addAll(response.results)
                 nextKey = if(response.info.next == null && responseData.isNotEmpty()) null else page + 1
             } else {
-
+                val listLocations = repository.getListEpisodesDb()
+                responseData.addAll(listLocations)
+                nextKey = if(responseData.isNotEmpty()) null else page + 1
             }
             val prevKey = if(page == 1) null else page - 1
-
             return LoadResult.Page(
                 data = responseData,
                 prevKey = prevKey,

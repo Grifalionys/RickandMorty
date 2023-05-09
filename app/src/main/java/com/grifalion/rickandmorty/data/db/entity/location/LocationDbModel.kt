@@ -5,11 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "item_location")
 data class LocationDbModel(
-    val created: String,
-    val dimension: String,
+    var created: String,
+    var dimension: String,
     @PrimaryKey()
-    val id: Int,
-    val name: String,
-    val type: String,
-    val url: String
+    var id: Int,
+    var name: String,
+    var type: String,
+    var url: String
 )

@@ -3,6 +3,11 @@ package com.grifalion.rickandmorty.data.mappers
 import com.grifalion.rickandmorty.data.api.repsonse.location.LocationInfoResponse
 import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResponse
 import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResultResponse
+import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
+import com.grifalion.rickandmorty.data.db.entity.location.LocationDbModel
+import com.grifalion.rickandmorty.domain.models.character.CharacterLocation
+import com.grifalion.rickandmorty.domain.models.character.CharacterOrigin
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.models.location.Location
 import com.grifalion.rickandmorty.domain.models.location.LocationInfo
 import com.grifalion.rickandmorty.domain.models.location.LocationResult
@@ -35,7 +40,33 @@ class LocationMapper @Inject constructor() {
         results = mapListResultsResponseForListResults(locationResponse.results)
     )
 
+    fun mapLocationResultResponseForLocationResultDb(locationResult: LocationResult): LocationDbModel {
+        return LocationDbModel (
+            created = locationResult.created,
+            dimension = locationResult.dimension,
+            id = locationResult.id,
+            name = locationResult.name,
+            type = locationResult.type,
+            url = locationResult.url,
+        )
+    }
 
+
+    fun mapListResultResponseForListDb(list: List<LocationResult>) = list.map {
+        mapLocationResultResponseForLocationResultDb(it)
+    }
+
+    fun mapLocationResultDbForLocationResult(locationResult: LocationDbModel): LocationResult{
+        return LocationResult(
+            created = locationResult.created,
+            dimension = locationResult.dimension,
+            id = locationResult.id,
+            name = locationResult.name,
+            residents = emptyList(),
+            type = locationResult.type,
+            url = locationResult.url
+        )
+    }
     companion object {
         private const val EMPTY_STRING = ""
         private const val ZERO_NUMBER = 0

@@ -17,7 +17,7 @@ import javax.inject.Inject
 class CharacterRepositoryImpl @Inject constructor(
     private val apiService: CharacterApiService,
     private val characterDao: CharacterDao,
-    private val mapper: CharacterMapper
+    val mapper: CharacterMapper
     ): CharacterRepository {
 
     override suspend fun getCharacter(

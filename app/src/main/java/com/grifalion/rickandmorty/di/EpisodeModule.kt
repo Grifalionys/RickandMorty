@@ -1,7 +1,12 @@
 package com.grifalion.rickandmorty.di
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.grifalion.rickandmorty.data.api.EpisodeApiService
+import com.grifalion.rickandmorty.data.db.EpisodeDatabase
+import com.grifalion.rickandmorty.data.db.LocationDatabase
+import com.grifalion.rickandmorty.data.db.dao.EpisodeDao
+import com.grifalion.rickandmorty.data.db.dao.LocationDao
 import com.grifalion.rickandmorty.data.repository.EpisodeRepositoryImpl
 import com.grifalion.rickandmorty.domain.repository.EpisodeRepository
 import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListViewModel
@@ -26,6 +31,11 @@ interface EpisodeModule {
         @Provides
         fun provideApiService(): EpisodeApiService {
             return EpisodeApiService.Companion.getInstance()
+        }
+
+        @Provides
+        fun provideEpisodeDao(application: Application): EpisodeDao {
+            return EpisodeDatabase.getMainDatabase(application).getEpisodeDao()
         }
     }
 }

@@ -27,6 +27,7 @@ import com.grifalion.rickandmorty.domain.models.location.Location
 import com.grifalion.rickandmorty.domain.models.location.LocationResult
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -9,4 +9,6 @@ interface LocationRepository {
 
     suspend fun insertLocation(list: List<LocationResult>)
 
+    fun getListLocationsDb(): List<LocationResult>
+
 }
