@@ -1,5 +1,2 @@
-# Rick and Morty
+# RickandMorty
 Приложение написано на Kotlin и частично на Java
-
-Основная информация
-
