@@ -48,7 +48,6 @@ ___Жирный и курсивный__
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/dea29c64-eb9e-40a3-b779-9d3ccec4b0db" width="300" height="700">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9cbfd7c7-f7ff-43ec-b5c8-96912456486f" width="300" height="700">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/0d7a596c-53cb-479f-aa4a-5c27bc68dcb9" width="300" height="700">
-<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/6b6c93f3-85e4-4e64-9b35-95099bf39e3c" width="300" height="700">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/85f2dbf7-5812-41e0-bbb9-deac0015dee5" width="300" height="700">
 
 
