@@ -34,14 +34,22 @@
 
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7" width="200" height="400">
 
-После загрузки Splash Screen, мы увидим главный экран с персонажами, а так же есть навигация между 3 вкладками: персонажи, локации и эпизоды.
+После загрузки Splash Screen, мы увидим главный экран с персонажами, а так же есть навигация между 3 вкладками: персонажи, локации и эпизоды. Списки были созданы спомощи RecyclerView. А данные были взяты с официальнного сайта API. Получаем данные с помощь библиотеки Retrofit. Данные списка загружаются постранично с помощью библиотеки Pagging3, и сохраняются в нашу базу данных с помощью библиотеки Room.
 
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6" width="200" height="400">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/7533e84a-c37f-4197-8be4-753e0e1ac847" width="200" height="400">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/544e7e2c-2e0f-48ea-bb27-94e0bb49b78c" width="200" height="400">
 
 При нажатии на персонажа мы переходим в детальную информацию о персонаже
-![ul6GPY7PhUE](https://github.com/Grifalionys/RickandMorty/assets/112081615/81e4a365-fe48-4b92-9302-7031e26a9ebf)
+
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/81e4a365-fe48-4b92-9302-7031e26a9ebf" width="200" height="400">
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/873d8156-cc01-415d-8dcb-f343a98010e8" width="200" height="400">
+
+В деталях персонажа мы можем увидеть детальную информацию о персонаже(п.2,3,4,5,6,7). На экране реализована кнопка назад (п.1), которая возвращает нас на главный экран.
+При нажатии на TextView "Происхождение" (п.6) мы переходим на детальнный экран локации. Аналогично если мы нажмем на  "Местоположение" (п7) мы перейдем на детальную информацию локации.
+Также мы можем увидеть информацию в каких эпизодах присутсовал данный персонаж (п.8). При нажатии на элемент эпизода мы увидем детальную информацию эпизода.
+
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/68e9bff2-0886-4211-9925-a39bc746c1a0" width="200" height="400">
 
 
 ## Скриншоты
