@@ -30,7 +30,7 @@
 * MVVM, Clean architecture
 
 ## Функционал приложения
-При запуске приложения запускается Splash Screen (gif animation), который символизирует названия приложение по мультсериалу Rick and Morty.
+При запуске приложения запускается Splash Screen (gif animation), который символизирует название приложение по мультсериалу Rick and Morty.
 
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7" width="200" height="400">
 
@@ -60,12 +60,7 @@
 
 Во всех вкладках со списками (персонажи, локации, эпизоды) мы можем использовать поиск и фильтрацию.
 
-<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/3b535503-0292-4318-85db-96a66e3aa5af">
-
-
-
-
-
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/3b535503-0292-4318-85db-96a66e3aa5af" width="200" height="400">
 
 
 ## Скриншоты
