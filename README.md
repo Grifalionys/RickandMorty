@@ -29,6 +29,21 @@
 * Dagger2
 * MVVM, Clean architecture
 
+## Функционал приложения
+При запуске приложения запускается Splash Screen (gif animation), который символизирует названия приложение по мультсериалу Rick and Morty.
+
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7" width="200" height="400">
+
+После загрузки Splash Screen, мы увидим главный экран с персонажами, а так же есть навигация между 3 вкладками: персонажи, локации и эпизоды.
+
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6" width="200" height="400">
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/7533e84a-c37f-4197-8be4-753e0e1ac847" width="200" height="400">
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/544e7e2c-2e0f-48ea-bb27-94e0bb49b78c" width="200" height="400">
+
+При нажатии на персонажа мы переходим в детальную информацию о персонаже
+![ul6GPY7PhUE](https://github.com/Grifalionys/RickandMorty/assets/112081615/81e4a365-fe48-4b92-9302-7031e26a9ebf)
+
+
 ## Скриншоты
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7" width="300" height="700">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/30e50df6-92b4-45b8-a797-35dc4cd3d5c6" width="300" height="700">
