@@ -65,10 +65,10 @@
 Пример поиска по фильтрации для каждого списка.
 
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/0d7a596c-53cb-479f-aa4a-5c27bc68dcb9" width="200" height="400">
+<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/d1aaeb09-c7ec-4310-8788-0997167d4f26" width="200" height="400">
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/85f2dbf7-5812-41e0-bbb9-deac0015dee5" width="200" height="400">
-<img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/d1aaeb09-c7ec-4310-8788-0997167d4f26">
 
-При выключенном интернет соединение приложение функционирует (не полностью). 
+При отсутствии интернет соединение приложение функционирует (не полностью). 
 
 ## Скриншоты
 <img src="https://github.com/Grifalionys/RickandMorty/assets/112081615/9074499f-b01b-4a69-94d1-a923421c18d7" width="300" height="700">
