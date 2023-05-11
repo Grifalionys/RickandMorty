@@ -1,7 +1,9 @@
 package com.grifalion.rickandmorty.domain.repository
 
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.models.location.Location
 import com.grifalion.rickandmorty.domain.models.location.LocationResult
+import io.reactivex.Observable
 
 interface LocationRepository {
 
@@ -11,4 +13,5 @@ interface LocationRepository {
 
     fun getListLocationsDb(): List<LocationResult>
 
+    fun getListCharactersIntoLocationDetail(id: String): Observable<List<CharacterResult>>
 }

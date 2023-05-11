@@ -25,10 +25,7 @@ interface CharacterApiService {
         @Query("species") species: String
     ): CharacterResponse
     @GET("episode/{id}")
-    fun getDetailEpisode(@Path("id") id: String): Observable<List<EpisodeResult>>
-
-    @GET("character/{id}")
-    fun getDetailCharacter(@Path("id") id: String): Observable<List<CharacterResult>>
+    fun getListEpisodesByIdIntoCharacterDetail(@Path("id") id: String): Observable<List<EpisodeResult>>
 
     @GET("location/")
     fun getDetailLocation(@Query("name") name: String): Observable<Location>

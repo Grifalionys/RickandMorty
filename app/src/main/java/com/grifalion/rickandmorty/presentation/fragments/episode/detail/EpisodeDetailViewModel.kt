@@ -4,12 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.grifalion.rickandmorty.data.api.EpisodeApiService
 import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
+import com.grifalion.rickandmorty.domain.usecases.episode.GetListCharactersIntoEpisodeUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class EpisodeDetailViewModel @Inject constructor() : ViewModel() {
+class EpisodeDetailViewModel @Inject constructor(
+    private val getListCharactersIntoEpisodeUseCase: GetListCharactersIntoEpisodeUseCase
+    ) : ViewModel() {
     val selectedItemLocation = MutableLiveData<EpisodeResult>()
     val responseCharacters = MutableLiveData<List<com.grifalion.rickandmorty.domain.models.character.CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()
@@ -23,7 +26,7 @@ class EpisodeDetailViewModel @Inject constructor() : ViewModel() {
     }
 
     fun fetchData(){
-        compositeDisposable.add(apiService.getDetailCharacter(characterId!!)
+        compositeDisposable.add(getListCharactersIntoEpisodeUseCase.execute(characterId!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

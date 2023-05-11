@@ -2,11 +2,12 @@ package com.grifalion.rickandmorty.presentation.fragments.location.detail;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.grifalion.rickandmorty.data.api.CharacterApiService;
+
+import com.grifalion.rickandmorty.data.api.LocationApiService;
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.location.Location;
 import com.grifalion.rickandmorty.domain.models.location.LocationResult;
-import com.grifalion.rickandmorty.domain.usecases.location.GetListLocationsUseCase;
+import com.grifalion.rickandmorty.domain.usecases.location.GetListCharactersIntoLocationDetailUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +24,15 @@ public class LocationDetailViewModel extends ViewModel {
     public MutableLiveData<List<CharacterResult>> responseCharacters = new MutableLiveData<List<CharacterResult>>();
 
     public List<String> listsOfCharacters = new ArrayList<>();
-    GetListLocationsUseCase locationUseCase;
+    GetListCharactersIntoLocationDetailUseCase getListCharactersIntoLocationDetailUseCase;
 
     public String characterId;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    public CharacterApiService apiService = CharacterApiService.Companion.getInstance();
+    public LocationApiService apiService = LocationApiService.Companion.getInstance();
 
     @Inject
-    public LocationDetailViewModel(GetListLocationsUseCase locationUseCase){
-        this.locationUseCase = locationUseCase;
+    public LocationDetailViewModel(GetListCharactersIntoLocationDetailUseCase getListCharactersIntoLocationDetailUseCase){
+        this.getListCharactersIntoLocationDetailUseCase = getListCharactersIntoLocationDetailUseCase;
     }
     public void onClickItemCharacter(LocationResult location){
         selectedItemLocation.setValue(location);
@@ -61,7 +62,7 @@ public class LocationDetailViewModel extends ViewModel {
     }
 
     public void fetchData(){
-        compositeDisposable.add(apiService.getDetailCharacter(characterId)
+        compositeDisposable.add(getListCharactersIntoLocationDetailUseCase.execute(characterId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setResponse,throwable -> {}

@@ -14,5 +14,5 @@ interface CharacterRepository {
 
     fun getListCharactersDb(): List<CharacterResult>
 
-    fun getDetailEpisode(id: String): Observable<List<EpisodeResult>>
+    fun getListEpisodesIntoCharacterDetail(id: String): Observable<List<EpisodeResult>>
 }

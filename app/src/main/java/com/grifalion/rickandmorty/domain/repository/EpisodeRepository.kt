@@ -13,6 +13,6 @@ interface EpisodeRepository {
 
     fun getListEpisodesDb(): List<EpisodeResult>
 
-    fun getDetailCharacter(id: String): Observable<List<CharacterResult>>
+    fun getListCharactersIntoEpisodeDetail(id: String): Observable<List<CharacterResult>>
 
 }

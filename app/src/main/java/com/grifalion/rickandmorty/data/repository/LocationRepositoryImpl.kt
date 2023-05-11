@@ -7,6 +7,7 @@ import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.models.location.Location
 import com.grifalion.rickandmorty.domain.models.location.LocationResult
 import com.grifalion.rickandmorty.domain.repository.LocationRepository
+import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,5 +43,9 @@ class LocationRepositoryImpl @Inject constructor(
             }
         }
         return listLocations
+    }
+
+    override fun getListCharactersIntoLocationDetail(id: String): Observable<List<CharacterResult>> {
+        return apiService.getListCharactersByIdIntoLocationDetail(id)
     }
 }

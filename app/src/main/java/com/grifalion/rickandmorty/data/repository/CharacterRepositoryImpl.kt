@@ -45,8 +45,8 @@ class CharacterRepositoryImpl @Inject constructor(
         return listCharacters
     }
 
-    override fun getDetailEpisode(id: String): Observable<List<EpisodeResult>> {
-        return apiService.getDetailEpisode(id)
+    override fun getListEpisodesIntoCharacterDetail(id: String): Observable<List<EpisodeResult>> {
+        return apiService.getListEpisodesByIdIntoCharacterDetail(id)
     }
 
 }
