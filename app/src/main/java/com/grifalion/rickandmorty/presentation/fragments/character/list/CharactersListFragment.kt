@@ -81,27 +81,37 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
     }
 
      private fun getNameSearchView(){
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                var name = query.toString()
-                lifecycleScope.launch {
-                    viewModelList.getCharacters(name,status,gender,species)
-                    viewModelList.characterFlow.collectLatest(adapter::submitData)
-                }
-                return true
-            }
+             binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                 override fun onQueryTextSubmit(query: String?): Boolean {
+                     var name = query.toString()
+                     if (hasConnected(requireContext())) {
+                         lifecycleScope.launch {
+                             viewModelList.getCharacters(name, status, gender, species)
+                             viewModelList.characterFlow.collectLatest(adapter::submitData)
+                         }
+                         return true
+                     } else {
+                         Toast.makeText(requireContext(),getString(R.string.error_network),Toast.LENGTH_SHORT).show()
+                         return true
+                     }
+                 }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                var name = newText.toString()
-                lifecycleScope.launch {
-                    viewModelList.getCharacters(name,status,gender,species)
-                    viewModelList.characterFlow.collectLatest(adapter::submitData)
-                }
-                return true
-            }
-        })
-
+                 override fun onQueryTextChange(newText: String?): Boolean {
+                     var name = newText.toString()
+                     if (hasConnected(requireContext())) {
+                     lifecycleScope.launch {
+                         viewModelList.getCharacters(name,status,gender,species)
+                         viewModelList.characterFlow.collectLatest(adapter::submitData)
+                     }
+                         return true
+                     } else {
+                         Toast.makeText(requireContext(),getString(R.string.error_network),Toast.LENGTH_SHORT).show()
+                         return true
+                     }
+                 }
+             })
     }
+
     private fun showBottomFilter(){
         binding.btnFilter.setOnClickListener{
           initBottomFilter()
@@ -222,11 +232,17 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
             .commit()
 
     }
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
+    }
 
     companion object{
         private const val EMPTY_STRING = ""
     }
 }
+
 
 
 

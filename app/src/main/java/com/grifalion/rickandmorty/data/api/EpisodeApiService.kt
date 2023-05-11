@@ -22,14 +22,8 @@ interface EpisodeApiService {
         @Query("episode") episode: String,
     ): EpisodeResponse
 
-    @GET("episode/{id}")
-    fun getDetailEpisode(@Path("id") id: String): Observable<List<Episode>>
-
     @GET("character/{id}")
     fun getDetailCharacter(@Path("id") id: String): Observable<List<CharacterResult>>
-
-    @GET("location/")
-    fun getDetailLocation(@Query("name") name: String): Observable<LocationResponse>
 
     companion object {
         private const val BASE_URL = "https://rickandmortyapi.com/api/"

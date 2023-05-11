@@ -1,6 +1,7 @@
 package com.grifalion.rickandmorty.presentation.fragments.episode.list
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -22,9 +24,7 @@ import com.grifalion.rickandmorty.app.App
 import com.grifalion.rickandmorty.databinding.EpisodeFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.EpisodeListFragmentBinding
 import com.grifalion.rickandmorty.di.ViewModelFactory
-import com.grifalion.rickandmorty.domain.models.episode.Episode
 import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
-import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailFragment
 import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -56,10 +56,8 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     ): View? {
         binding = EpisodeListFragmentBinding.inflate(inflater)
         filterBinding = EpisodeFilterFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this,viewModelFactory)[EpisodeListViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[EpisodeListViewModel::class.java]
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,24 +86,32 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         binding.searchViewEp.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
+                if (hasConnected(requireContext())) {
                 lifecycleScope.launch {
                     viewModel.getEpisodes(name,episode)
                     viewModel.episodeFlow.collectLatest(adapter::submitData)
                 }
-                return true
+                    return true
+                } else {
+                    Toast.makeText(requireContext(),getString(R.string.error_network), Toast.LENGTH_SHORT).show()
+                    return true
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
+                if (hasConnected(requireContext())) {
                 lifecycleScope.launch {
                     viewModel.getEpisodes(name,episode)
                     viewModel.episodeFlow.collectLatest(adapter::submitData)
                 }
-                return true
+                    return true
+                } else {
+                    Toast.makeText(requireContext(),getString(R.string.error_network), Toast.LENGTH_SHORT).show()
+                    return true
+                }
             }
-
         })
-
     }
     private fun swipeRefresh(){
         binding.swipeRefresh.setOnRefreshListener {
@@ -130,7 +136,6 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         val seasonsAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,seasonsArray)
         val episodeAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,episodeArray)
         spinnerSeason.adapter = seasonsAdapter
-
         spinnerSeason.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -142,7 +147,6 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
-
         spinnerEpisode.adapter = episodeAdapter
         spinnerEpisode.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -153,9 +157,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
             ) {
                 selectEpisode = episodeArray[position]
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {}
-
         }
 
         if(filterBinding.root.parent != null){
@@ -193,12 +195,17 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     }
 
     private fun getListEpisodes() {
-        name = ""
-        episode = ""
+        name = EMPTY_STRING
+        episode = EMPTY_STRING
         lifecycleScope.launch {
             viewModel.getEpisodes(name, episode)
             viewModel.episodeFlow.collectLatest(adapter::submitData)
         }
+    }
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
     }
 
     companion object{

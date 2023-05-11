@@ -78,7 +78,8 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_planet"
@@ -88,14 +89,14 @@
                     android:text="@string/planet" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_alien"
+                    android:id="@+id/chip_cluster"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cluster" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_humanoid"
+                    android:id="@+id/chip_space"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,35 +117,35 @@
                     android:text="@string/unknown" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipPoopybutthole"
+                    android:id="@+id/chip_microverse"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/microverse" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipMythological"
+                    android:id="@+id/chip_resort"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/resort" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipAnimal"
+                    android:id="@+id/chip_fantasy_town"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fantasy_town" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipCronenberg"
+                    android:id="@+id/chip_dream"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dream" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chipDisease"
+                    android:id="@+id/chip_menagerie"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -203,11 +204,13 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_137"
                     style="@style/CustomChipStyle"
+                    app:singleSelection="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dimension_c_137" />

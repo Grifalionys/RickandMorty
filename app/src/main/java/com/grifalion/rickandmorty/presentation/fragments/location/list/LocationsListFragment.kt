@@ -1,6 +1,7 @@
 package com.grifalion.rickandmorty.presentation.fragments.location.list
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.grifalion.rickandmorty.R
 import com.grifalion.rickandmorty.app.App
+import com.grifalion.rickandmorty.databinding.CharacterFilterFragmentBinding
+import com.grifalion.rickandmorty.databinding.LocationFilterFragmentBinding
 import com.grifalion.rickandmorty.databinding.LocationListFragmentBinding
 import com.grifalion.rickandmorty.di.ViewModelFactory
 import com.grifalion.rickandmorty.domain.models.location.Location
@@ -34,9 +37,10 @@ import javax.inject.Inject
 
 class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
     private lateinit var binding: LocationListFragmentBinding
+    private lateinit var filterBinding: LocationFilterFragmentBinding
     private val adapter = LocationListAdapter(this)
     private lateinit var viewModel: LocationListViewModel
-    private val detailVM: LocationDetailViewModel by activityViewModels()
+    private lateinit var locationDetailViewModel: LocationDetailViewModel
     private var name = EMPTY_STRING
     private var type = EMPTY_STRING
     private var dimension = EMPTY_STRING
@@ -57,7 +61,9 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
         savedInstanceState: Bundle?
     ): View? {
         binding = LocationListFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this,viewModelFactory)[LocationListViewModel::class.java]
+        filterBinding = LocationFilterFragmentBinding.inflate(layoutInflater)
+        locationDetailViewModel = ViewModelProvider(requireActivity(),viewModelFactory)[LocationDetailViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[LocationListViewModel::class.java]
         return binding.root
     }
 
@@ -78,31 +84,38 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
         swipeRefresh()
     }
 
-
-
     private fun getNameSearchView(){
         binding.searchViewLocation.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
+                if (hasConnected(requireContext())) {
                 lifecycleScope.launch {
                     viewModel.getLocations(name,type,dimension)
                     viewModel.locationFlow.collectLatest(adapter::submitData)
                 }
                 return true
+                } else {
+                    Toast.makeText(requireContext(),getString(R.string.error_network), Toast.LENGTH_SHORT).show()
+                    return true
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
+                if (hasConnected(requireContext())) {
                 lifecycleScope.launch {
                     viewModel.getLocations(name,type,dimension)
                     viewModel.locationFlow.collectLatest(adapter::submitData)
                 }
                 return true
+                } else {
+                    Toast.makeText(requireContext(),getString(R.string.error_network), Toast.LENGTH_SHORT).show()
+                    return true
+                }
             }
-
         })
-
     }
+
     private fun swipeRefresh(){
         binding.swipeRefresh.setOnRefreshListener {
             lifecycleScope.launch{
@@ -112,44 +125,25 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
             binding.swipeRefresh.isRefreshing = false
         }
     }
+
     private fun showBottomFilter(){
         binding.btnFilter.setOnClickListener{
             initBottomFilter()
         }
     }
-    private fun initBottomFilter() {
-        val dialogView: View = layoutInflater.inflate(R.layout.location_filter_fragment, null)
+
+    private fun initBottomFilter() = with(filterBinding) {
         val dialog = BottomSheetDialog(requireContext())
-        val btnApply = dialogView.findViewById<Button>(R.id.btnApply)
-        val chipPlanet = dialogView.findViewById<Chip>(R.id.chip_planet)
-        val chipCluster = dialogView.findViewById<Chip>(R.id.chip_alien)
-        val chipSpaceStation = dialogView.findViewById<Chip>(R.id.chip_humanoid)
-        val chipTv = dialogView.findViewById<Chip>(R.id.chip_tv)
-        val chipUnknownType = dialogView.findViewById<Chip>(R.id.chip_unknown_type)
-        val chipMicroverse = dialogView.findViewById<Chip>(R.id.chipPoopybutthole)
-        val chipResort = dialogView.findViewById<Chip>(R.id.chipMythological)
-        val chipFantasyTown = dialogView.findViewById<Chip>(R.id.chipAnimal)
-        val chipDream = dialogView.findViewById<Chip>(R.id.chipCronenberg)
-        val chipMenagerie = dialogView.findViewById<Chip>(R.id.chipDisease)
-        val chipGame = dialogView.findViewById<Chip>(R.id.chip_game)
-        val chipCustoms = dialogView.findViewById<Chip>(R.id.chip_customs)
-        val chipDaycare = dialogView.findViewById<Chip>(R.id.chip_daycare)
-        val chip137 = dialogView.findViewById<Chip>(R.id.chip_137)
-        val chipApocaliptic = dialogView.findViewById<Chip>(R.id.chip_apocaliptic)
-        val chipReplacement = dialogView.findViewById<Chip>(R.id.chip_replacement)
-        val chipFantasy = dialogView.findViewById<Chip>(R.id.chip_fantasy)
-        val chip5 = dialogView.findViewById<Chip>(R.id.chip_5)
-        val chipUnknownDimension = dialogView.findViewById<Chip>(R.id.chip_unknown_dimension)
-
-        val btnCloseDialog = dialogView.findViewById<ImageView>(R.id.btnCloseDialog)
-        dialog.setContentView(dialogView)
+        if(filterBinding.root.parent != null){
+            (filterBinding.root.parent as ViewGroup).removeView(filterBinding.root)
+        }
+        dialog.setContentView(filterBinding.root)
         dialog.show()
-        btnCloseDialog.setOnClickListener { dialog.dismiss() }
-
+        filterBinding.btnCloseDialog.setOnClickListener { dialog.dismiss() }
         when(type){
             "Planet" -> chipPlanet.isChecked
             "Cluster" -> chipCluster.isChecked
-            "Space station" -> chipSpaceStation.isChecked
+            "Space station" -> chipSpace.isChecked
             "TV" -> chipTv.isChecked
             "unknown" -> chipUnknownType.isChecked
             "Microverse" -> chipMicroverse.isChecked
@@ -161,7 +155,6 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
             "Customs" -> chipCustoms.isChecked
             "Daycare" -> chipDaycare.isChecked
         }
-
         when(dimension){
             "Dimension C-137" -> chip137.isChecked
             "Post-Apocalyptic Dimension" -> chipApocaliptic.isChecked
@@ -169,13 +162,11 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
             "Fantasy Dimension" -> chipFantasy.isChecked
             "Dimension 5-126" -> chip5.isChecked
             "unknown" -> chipUnknownDimension.isChecked
-
-
         }
         btnApply.setOnClickListener {
             if(chipPlanet.isChecked) type = "Planet"
             if(chipCluster.isChecked) type = "Cluster"
-            if(chipSpaceStation.isChecked) type = "Space station"
+            if(chipSpace.isChecked) type = "Space station"
             if(chipTv.isChecked) type = "TV"
             if(chipUnknownType.isChecked) type = "unknown"
             if(chipMicroverse.isChecked) type = "Microverse"
@@ -192,8 +183,7 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
             if(chipFantasy.isChecked) dimension = "Fantasy Dimension"
             if(chip5.isChecked) dimension = "Dimension 5-126"
             if(chipUnknownDimension.isChecked) dimension = "unknown"
-
-            if(chipPlanet.isChecked || chipCluster.isChecked || chipSpaceStation.isChecked || chipTv.isChecked || chipUnknownType.isChecked ||
+            if(chipPlanet.isChecked || chipCluster.isChecked || chipSpace.isChecked || chipTv.isChecked || chipUnknownType.isChecked ||
                 chipMicroverse.isChecked || chipResort.isChecked || chipFantasyTown.isChecked || chipDream.isChecked || chipMenagerie.isChecked ||
                 chipGame.isChecked || chipCustoms.isChecked || chipDaycare.isChecked || chip137.isChecked || chipApocaliptic.isChecked ||
                     chipReplacement.isChecked || chipFantasy.isChecked || chip5.isChecked || chipUnknownDimension.isChecked){
@@ -226,7 +216,7 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
     }
 
     override fun onClick(location: LocationResult) {
-        detailVM.onClickItemCharacter(location)
+        locationDetailViewModel.onClickItemCharacter(location)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
@@ -238,6 +228,13 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
     }
+
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
+    }
+
     companion object{
         private const val EMPTY_STRING = ""
     }

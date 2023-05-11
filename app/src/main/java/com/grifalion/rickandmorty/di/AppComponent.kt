@@ -15,7 +15,6 @@ import com.grifalion.rickandmorty.presentation.fragments.location.list.Locations
 import dagger.BindsInstance
 import dagger.Component
 
-
 @Component(modules = [CharacterModule::class, EpisodeModule::class, LocationModule::class])
 interface AppComponent {
 

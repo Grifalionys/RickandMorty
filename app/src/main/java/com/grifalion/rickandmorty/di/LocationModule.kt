@@ -30,12 +30,10 @@ interface LocationModule {
     @ViewModelKey(LocationDetailViewModel::class)
     fun bindLocationDetailViewModel(viewModel: LocationDetailViewModel): ViewModel
 
-
-
     companion object {
         @Provides
         fun provideApiService(): LocationApiService {
-            return LocationApiService.Companion.getInstance()
+            return LocationApiService.getInstance()
         }
 
         @Provides
