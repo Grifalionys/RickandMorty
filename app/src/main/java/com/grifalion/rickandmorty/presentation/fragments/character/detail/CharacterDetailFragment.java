@@ -1,5 +1,6 @@
 package com.grifalion.rickandmorty.presentation.fragments.character.detail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.astonproject.app.di.AppComponent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.grifalion.rickandmorty.R;
+import com.grifalion.rickandmorty.app.App;
 import com.grifalion.rickandmorty.data.api.CharacterApiService;
 import com.grifalion.rickandmorty.databinding.CharacterDetailFragmentBinding;
+import com.grifalion.rickandmorty.di.ViewModelFactory;
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.episode.Episode;
 import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult;
@@ -27,6 +31,9 @@ import com.grifalion.rickandmorty.presentation.fragments.location.detail.Locatio
 import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class CharacterDetailFragment extends Fragment implements CharacterDetailAdapter.SelectListener {
@@ -37,18 +44,27 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RecyclerView rv;
     private CharacterApiService apiService;
+    private AppComponent appComponent;
 
-    public CharacterDetailFragment(@NotNull CharacterDetailViewModel characterDetailViewModel){
-        this.characterDetailViewModel = characterDetailViewModel;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        App application = (App) requireActivity().getApplication();
+        appComponent = application.getComponent();
+        appComponent.inject(this);
+        super.onAttach(context);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = CharacterDetailFragmentBinding.inflate(inflater);
-        episodeDetailViewModel = new ViewModelProvider(this).get(EpisodeDetailViewModel.class);
-        locationDetailViewModel = new ViewModelProvider(this).get(LocationDetailViewModel.class);
+        characterDetailViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(CharacterDetailViewModel.class);
+        episodeDetailViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(EpisodeDetailViewModel.class);
+        locationDetailViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(LocationDetailViewModel.class);
         return binding.getRoot();
     }
 
@@ -89,7 +105,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     fragmentManager
                             .beginTransaction()
-                            .replace(R.id.containerFragment,new LocationDetailFragment(locationDetailViewModel))
+                            .replace(R.id.containerFragment,new LocationDetailFragment())
                             .addToBackStack(null)
                             .commit();
             });
@@ -98,7 +114,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.containerFragment,new LocationDetailFragment(locationDetailViewModel))
+                        .replace(R.id.containerFragment,new LocationDetailFragment())
                         .addToBackStack(null)
                         .commit();
             });
@@ -137,7 +153,7 @@ public class CharacterDetailFragment extends Fragment implements CharacterDetail
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new EpisodeDetailFragment(episodeDetailViewModel))
+                .replace(R.id.containerFragment, new EpisodeDetailFragment())
                 .addToBackStack(null)
                 .commit();
     }

@@ -21,7 +21,7 @@ class EpisodeDataSource @Inject constructor(
             val page = params.key ?: 1
             var nextKey : Int? = 0
             val responseData = arrayListOf<EpisodeResult>()
-            if(hasConnected(application.applicationContext)){
+            if (hasConnected(application.applicationContext)){
                 val response = repository.getEpisode(page,name,episode)
                 responseData.addAll(response.results)
                 nextKey = if(response.info.next == null && responseData.isNotEmpty()) null else page + 1

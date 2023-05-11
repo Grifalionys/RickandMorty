@@ -5,9 +5,13 @@ import androidx.lifecycle.ViewModel;
 import com.grifalion.rickandmorty.data.api.CharacterApiService;
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult;
+import com.grifalion.rickandmorty.domain.usecases.character.GetListCharactersUseCase;
+import com.grifalion.rickandmorty.domain.usecases.character.GetListEpisodesIntoCharacterDetailUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -20,9 +24,12 @@ public class CharacterDetailViewModel extends ViewModel {
 
     public String episodeId;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-
+    GetListEpisodesIntoCharacterDetailUseCase getListEpisodesIntoCharacterDetailUseCase;
     public CharacterApiService apiService = CharacterApiService.Companion.getInstance();
-
+    @Inject
+    public CharacterDetailViewModel(GetListEpisodesIntoCharacterDetailUseCase getListEpisodesIntoCharacterDetailUseCase){
+        this.getListEpisodesIntoCharacterDetailUseCase = getListEpisodesIntoCharacterDetailUseCase;
+    }
     public void onClickItemCharacter(CharacterResult character){
         selectedItemCharacter.setValue(character);
         listOfEpisodes.addAll(character.getEpisode());
@@ -40,7 +47,7 @@ public class CharacterDetailViewModel extends ViewModel {
     }
 
     void fetchData(){
-        compositeDisposable.add(apiService.getDetailEpisode(episodeId)
+        compositeDisposable.add(getListEpisodesIntoCharacterDetailUseCase.execute(episodeId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setListOfEpisodes,throwable -> {}));

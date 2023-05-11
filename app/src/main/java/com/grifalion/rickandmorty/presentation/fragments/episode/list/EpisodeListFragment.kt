@@ -187,7 +187,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     override fun onClick(episode: EpisodeResult) {
         viewModelDetail.onClickItemEpisode(episode)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.containerFragment, EpisodeDetailFragment(viewModelDetail))
+            ?.replace(R.id.containerFragment, EpisodeDetailFragment())
             ?.addToBackStack(null)
             ?.commit()
     }

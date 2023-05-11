@@ -1,7 +1,9 @@
 package com.grifalion.rickandmorty.domain.repository
 
+import com.grifalion.rickandmorty.domain.models.character.CharacterResult
 import com.grifalion.rickandmorty.domain.models.episode.Episode
 import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
+import io.reactivex.Observable
 
 interface EpisodeRepository {
 
@@ -10,5 +12,7 @@ interface EpisodeRepository {
     suspend fun insertEpisode(list: List<EpisodeResult>)
 
     fun getListEpisodesDb(): List<EpisodeResult>
+
+    fun getDetailCharacter(id: String): Observable<List<CharacterResult>>
 
 }

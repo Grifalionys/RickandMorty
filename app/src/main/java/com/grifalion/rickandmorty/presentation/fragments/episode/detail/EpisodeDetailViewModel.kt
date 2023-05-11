@@ -7,8 +7,9 @@ import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class EpisodeDetailViewModel: ViewModel() {
+class EpisodeDetailViewModel @Inject constructor() : ViewModel() {
     val selectedItemLocation = MutableLiveData<EpisodeResult>()
     val responseCharacters = MutableLiveData<List<com.grifalion.rickandmorty.domain.models.character.CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()

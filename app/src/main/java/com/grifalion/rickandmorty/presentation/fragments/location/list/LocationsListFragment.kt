@@ -230,7 +230,7 @@ class LocationsListFragment: Fragment(), LocationListAdapter.Listener {
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.containerFragment, LocationDetailFragment(detailVM))
+            .replace(R.id.containerFragment, LocationDetailFragment())
             .addToBackStack("locations")
             .commit()
     }

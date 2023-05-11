@@ -9,6 +9,7 @@ import com.grifalion.rickandmorty.data.db.dao.EpisodeDao
 import com.grifalion.rickandmorty.data.db.dao.LocationDao
 import com.grifalion.rickandmorty.data.repository.EpisodeRepositoryImpl
 import com.grifalion.rickandmorty.domain.repository.EpisodeRepository
+import com.grifalion.rickandmorty.presentation.fragments.episode.detail.EpisodeDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.episode.list.EpisodeListViewModel
 import dagger.Binds
 import dagger.Module
@@ -25,6 +26,11 @@ interface EpisodeModule {
     @IntoMap
     @ViewModelKey(EpisodeListViewModel::class)
     fun bindEpisodeViewModel(viewModel: EpisodeListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EpisodeDetailViewModel::class)
+    fun bindEpisodeDetailViewModel(viewModel: EpisodeDetailViewModel): ViewModel
 
 
     companion object {

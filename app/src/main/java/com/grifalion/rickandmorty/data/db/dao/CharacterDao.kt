@@ -25,4 +25,10 @@ interface CharacterDao {
         deleteAllCharacters()
         insertCharacter(list)
     }
+    @Query("SELECT * FROM item_character WHERE (:name IS NULL OR name LIKE '%' || :name || '%')" +
+            "AND (:status IS NULL OR status LIKE :status)" +
+            "AND (:species IS NULL OR species LIKE '%' || :species || '%')" +
+            "AND (:type IS NULL OR type LIKE '%' || :type || '%')" +
+            "AND (:gender IS NULL OR gender LIKE :gender)")
+    fun getFilteredCharacters(name: String?, status: String?, species: String?, type: String?, gender: String?): List<CharacterDbModel>
 }

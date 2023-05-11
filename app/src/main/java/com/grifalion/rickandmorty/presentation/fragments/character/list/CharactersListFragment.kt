@@ -33,18 +33,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, LocationDetailAdapter.SelectListener {
+class CharactersListFragment: Fragment(), CharacterListAdapter.Listener {
     private lateinit var binding: CharacterListFragmentBinding
     private lateinit var filterBinding: CharacterFilterFragmentBinding
     private val adapter = CharacterListAdapter(this)
-    private val detailVM: CharacterDetailViewModel by activityViewModels()
-    private lateinit var viewModel: CharacterListViewModel
+    private lateinit var viewModelList: CharacterListViewModel
+    private lateinit var viewModelDetail: CharacterDetailViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
-    private val component by lazy{
-        (requireActivity().application as App).component
-    }
 
     private var name = EMPTY_STRING
     private var status = EMPTY_STRING
@@ -52,7 +48,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
     private var species = EMPTY_STRING
 
     override fun onAttach(context: Context) {
-        component.inject(this)
+        (requireActivity().application as App).component.inject(this)
         super.onAttach(context)
     }
     override fun onCreateView(
@@ -61,8 +57,9 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
     ): View? {
         binding = CharacterListFragmentBinding.inflate(inflater)
         filterBinding = CharacterFilterFragmentBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this,viewModelFactory)[CharacterListViewModel::class.java]
-        viewModel.getCharacters(name,status,gender,species)
+        viewModelList = ViewModelProvider(requireActivity(),viewModelFactory)[CharacterListViewModel::class.java]
+        viewModelDetail = ViewModelProvider(requireActivity(),viewModelFactory)[CharacterDetailViewModel::class.java]
+        viewModelList.getCharacters(name,status,gender,species)
         return binding.root
     }
 
@@ -77,12 +74,10 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
                 binding.progressBar.visibility = View.GONE
             }
         }
-
             getListCharacters()
             getNameSearchView()
             showBottomFilter()
             swipeRefresh()
-
     }
 
      private fun getNameSearchView(){
@@ -90,8 +85,8 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharacters(name,status,gender,species)
-                    viewModel.characterFlow.collectLatest(adapter::submitData)
+                    viewModelList.getCharacters(name,status,gender,species)
+                    viewModelList.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
             }
@@ -99,12 +94,11 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
                 lifecycleScope.launch {
-                    viewModel.getCharacters(name,status,gender,species)
-                    viewModel.characterFlow.collectLatest(adapter::submitData)
+                    viewModelList.getCharacters(name,status,gender,species)
+                    viewModelList.characterFlow.collectLatest(adapter::submitData)
                 }
                 return true
             }
-
         })
 
     }
@@ -119,7 +113,7 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
         binding.swipeRefresh.setOnRefreshListener {
             lifecycleScope.launch{
                 adapter.submitData(PagingData.empty())
-                viewModel.characterFlow.collectLatest(adapter::submitData)
+                viewModelList.characterFlow.collectLatest(adapter::submitData)
             }
             binding.swipeRefresh.isRefreshing = false
         }
@@ -185,8 +179,8 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
                     chipAnimal.isChecked || chipCronenberg.isChecked || chipDisease.isChecked || edSearchHero.text.isNotEmpty()){
                 lifecycleScope.launch {
 
-                    viewModel.getCharacters(name,status,gender,species)
-                    viewModel.characterFlow.collectLatest(adapter::submitData)
+                    viewModelList.getCharacters(name,status,gender,species)
+                    viewModelList.characterFlow.collectLatest(adapter::submitData)
                 }
                 dialog.dismiss()
                 binding.btnFilter.visibility = View.GONE
@@ -213,18 +207,17 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
             status = EMPTY_STRING
             gender = EMPTY_STRING
             species = EMPTY_STRING
-
-            viewModel.getCharacters(name,status,gender,species)
-            viewModel.characterFlow.collectLatest(adapter::submitData)
+            viewModelList.getCharacters(name,status,gender,species)
+            viewModelList.characterFlow.collectLatest(adapter::submitData)
         }
     }
 
     override fun onClick(character: CharacterResult) {
-        detailVM.onClickItemCharacter(character)
+        viewModelDetail.onClickItemCharacter(character)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.containerFragment, CharacterDetailFragment(detailVM))
+            .replace(R.id.containerFragment, CharacterDetailFragment())
             .addToBackStack("characters")
             .commit()
 
@@ -232,10 +225,6 @@ class CharactersListFragment: Fragment(), CharacterListAdapter.Listener, Locatio
 
     companion object{
         private const val EMPTY_STRING = ""
-    }
-
-    override fun onItemClicked(character: CharacterResult?) {
-        TODO("Not yet implemented")
     }
 }
 

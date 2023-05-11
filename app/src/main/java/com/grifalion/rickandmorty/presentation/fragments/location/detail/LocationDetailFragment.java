@@ -1,5 +1,6 @@
 package com.grifalion.rickandmorty.presentation.fragments.location.detail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +12,23 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.astonproject.app.di.AppComponent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.grifalion.rickandmorty.R;
+import com.grifalion.rickandmorty.app.App;
 import com.grifalion.rickandmorty.data.api.LocationApiService;
 import com.grifalion.rickandmorty.databinding.LocationDetailFragmentBinding;
+import com.grifalion.rickandmorty.di.ViewModelFactory;
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult;
 import com.grifalion.rickandmorty.domain.models.location.LocationResult;
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailFragment;
 import com.grifalion.rickandmorty.presentation.fragments.character.detail.CharacterDetailViewModel;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 
@@ -32,16 +40,24 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private RecyclerView rv;
     private LocationApiService apiService;
+    @Inject
+    ViewModelFactory viewModelFactory;
+    AppComponent appComponent;
 
-    public LocationDetailFragment(@NotNull LocationDetailViewModel locationDetailViewModel){
-        this.locationDetailViewModel = locationDetailViewModel;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        App application = (App) requireActivity().getApplication();
+        appComponent = application.getComponent();
+        appComponent.inject(this);
+        super.onAttach(context);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = LocationDetailFragmentBinding.inflate(inflater);
-        characterDetailViewModel = new ViewModelProvider(this).get(CharacterDetailViewModel.class);
+        characterDetailViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(CharacterDetailViewModel.class);
+        locationDetailViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(LocationDetailViewModel.class);
         return binding.getRoot();
     }
 
@@ -98,7 +114,7 @@ public class LocationDetailFragment extends Fragment implements LocationDetailAd
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new CharacterDetailFragment(characterDetailViewModel))
+                .replace(R.id.containerFragment, new CharacterDetailFragment())
                 .addToBackStack(null)
                 .commit();
     }

@@ -1,14 +1,13 @@
 package com.grifalion.rickandmorty.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import com.grifalion.rickandmorty.data.api.CharacterApiService
 import com.grifalion.rickandmorty.data.db.dao.CharacterDao
-import com.grifalion.rickandmorty.data.db.entity.character.CharacterDbModel
 import com.grifalion.rickandmorty.data.mappers.CharacterMapper
 import com.grifalion.rickandmorty.domain.models.character.CharacterModel
 import com.grifalion.rickandmorty.domain.models.character.CharacterResult
+import com.grifalion.rickandmorty.domain.models.episode.EpisodeResult
 import com.grifalion.rickandmorty.domain.repository.CharacterRepository
+import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +43,10 @@ class CharacterRepositoryImpl @Inject constructor(
             }
         }
         return listCharacters
+    }
+
+    override fun getDetailEpisode(id: String): Observable<List<EpisodeResult>> {
+        return apiService.getDetailEpisode(id)
     }
 
 }

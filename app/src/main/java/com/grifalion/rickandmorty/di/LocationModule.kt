@@ -7,6 +7,7 @@ import com.grifalion.rickandmorty.data.db.LocationDatabase
 import com.grifalion.rickandmorty.data.db.dao.LocationDao
 import com.grifalion.rickandmorty.data.repository.LocationRepositoryImpl
 import com.grifalion.rickandmorty.domain.repository.LocationRepository
+import com.grifalion.rickandmorty.presentation.fragments.location.detail.LocationDetailViewModel
 import com.grifalion.rickandmorty.presentation.fragments.location.list.LocationListViewModel
 import dagger.Binds
 import dagger.Module
@@ -23,6 +24,11 @@ interface LocationModule {
     @IntoMap
     @ViewModelKey(LocationListViewModel::class)
     fun bindLocationViewModel(viewModel: LocationListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LocationDetailViewModel::class)
+    fun bindLocationDetailViewModel(viewModel: LocationDetailViewModel): ViewModel
 
 
 
