@@ -40,7 +40,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     private val component by lazy {
         (requireActivity().application as App).component
     }
-    private val viewModelDetail: EpisodeDetailViewModel by activityViewModels()
+    private lateinit var viewModelDetail: EpisodeDetailViewModel
     private val adapter = EpisodeListAdapter(this)
     private var name = EMPTY_STRING
     private var episode = EMPTY_STRING
@@ -57,6 +57,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         binding = EpisodeListFragmentBinding.inflate(inflater)
         filterBinding = EpisodeFilterFragmentBinding.inflate(inflater)
         viewModel = ViewModelProvider(requireActivity(),viewModelFactory)[EpisodeListViewModel::class.java]
+        viewModelDetail = ViewModelProvider(requireActivity(),viewModelFactory)[EpisodeDetailViewModel::class.java]
         return binding.root
     }
 
@@ -87,7 +88,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
 
-                lifecycleScope.launch {
+                lifecycleScope.launchWhenStarted {
                     viewModel.getEpisodes(name,episode)
                     viewModel.episodeFlow.collectLatest(adapter::submitData)
                 }
@@ -96,7 +97,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
-                lifecycleScope.launch {
+                lifecycleScope.launchWhenStarted {
                     viewModel.getEpisodes(name, episode)
                     viewModel.episodeFlow.collectLatest(adapter::submitData)
                 }
@@ -188,7 +189,7 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
     private fun getListEpisodes() {
         name = EMPTY_STRING
         episode = EMPTY_STRING
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             viewModel.getEpisodes(name, episode)
             viewModel.episodeFlow.collectLatest(adapter::submitData)
         }
