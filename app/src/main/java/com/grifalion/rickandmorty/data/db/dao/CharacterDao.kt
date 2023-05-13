@@ -14,8 +14,11 @@ interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacter(list: List<CharacterDbModel>)
 
-    @Query("SELECT * FROM item_character")
-    fun getAllCharacters(): List<CharacterDbModel>
+    @Query("SELECT * FROM item_character WHERE (name LIKE  '%' || :searchName || '%' OR :searchName = '') " +
+            "AND (gender LIKE :gender OR :gender = '') " +
+            "AND (status LIKE :status OR :status = '') " +
+            "AND (species LIKE :species OR :species = '') LIMIT :limit OFFSET :offset")
+    suspend fun getCharactersPage(offset: Int, limit: Int, searchName: String, gender: String,status: String,species: String): List<CharacterDbModel>
 
     @Query("DELETE FROM item_character")
     suspend fun deleteAllCharacters()
@@ -25,10 +28,4 @@ interface CharacterDao {
         deleteAllCharacters()
         insertCharacter(list)
     }
-    @Query("SELECT * FROM item_character WHERE (:name IS NULL OR name LIKE '%' || :name || '%')" +
-            "AND (:status IS NULL OR status LIKE :status)" +
-            "AND (:species IS NULL OR species LIKE '%' || :species || '%')" +
-            "AND (:type IS NULL OR type LIKE '%' || :type || '%')" +
-            "AND (:gender IS NULL OR gender LIKE :gender)")
-    fun getFilteredCharacters(name: String?, status: String?, species: String?, type: String?, gender: String?): List<CharacterDbModel>
 }

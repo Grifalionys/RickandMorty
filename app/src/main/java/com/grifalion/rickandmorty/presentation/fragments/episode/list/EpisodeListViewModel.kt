@@ -20,7 +20,7 @@ class EpisodeListViewModel @Inject constructor(
     var episodeFlow: Flow<PagingData<EpisodeResult>> = emptyFlow()
 
     fun getEpisodes(name: String, episode: String) {
-        episodeFlow = Pager(PagingConfig(pageSize = 1)){
+        episodeFlow = Pager(PagingConfig(pageSize = 10, enablePlaceholders = false, initialLoadSize = 10)){
             getListEpisodesUseCase.execute(name,episode)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

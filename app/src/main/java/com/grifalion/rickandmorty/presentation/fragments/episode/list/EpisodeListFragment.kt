@@ -86,31 +86,22 @@ class EpisodeListFragment: Fragment(), EpisodeListAdapter.ListenerEpisode {
         binding.searchViewEp.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 var name = query.toString()
-                if (hasConnected(requireContext())) {
+
                 lifecycleScope.launch {
                     viewModel.getEpisodes(name,episode)
                     viewModel.episodeFlow.collectLatest(adapter::submitData)
                 }
                     return true
-                } else {
-                    Toast.makeText(requireContext(),getString(R.string.error_network), Toast.LENGTH_SHORT).show()
-                    return true
-                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 var name = newText.toString()
-                if (hasConnected(requireContext())) {
                 lifecycleScope.launch {
-                    viewModel.getEpisodes(name,episode)
+                    viewModel.getEpisodes(name, episode)
                     viewModel.episodeFlow.collectLatest(adapter::submitData)
                 }
                     return true
-                } else {
-                    Toast.makeText(requireContext(),getString(R.string.error_network), Toast.LENGTH_SHORT).show()
-                    return true
                 }
-            }
         })
     }
     private fun swipeRefresh(){

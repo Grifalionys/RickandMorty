@@ -20,15 +20,14 @@ class EpisodeDataSource @Inject constructor(
         return try {
             val page = params.key ?: 1
             var nextKey : Int? = 0
-            val responseData = arrayListOf<EpisodeResult>()
-            if (hasConnected(application.applicationContext)){
+            val responseData =  if(hasConnected(application.applicationContext)){
                 val response = repository.getEpisode(page,name,episode)
-                responseData.addAll(response.results)
-                nextKey = if(response.info.next == null && responseData.isNotEmpty()) null else page + 1
+                nextKey = if(response.info.next == null) null else page + 1
+                response.results
             } else {
-                val listLocations = repository.getListEpisodesDb()
-                responseData.addAll(listLocations)
-                nextKey = if(responseData.isNotEmpty()) null else page + 1
+                val listLocations = repository.getListEpisodesDb((page-1) * params.loadSize, params.loadSize, name, episode)
+                nextKey = if(listLocations.isNotEmpty()) page +1  else null
+                listLocations
             }
             val prevKey = if(page == 1) null else page - 1
             return LoadResult.Page(

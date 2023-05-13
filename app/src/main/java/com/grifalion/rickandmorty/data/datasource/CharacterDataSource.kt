@@ -25,15 +25,14 @@ class CharacterDataSource @Inject constructor(
        return try {
             val page = params.key ?: 1
             var nextKey : Int? = 0
-            val responseData = arrayListOf<CharacterResult>()
-            if (hasConnected(application.applicationContext)) {
+            val responseData = if (hasConnected(application.applicationContext)) {
                 val response = repository.getCharacter(page,name,gender,status,species)
-                responseData.addAll(response.result)
-                nextKey = if(response.info.next == null && responseData.isNotEmpty()) null else page + 1
+                nextKey = if(response.info.next == null) null else page+1
+                response.result
             } else {
-                val listCharacters = repository.getListCharactersDb()
-                responseData.addAll(listCharacters)
-                nextKey = if(responseData.isNotEmpty()) null else page + 1
+                val listCharacters = repository.getListCharacters((page-1) * params.loadSize, params.loadSize,name,gender,status,species)
+                nextKey = if(listCharacters.isNotEmpty()) page+1 else null
+                listCharacters
             }
 
            val prevKey = if(page == 1) null else page - 1

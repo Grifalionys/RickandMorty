@@ -11,7 +11,8 @@ interface LocationRepository {
 
     suspend fun insertLocation(list: List<LocationResult>)
 
-    fun getListLocationsDb(): List<LocationResult>
+    suspend fun getListLocationsDb(offset: Int, limit: Int, name: String, type: String, dimension: String
+    ): List<LocationResult>
 
     fun getListCharactersIntoLocationDetail(id: String): Observable<List<CharacterResult>>
 }

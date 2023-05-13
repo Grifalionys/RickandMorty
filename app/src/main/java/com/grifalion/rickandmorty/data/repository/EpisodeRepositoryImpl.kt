@@ -31,14 +31,13 @@ class EpisodeRepositoryImpl @Inject constructor(
         episodeDao.insertEpisode(mapper.mapListResultResponseForListDb(list))
     }
 
-    override fun getListEpisodesDb(): List<EpisodeResult> {
-        var listEpisodes = emptyList<EpisodeResult>()
-        CoroutineScope(Dispatchers.IO).launch {
-            listEpisodes = (episodeDao.getAllEpisodes()).map {
-                mapper.mapEpisodeResultDbForEpisodeResult(it)
-            }
-        }
-        return listEpisodes
+    override suspend fun getListEpisodesDb(
+        offset: Int,
+        limit: Int,
+        name: String,
+        episode: String,
+    ): List<EpisodeResult> {
+        return episodeDao.getAllEpisodesPage(offset, limit, name, episode).map(mapper::mapEpisodeResultDbForEpisodeResult)
     }
 
     override fun getListCharactersIntoEpisodeDetail(id: String): Observable<List<CharacterResult>> {

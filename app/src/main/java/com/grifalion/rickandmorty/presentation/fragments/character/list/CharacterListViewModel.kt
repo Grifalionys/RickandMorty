@@ -20,7 +20,7 @@ class CharacterListViewModel @Inject constructor(
 
 
     fun getCharacters(name: String, status: String, gender: String, species: String) {
-        characterFlow = Pager(PagingConfig(pageSize = 1)) {
+        characterFlow = Pager(PagingConfig(pageSize = 10, enablePlaceholders = false, initialLoadSize = 10)) {
             getListCharactersUseCase.execute(name, status, gender, species)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

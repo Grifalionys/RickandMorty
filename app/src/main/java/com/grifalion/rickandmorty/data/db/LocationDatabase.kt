@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.grifalion.rickandmorty.data.db.dao.LocationDao
 import com.grifalion.rickandmorty.data.db.entity.location.LocationDbModel
 
-@Database(entities = [LocationDbModel::class], version = 2)
+@Database(entities = [LocationDbModel::class], version = 3)
 abstract class LocationDatabase: RoomDatabase() {
     abstract fun getLocationDao(): LocationDao
 

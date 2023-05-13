@@ -35,14 +35,13 @@ class CharacterRepositoryImpl @Inject constructor(
         characterDao.insertCharacter(mapper.mapListResultResponseForListDb(list))
     }
 
-    override fun getListCharactersDb(): List<CharacterResult> {
-        var listCharacters = emptyList<CharacterResult>()
-        CoroutineScope(Dispatchers.IO).launch {
-            listCharacters = (characterDao.getAllCharacters()).map {
-                mapper.mapCharacterResultDbForCharacterResult(it)
-            }
-        }
-        return listCharacters
+    override suspend fun getListCharacters(offset: Int,
+                                           limit: Int,
+                                           name: String,
+                                           gender: String,
+                                           status: String,
+                                           species: String): List<CharacterResult> {
+        return characterDao.getCharactersPage(offset, limit, name,gender,status,species).map(mapper::mapCharacterResultDbForCharacterResult)
     }
 
     override fun getListEpisodesIntoCharacterDetail(id: String): Observable<List<EpisodeResult>> {

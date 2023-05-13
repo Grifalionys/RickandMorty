@@ -22,7 +22,7 @@ class LocationListViewModel @Inject constructor(
     var locationFlow: Flow<PagingData<LocationResult>> = emptyFlow()
 
     fun getLocations(name: String, type: String, dimension: String) {
-        locationFlow = Pager(PagingConfig(pageSize = 1)) {
+        locationFlow = Pager(PagingConfig(pageSize = 10, enablePlaceholders = false, initialLoadSize = 10)) {
             getListLocationsUseCase.execute(name,type,dimension)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

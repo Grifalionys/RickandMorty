@@ -35,15 +35,16 @@ class LocationRepositoryImpl @Inject constructor(
         locationDao.insertLocation(mapper.mapListResultResponseForListDb(list))
     }
 
-    override fun getListLocationsDb(): List<LocationResult> {
-        var listLocations = emptyList<LocationResult>()
-        CoroutineScope(Dispatchers.IO).launch {
-            listLocations = (locationDao.getAllLocation()).map {
-                mapper.mapLocationResultDbForLocationResult(it)
-            }
-        }
-        return listLocations
+    override suspend fun getListLocationsDb(
+        offset: Int,
+        limit: Int,
+        name: String,
+        type: String,
+        dimension: String,
+    ): List<LocationResult> {
+        return locationDao.getAllLocationPage(offset, limit, name, type, dimension).map(mapper::mapLocationResultDbForLocationResult)
     }
+
 
     override fun getListCharactersIntoLocationDetail(id: String): Observable<List<CharacterResult>> {
         return apiService.getListCharactersByIdIntoLocationDetail(id)

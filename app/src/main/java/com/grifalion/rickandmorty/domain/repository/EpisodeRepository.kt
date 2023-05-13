@@ -11,7 +11,7 @@ interface EpisodeRepository {
 
     suspend fun insertEpisode(list: List<EpisodeResult>)
 
-    fun getListEpisodesDb(): List<EpisodeResult>
+    suspend fun getListEpisodesDb(offset: Int, limit: Int, name: String, episode: String): List<EpisodeResult>
 
     fun getListCharactersIntoEpisodeDetail(id: String): Observable<List<CharacterResult>>
 

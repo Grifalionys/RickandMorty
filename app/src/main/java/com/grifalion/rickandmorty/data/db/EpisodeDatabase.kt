@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.grifalion.rickandmorty.data.db.dao.EpisodeDao
 import com.grifalion.rickandmorty.data.db.entity.episode.EpisodeDbModel
 
-@Database(entities = [EpisodeDbModel::class], version = 1)
+@Database(entities = [EpisodeDbModel::class], version = 2)
 abstract class EpisodeDatabase: RoomDatabase() {
     abstract fun getEpisodeDao(): EpisodeDao
 
