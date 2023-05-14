@@ -1,7 +1,6 @@
 package com.grifalion.rickandmorty
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**
