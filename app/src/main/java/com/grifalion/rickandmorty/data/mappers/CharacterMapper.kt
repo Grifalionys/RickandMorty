@@ -57,7 +57,7 @@ class CharacterMapper @Inject constructor() {
         url = location.url ?: EMPTY_STRING
     )
 
-    fun mapCharacterResultResponseForCharacterResultDb(characterResult: CharacterResult): CharacterDbModel{
+    fun mapCharacterResultForCharacterResultDb(characterResult: CharacterResult): CharacterDbModel{
         return CharacterDbModel (
             id = characterResult.id,
             name = characterResult.name,
@@ -94,7 +94,7 @@ class CharacterMapper @Inject constructor() {
     }
 
     fun mapListResultResponseForListDb(list: List<CharacterResult>) = list.map {
-        mapCharacterResultResponseForCharacterResultDb(it)
+        mapCharacterResultForCharacterResultDb(it)
     }
 
     fun mapListResultDbForCharacterResult(list: List<CharacterDbModel> ) = list.map {
@@ -124,6 +124,8 @@ class CharacterMapper @Inject constructor() {
             url = originResponse.url
         )
     }
+
+
     companion object{
         private const val EMPTY_STRING = ""
         private const val ZERO_NUMBER = 0
