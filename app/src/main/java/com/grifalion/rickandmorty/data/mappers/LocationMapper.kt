@@ -51,7 +51,6 @@ class LocationMapper @Inject constructor() {
         )
     }
 
-
     fun mapListResultResponseForListDb(list: List<LocationResult>) = list.map {
         mapLocationResultForLocationResultDb(it)
     }
@@ -67,6 +66,7 @@ class LocationMapper @Inject constructor() {
             url = locationResult.url
         )
     }
+
     companion object {
         private const val EMPTY_STRING = ""
         private const val ZERO_NUMBER = 0

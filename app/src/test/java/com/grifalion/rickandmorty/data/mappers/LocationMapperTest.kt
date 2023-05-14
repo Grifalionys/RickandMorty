@@ -1,16 +1,41 @@
 package com.grifalion.rickandmorty.data.mappers
 
+import com.grifalion.rickandmorty.data.api.repsonse.location.LocationResultResponse
 import com.grifalion.rickandmorty.data.db.entity.location.LocationDbModel
 import com.grifalion.rickandmorty.domain.models.location.LocationResult
 import org.junit.Assert
 import org.junit.Test
 
 class LocationMapperTest {
-
     private val locationMapper = LocationMapper()
 
     @Test
-    fun modelToDbLocation() {
+    fun modelResponseForModelResult() {
+        val locationResultResponse = LocationResultResponse(
+            id = LOCATION_ID,
+            name = LOCATION_NAME,
+            url = LOCATION_URL,
+            created = LOCATION_CREATED,
+            residents = LOCATION_CHARACTERS,
+            type = LOCATION_TYPE,
+            dimension = LOCATION_DIMENSION
+        )
+
+        val expectedLocationResult = LocationResult(
+            id = LOCATION_ID,
+            name = LOCATION_NAME,
+            url = LOCATION_URL,
+            created = LOCATION_CREATED,
+            residents = LOCATION_CHARACTERS,
+            type = LOCATION_TYPE,
+            dimension = LOCATION_DIMENSION
+        )
+
+        val actualLocationResult : LocationResult = locationMapper.mapResultsResponseForResults(locationResultResponse)
+        Assert.assertEquals(expectedLocationResult, actualLocationResult)
+    }
+    @Test
+    fun modelResultForDbLocationModel() {
 
         val locationResult = LocationResult(
             id = LOCATION_ID,
@@ -31,14 +56,33 @@ class LocationMapperTest {
             type = LOCATION_TYPE
         )
 
-
-        val actualDbLocation: LocationDbModel =
-            locationMapper.mapLocationResultForLocationResultDb(locationResult)
-
+        val actualDbLocation: LocationDbModel = locationMapper.mapLocationResultForLocationResultDb(locationResult)
         Assert.assertEquals(expectedDbLocation, actualDbLocation)
-
     }
 
+    @Test
+    fun locationDbModelForLocationResult() {
+        val locationDbModel = LocationDbModel(
+            id = LOCATION_ID,
+            name = LOCATION_NAME,
+            url = LOCATION_URL,
+            created = LOCATION_CREATED,
+            dimension = LOCATION_DIMENSION,
+            type = LOCATION_TYPE
+        )
+
+        val expectedLocationResult = LocationResult(
+            id = LOCATION_ID,
+            name = LOCATION_NAME,
+            url = LOCATION_URL,
+            created = LOCATION_CREATED,
+            residents = emptyList(),
+            type = LOCATION_TYPE,
+            dimension = LOCATION_DIMENSION
+        )
+        val actualLocationResult: LocationResult = locationMapper.mapLocationResultDbForLocationResult(locationDbModel)
+        Assert.assertEquals(expectedLocationResult, actualLocationResult)
+    }
 
     companion object {
         private const val LOCATION_ID = 123

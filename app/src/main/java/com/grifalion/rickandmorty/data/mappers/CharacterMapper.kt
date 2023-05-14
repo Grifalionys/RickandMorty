@@ -50,8 +50,6 @@ class CharacterMapper @Inject constructor() {
         url = location.url ?: EMPTY_STRING
     )
 
-
-
     fun mapLocationDbForLocation(location: CharacterLocationDb) = CharacterLocation(
         name = location.name ?: EMPTY_STRING,
         url = location.url ?: EMPTY_STRING
@@ -73,8 +71,6 @@ class CharacterMapper @Inject constructor() {
 
         )
     }
-
-
 
     fun mapCharacterResultDbForCharacterResult(characterResult: CharacterDbModel): CharacterResult{
         return CharacterResult(
@@ -99,23 +95,6 @@ class CharacterMapper @Inject constructor() {
 
     fun mapListResultDbForCharacterResult(list: List<CharacterDbModel> ) = list.map {
         mapCharacterResultDbForCharacterResult(it)
-    }
-
-    fun mapDetailResponseForDetail(characterDetailResponse: CharacterDetailResponse): CharacterDetail {
-        return CharacterDetail(
-            created = characterDetailResponse.created,
-            gender = characterDetailResponse.gender,
-            name = characterDetailResponse.name,
-            species = characterDetailResponse.species,
-            status = characterDetailResponse.status,
-            episode = characterDetailResponse.episode,
-            type = characterDetailResponse.type,
-            image = characterDetailResponse.image,
-            location = mapLocationResponseForLocation(characterDetailResponse.location),
-            id = characterDetailResponse.id,
-            url = characterDetailResponse.url,
-            origin = mapOriginResponseForOrigin(characterDetailResponse.origin),
-        )
     }
 
     private fun mapOriginResponseForOrigin(originResponse: CharacterOriginResponse): CharacterOrigin {

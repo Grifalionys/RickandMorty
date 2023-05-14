@@ -48,6 +48,7 @@ class EpisodeMapper @Inject constructor() {
             url = episodeResult.url
         )
     }
+
     fun mapListResultResponseForListDb(list: List<EpisodeResult>) = list.map {
         mapEpisodeResultForEpisodeResultDb(it)
     }
