@@ -40,7 +40,7 @@ class LocationMapper @Inject constructor() {
         results = mapListResultsResponseForListResults(locationResponse.results)
     )
 
-    fun mapLocationResultResponseForLocationResultDb(locationResult: LocationResult): LocationDbModel {
+    fun mapLocationResultForLocationResultDb(locationResult: LocationResult): LocationDbModel {
         return LocationDbModel (
             created = locationResult.created,
             dimension = locationResult.dimension,
@@ -53,7 +53,7 @@ class LocationMapper @Inject constructor() {
 
 
     fun mapListResultResponseForListDb(list: List<LocationResult>) = list.map {
-        mapLocationResultResponseForLocationResultDb(it)
+        mapLocationResultForLocationResultDb(it)
     }
 
     fun mapLocationResultDbForLocationResult(locationResult: LocationDbModel): LocationResult{
